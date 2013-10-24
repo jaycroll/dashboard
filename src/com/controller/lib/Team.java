@@ -123,7 +123,7 @@ public class Team extends HttpServlet {
 					
 					//Agent Name
 					request.setAttribute("fullname_"+iCtr,agentlist.getString("userfirstname")+" "+agentlist.getString("userlastname"));
-					request.setAttribute("userid_",agentlist.getString("userid"));
+					
 					///////////////////////////////////////////////////////////////////////////
 					///////////////////////////////////////////////////////////////////////////
 					//Get Per Month Settings

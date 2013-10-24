@@ -92,7 +92,7 @@ public class AProjection extends HttpServlet {
 					  do{
 						  	request.setAttribute("rsMonthRevenue",rsMonthRevenue.getString("actual_revenue"));
 					  } while (rsMonthRevenue.next());
-					  }
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

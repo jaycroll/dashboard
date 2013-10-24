@@ -30,7 +30,7 @@ import org.json.simple.JSONValue;
 public class APrivilege extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-       
+       	
     /**
      * @see HttpServlet#HttpServlet()
      */

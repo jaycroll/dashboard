@@ -61,7 +61,7 @@
 
 		<% for(int i=0; i<=iCtr;i++){ %>
 		<tr>
-			<td  align='left'><a href="<%=sitePathInit%>Profile/<%=request.getAttribute("userid_") %>" style="text-decoration:none;color:#000000"><%=request.getAttribute("fullname_"+i) %></a></td>
+			<td  align='left'><a href="<%=sitePathInit%>Profile/<%=request.getAttribute("user_id") %>" class="jq_viewProfile"><%=request.getAttribute("fullname_"+i) %></a></td>
 			<td  align='center'><span class='green'><%=request.getAttribute("monthly_"+i) %></span> - <span class='blu'><%=request.getAttribute("monthlyrevenue_"+i) %></span> <%=request.getAttribute("monthlypercentage_"+i) %>%</td>
 			<td  align='center'><span class='green'><%=request.getAttribute("yearly_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlypercentage_"+i) %>%</td>
 			<td  align='center'><span class='green'><%=request.getAttribute("yearlytotal_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlytotalpercentage_"+i) %>%</td>
@@ -118,6 +118,14 @@ $(document).ready(function($){
 				window.location='<%=sitePathInit%>';
 		}	
 	});
+	(".jq_viewProfile").live('click',function () {
+		
+		if(checkLogged()){
+				loadProfile();
+		}else{
+				window.location='<%=sitePathInit%>';
+		}	
+	});
 	
 	
 	
@@ -132,6 +140,7 @@ function loadTarget(){
 		$('table.bar').visualize({type: 'bar', barDirection: 'vertical'});
 	});
 }
+
 
 </script>
 
