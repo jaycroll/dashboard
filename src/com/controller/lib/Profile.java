@@ -16,6 +16,8 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -55,7 +57,9 @@ public class Profile extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String action	= request.getParameter("action");
+		//String action	= request.getParameter("action");
+		String userid = request.getParameter("userid");
+		String year = request.getParameter("year");
 		HttpSession sess=request.getSession();
 		CustomHelper ch=new CustomHelper();
 		
@@ -73,337 +77,71 @@ public class Profile extends HttpServlet {
 			
 			RequestDispatcher view=null;
 			Boolean useDispatcher=false;
+
+
 			
+			DecimalFormat numberFormat = new DecimalFormat("#.00");
+			Map salesM = new HashMap();
+			Map targetM = new HashMap();
+			float[] monthlySales = new float[13];
+			float[] monthlyTarget = new float[13];
 			
-			if(action==null){
+			salesM.put("userid", userid);
+			targetM.put("userid", userid);
+			if(year==null){
+				int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+				salesM.put("year",currentYear);
+				targetM.put("year",currentYear);
+				ResultSet getSales = sales.loadAgentMonthlySales(salesM, true);
+				ResultSet getTargets = proj.loadAgentMonthlyTarget(targetM, true);
 				
-				////////////////////////////////////////////////////////
-				//For Year
-				/*
-				 Map det=new HashMap();
-				 request.setAttribute("banner","dashboard");
-				
-				
-				//Monthly
-				det.put("fromMonth",ch.formatDate("yyyy-MM"));
-				det.put("toMonth",ch.formatDate("yyyy-MM-dd"));
-				
-				//Yearly
-				det.put("fromYear",ch.formatDate("yyyy"));
-				det.put("toYear",ch.formatDate("yyyy-MM-dd"));
-				
-				ResultSet rDetails=proj.loadProjectionA(det);
-				request.setAttribute("rDetails",rDetails);
-				*/
-				
-				Map det=new HashMap();
-				ResultSet agentlist=usr.loadSalesUser(det);
-				
-				Map detMonthTarget=new HashMap();
-				Map detYearTarget=new HashMap();
-				Map detYearTotalTarget=new HashMap();
-				
-				
-				Map detMonthRevenue=new HashMap();
-				Map detYearRevenue=new HashMap();
-				Map detYearTotalRevenue=new HashMap();
-				
-				
-				String strMonthTarget="";
-				String strYearTarget="";
-				String strYearTotalTarget="";
-				
-				String strMonthRevenue="";
-				String strYearRevenue="";
-				String strYearTotalRevenue="";
-				
-				try {
-					int iCtr=0;
-				while(agentlist.next()){
-					
-					//Agent Name
-					request.setAttribute("fullname_"+iCtr,agentlist.getString("userfirstname")+" "+agentlist.getString("userlastname"));
-					
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					//Get Per Month Settings
-					//Monthly Target 
-					try {
-						detMonthTarget.put("month",ch.formatDate("yyyy-MM"));
-						detMonthTarget.put("user_id",agentlist.getString("userid"));
-						ResultSet rsMonthTarget=sales.ldMonthTarget(detMonthTarget,false);
-						
-						if (rsMonthTarget.next()) {  
-							  do{
-								 // System.out.println("Target Month Amount"+rsMonthTarget.getString("target_amount"));
-								 request.setAttribute("monthly_"+iCtr,rsMonthTarget.getString("target_amount"));
-								 strMonthTarget=rsMonthTarget.getString("target_amount");
-							  } while (rsMonthTarget.next());
-						 }else{
-							 
-								detMonthTarget.put("user_id",null);
-								ResultSet rsMonthTarget2=sales.ldMonthTarget(detMonthTarget,false);
-								
-								if (rsMonthTarget2.next()) {  
-									  do{
-										 request.setAttribute("monthly_"+iCtr,rsMonthTarget2.getString("target_amount"));
-										 strMonthTarget=rsMonthTarget2.getString("target_amount");
-										 
-									  } while (rsMonthTarget2.next());
-								 }else{
-									 request.setAttribute("monthly_"+iCtr,"00.00");
-									 strMonthTarget="00.00";
-									
-								 }
-						 }
-						 
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					
-					
-					
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					//Get Per Year Settings
-					//Yearly Target 
-					try {
-					
-					detYearTarget.put("year",ch.formatDate("yyyy"));
-					detYearTarget.put("user_id",agentlist.getString("userid"));
-					ResultSet rsYearTarget=sales.ldYearTarget(detYearTarget);
-					
-					if (rsYearTarget.next()) {  
-					do{
-						request.setAttribute("yearly_"+iCtr,rsYearTarget.getString("target_amount"));
-						strYearTarget=rsYearTarget.getString("target_amount");
-					} while (rsYearTarget.next());
-					}else{
-					
-					detYearTarget.put("user_id",null);
-					ResultSet rsYearTarget2=sales.ldYearTarget(detYearTarget);
-					
-					if (rsYearTarget2.next()) {  
-					do{
-						request.setAttribute("yearly_"+iCtr,rsYearTarget2.getString("target_amount"));
-						strYearTarget=rsYearTarget2.getString("target_amount");
-					} while (rsYearTarget2.next());
-					}else{
-						request.setAttribute("yearly_"+iCtr,"00.00");
-						strYearTarget="00.00";
-					}
-					}
-					
-					} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					
-										
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					//Get Per Year Total Settings
-					//Yearly  Total Target 
-					try {
-					
-						detYearTotalTarget.put("year",ch.formatDate("yyyy"));
-						detYearTotalTarget.put("user_id",agentlist.getString("userid"));
-					ResultSet rsYearTotalTarget=sales.ldYearTarget(detYearTotalTarget);
-					
-					if (rsYearTotalTarget.next()) {  
-					do{
-						request.setAttribute("yearlytotal_"+iCtr,rsYearTotalTarget.getString("target_amount"));
-						strYearTotalTarget=rsYearTotalTarget.getString("target_amount");
-					
-					} while (rsYearTotalTarget.next());
-					}else{
-					
-						detYearTotalTarget.put("user_id",null);
-					ResultSet rsYearTotalTarget2=sales.ldYearTarget(detYearTotalTarget);
-					
-					if (rsYearTotalTarget2.next()) {  
-					do{
-						request.setAttribute("yearlytotal_"+iCtr,rsYearTotalTarget2.getString("target_amount"));
-						strYearTotalTarget=rsYearTotalTarget2.getString("target_amount");
-					} while (rsYearTotalTarget2.next());
-					}else{
-						request.setAttribute("yearlytotal_"+iCtr,"00.00");
-						strYearTotalTarget="00.00";
-					}
-					}
-					
-					} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					
-					
-					
-			
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					/////////Monthly Revenue
-					try {
-						
-						detMonthRevenue.put("month",ch.formatDate("yyyy-MM"));
-						detMonthRevenue.put("user_id",agentlist.getString("userid"));
-						
-						ResultSet rsMonthRevenue=sales.ldMonthRevenue(detMonthRevenue,false);
-					
-						if (rsMonthRevenue.next()) {  
+				try{
+					if(getSales.next()){
+						monthlySales[0] = (float) 00.0;
 						do{
-							request.setAttribute("monthlyrevenue_"+iCtr,rsMonthRevenue.getString("actual_revenue"));
-							strMonthRevenue=rsMonthRevenue.getString("actual_revenue");
-						} while (rsMonthRevenue.next());
-						}
-						
-					} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}				
+							for(int i = 1; i<13; i++){
+								if(i == Integer.parseInt(getSales.getString("month"))){
 									
-					//Compute Monthly Percentage
-					request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage(strMonthRevenue,strMonthTarget));
-					//request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage("3600000","4332000"));	
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					
-					
-					
-					
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-					/////////Yearly Revenue
-					try {
-					
-					detYearRevenue.put("year",ch.formatDate("yyyy"));
-					detYearRevenue.put("user_id",agentlist.getString("userid"));
-					
-					ResultSet rsYearRevenue=sales.ldYearRevenue(detYearRevenue);
-					
-					if (rsYearRevenue.next()) {  
-					do{
-					request.setAttribute("yearlyrevenue_"+iCtr,rsYearRevenue.getString("actual_revenue"));
-						strYearRevenue=rsYearRevenue.getString("actual_revenue");
-					} while (rsYearRevenue.next());
-					}
-					
-					} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					}				
-					
-					//Compute Monthly Percentage
-					request.setAttribute("yearlypercentage_"+iCtr,ch.computePercentage(strYearTarget,strYearRevenue));
-					
-					request.setAttribute("yearlytotalpercentage_"+iCtr,ch.computePercentage(strYearTotalTarget,strYearRevenue));
-					//request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage("3600000","4332000"));	
-					///////////////////////////////////////////////////////////////////////////
-					///////////////////////////////////////////////////////////////////////////
-				
-					request.setAttribute("iCtr",iCtr);
-					iCtr++;
-					
-				}//end of while
-				
-					
-				
-				
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				//request.setAttribute("graphContent",true);
-				useDispatcher=true;
-				view = request.getRequestDispatcher("profile/main.jsp");
-				////////////////////////////////////////////////////////
-				
-			}else if(action.equals("Monthly")){
-				
-				
-				////////////////////////////////////////////////////////
-				//////////////////////For Monthly///////////////////////
-				 Map det=new HashMap();
-				 useDispatcher=true;
-				 det.put("revenue_type", "Sales");
-				 det.put("year","2012");
-				 ResultSet detSales=proj.loadProjectionMonthly(det);
-				 
-				 float[] iActualSales=new float[13];
-				 
-				 	float[] iSales=new float[13];
-				 	try {
-						if (detSales.next()) {  
-							
-							iSales[0]=(float) 00.0;
-						do{
-							
-							for(int i=1;i<13;i++){
-								if(detSales.getString("monthNum").equals(String.format("%02d", i))){
-									iSales[i]=Float.parseFloat(detSales.getString("subTotal"));
+									monthlySales[i] = Float.parseFloat(getSales.getString("totalpayment"));
+									
 								}
-								
-							}//end of loop
-						
-						} while (detSales.next());
-						
-						}
-						
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				 	
-				 	
-				 	 det.put("revenue_type", "Refund");
-					 det.put("year","2012");
-					 ResultSet detRefund=proj.loadProjectionMonthly(det);
-					 
-					 float[] iRefund=new float[13];
-					 	try {
-							if (detRefund.next()) {  
-						
-								iRefund[0]=(float) 00.0;
-							do{
-								
-								for(int i=1;i<13;i++){
-									if(detRefund.getString("monthNum").equals(String.format("%02d", i))){
-										iRefund[i]=Float.parseFloat(detRefund.getString("subTotal"));
-									}
-									
-								}//end of loop
-							
-							} while (detRefund.next());
-							
+							//System.out.println(getSales.getString("month"));
+							//System.out.println(i);
 							}
-							
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					 
+							//System.out.println(getSales.getString("month"));
+						}while(getSales.next());
+					}
+				}catch(SQLException e){ e.printStackTrace(); }
+				try{
+					if(getTargets.next()){
+						monthlyTarget[0] = (float) 00.0;
+						do{
+							for(int i = 1; i<13; i++){
+								if(i == Integer.parseInt(getTargets.getString("month"))){
+									System.out.println("Validated: "+getTargets.getString("month"));
+									monthlyTarget[i] = Float.parseFloat(getTargets.getString("amount"));
+									
+								}
+							//System.out.println(getTargets.getString("month"));
+							//System.out.println(i);
+							}
+							System.out.println(getSales.getString("month"));
+						}while(getTargets.next());
+					}
 					
-					iActualSales[0]=(float) 00.0;
-					
-					for(int b=1;b<13;b++){
-						iActualSales[b]=iSales[b]-iRefund[b];
-					}//end of float
-					
-				request.setAttribute("iActualSales",iActualSales);
-				view = request.getRequestDispatcher("profile/main.jsp");	
+				}catch(SQLException e){ e.printStackTrace(); }
 				
-				////////////////////////////////////////////////////////
+				
 			}
 			
-			
+			else{
+				salesM.put("year", year);
+				targetM.put("year",year);
+			}
+			request.setAttribute("monthlySales",monthlySales);
+			request.setAttribute("monthlyTargets",monthlyTarget);
+			useDispatcher=true;
+			view = request.getRequestDispatcher("profile/main.jsp");
 			if(useDispatcher){	
 				response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 				response.setHeader("Pragma", "no-cache");

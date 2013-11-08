@@ -74,10 +74,14 @@
 <rule>
     <name></name>
     <from>^/Profile/([a-z0-9]+)$</from>
-    <to>/Profile?param=$2</to>
+    <to>/Profile?userid=$1</to>
 </rule>
 
-
+<rule>
+    <name></name>
+    <from>^/Profile/([a-z0-9]+)/([a-z0-9]+)$</from>
+    <to>/Profile?userid=$1&amp;year=$2</to>
+</rule>
 
 
 <rule>

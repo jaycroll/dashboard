@@ -279,6 +279,43 @@ public class SalesModel{
 			 }	  
 			return rs;
 		}
+		public ResultSet loadAgentMonthlySales(Map det,Boolean byYear){
+			
+			String query="";
+			ResultSet rs=null;
+			
+			try{
+				 this.fetchProperties();
+				 Connection connection=null;
+				 Class.forName("com.mysql.jdbc.Driver");
+				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+				 
+				  Statement st = connection.createStatement();
+				  query =  " SELECT SUM(salesteam.sales_order.totalamountpaid) as totalpayment, "
+						  +" YEAR(salesteam.sales_order.salesinvoicecreateddate) as year, MONTH(salesteam.sales_order.salesinvoicecreateddate) as month  "
+						  +" FROM salesteam.sales_order,salesteam.agents "
+						  +" WHERE salesteam.agents.agentuserid = '"+det.get("userid")+"' "
+						  +" AND salesteam.sales_order.agentid = salesteam.agents.agentid "
+				  		  +" AND YEAR(salesteam.sales_order.salesinvoicecreateddate) =  '"+det.get("year")+"' "
+				  		  +" GROUP BY YEAR(salesteam.sales_order.salesinvoicecreateddate), MONTH(salesteam.sales_order.salesinvoicecreateddate)";
+				 // System.out.println(query);
+				/*
+				  if(det.get("userid") != null && det.get("userid") != ""){
+					  query+=" and `user`.userid='"+det.get("userid")+"'";
+				  }
+				  */
+		
+				  rs = st.executeQuery(query);
+				  
+			 } catch (SQLException e) {
+				  System.err.println("SQLException: "
+			    	        +e.getMessage());
+			      System.err.println("SQL Query: "+query);
+			 } catch (Exception e){
+			 			System.out.println("Error in fetching"+e);
+			 }	  
+			return rs;
+		}
 
 		
 		

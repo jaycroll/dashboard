@@ -242,6 +242,42 @@ public class ProjectionModel{
 			 }	  
 			return rs;
 		}
+	 public ResultSet loadAgentMonthlyTarget(Map det,Boolean byYear){
+			
+		 	/////Notes here
+		 
+			String query="";
+			ResultSet rs=null;
+			
+			try{
+				 this.fetchProperties();
+				 Connection connection=null;
+				 Class.forName("com.mysql.jdbc.Driver");
+				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+				 
+				  Statement st = connection.createStatement();
+				  
+				   			query = "  SELECT SUM(target_amount) as amount, YEAR(target_date) as year, DATE_FORMAT(target_date,'%m') as month "
+				   					+" FROM targets "
+				   					+" WHERE user_id='"+det.get("userid")+"' "
+				   					+" AND target_id!=3 "
+				   					+" AND department_id=2 "
+				   				    +" AND YEAR(target_date)='"+det.get("year")+"' "
+				   					+" GROUP BY YEAR(target_date), MONTH(target_date)";
+				
+				 
+				 rs = st.executeQuery(query);
+				 System.out.println(det.get("userid"));
+				 System.out.println(det.get("year"));
+			 } catch (SQLException e) {
+				  System.err.println("SQLException: "
+			    	        +e.getMessage());
+			      System.err.println("SQL Query: "+query);
+			 } catch (Exception e){
+			 			System.out.println("Error in fetching"+e);
+			 }	  
+			return rs;
+		}
 	 
 	 
 	 

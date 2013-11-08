@@ -123,7 +123,7 @@ public class Team extends HttpServlet {
 					
 					//Agent Name
 					request.setAttribute("fullname_"+iCtr,agentlist.getString("userfirstname")+" "+agentlist.getString("userlastname"));
-					
+					request.setAttribute("userid_"+iCtr,agentlist.getString("userid"));
 					///////////////////////////////////////////////////////////////////////////
 					///////////////////////////////////////////////////////////////////////////
 					//Get Per Month Settings
@@ -307,29 +307,7 @@ public class Team extends HttpServlet {
 					//request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage("3600000","4332000"));	
 					///////////////////////////////////////////////////////////////////////////
 					///////////////////////////////////////////////////////////////////////////
-										
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
+												
 					request.setAttribute("iCtr",iCtr);
 					iCtr++;
 					

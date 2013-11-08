@@ -3,14 +3,17 @@
 
 
 <%@ page import="com.misc.lib.RolePermission" %> 
-
+<%@ page import="java.text.DecimalFormat" %>
 
 <% 
 	HttpSession sMain=request.getSession();
 	RolePermission rpMain=new RolePermission();
 	rpMain.gAppProperties(request.getRealPath("/"));
-
-	int iCtr = Integer.parseInt(request.getAttribute("iCtr").toString());
+	CustomHelper ch = new CustomHelper();
+	float[] ActualSales = (float[]) request.getAttribute("monthlySales");
+	float[] ActualTarget = (float[]) request.getAttribute("monthlyTargets");
+	String[] strMonths=ch.loadInitMonths();
+	DecimalFormat numberFormat = new DecimalFormat("#.00");
 %>
 
 <div id="header" align="center"><img src="<%=sitePathInit%>images/ppe-blk.png"/></div>
@@ -38,52 +41,36 @@
 <% if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),8,6)){	%>  
 
 <div id="content" style='float:left'>
-
-
-
-
-<div class='floatleft green'>Target</div>
-<div class='floatleft'>&nbsp; - &nbsp; </div>
-<div class='floatleft blu'>Actual</div>
-<div class='floatleft bld'>&nbsp; &nbsp;% (Achievement)</div>
-
-<div class='clr'><p>redirected to profile</p></div>
-
-
-<div class='margintop30px'>
-
-	<table style='width:900px;' class='gridtable' cellpadding='10' cellspacing='0'>
-		<tr class='grayTitle'>
-			<td  align='center'>Profile</td>
-			<td  align='center'>MTD</td>
-			<td  align='center'>YTD</td>
-			<td  align='center'>Total</td>
-		</tr>
-
-		<% for(int i=0; i<=iCtr;i++){ %>
-		<tr>
-			<td  align='left'><a href="<%=sitePathInit%>" style="text-decoration:none;color:#000000"><%=request.getAttribute("fullname_"+i) %></a></td>
-			<td  align='center'><span class='green'><%=request.getAttribute("monthly_"+i) %></span> - <span class='blu'><%=request.getAttribute("monthlyrevenue_"+i) %></span> <%=request.getAttribute("monthlypercentage_"+i) %>%</td>
-			<td  align='center'><span class='green'><%=request.getAttribute("yearly_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlypercentage_"+i) %>%</td>
-			<td  align='center'><span class='green'><%=request.getAttribute("yearlytotal_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlytotalpercentage_"+i) %>%</td>
-		</tr>
-		<% } %>
-		<% /*
-		<tr>
-			<td  align='center'>Juan De La Cruz</td>
-			<td  align='center'><span class='green'>4,332,000</span> - <span class='blu'>3,600,000</span> 120%</td>
-			<td  align='center'><span class='green'>4,332,000</span> - <span class='blu'>3,600,000</span> 120%</td>
-			<td  align='center'><span class='green'>4,332,000</span> - <span class='blu'>3,600,000</span> 120%</td>
-		</tr>
-		*/ %>
-		
-		
-	</table>
-
-</div>
-
-
-
+	<div>
+	<!-- Profile status here -->
+	</div>
+	<div>
+	<!-- Form and Table here  -->
+		<table  class="pie line area bar" style='display:none;' >
+			<thead>
+				<tr>
+					<td></td>
+					<% for(int a=1;a<13;a++){ %>			
+						<th><%=strMonths[a]%></th>
+					<% } %>					
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>Target</th>
+					<% for(int a=1;a<13;a++){ %>
+						<td><%=numberFormat.format(ActualTarget[a]) %></td>
+					<% } %>
+				</tr>	
+				<tr>
+					<th>Actual</th>
+					<% for(int a=1;a<13;a++){ %>
+						<td><%=numberFormat.format(ActualSales[a])%></td>
+					<% } %>	
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 
