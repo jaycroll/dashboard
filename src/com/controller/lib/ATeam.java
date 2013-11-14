@@ -88,7 +88,7 @@ public class ATeam extends HttpServlet {
 			 det.put("user_id",user_id);
 			 det.put("userid",user_id);
 			 ResultSet detSales=sales.loadProjectionMonthly(det);
-			
+			 
 			 
 			 float[] iActualSales=new float[13];
 			 float[] iActualTarget=new float[13];
@@ -110,6 +110,7 @@ public class ATeam extends HttpServlet {
 								  }
 							  }
 						  } while (rsMonthRevenue.next());
+						  rsMonthRevenue.close();
 						  }
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -131,6 +132,7 @@ public class ATeam extends HttpServlet {
 							  }
 						  }
 				      } while (rsMonthTarget.next());
+					  rsMonthTarget.close();
 				  }
 				
 			} catch (SQLException e) {
@@ -138,7 +140,8 @@ public class ATeam extends HttpServlet {
 				e.printStackTrace();
 			}
 			  
-	
+			
+			
 			 	
 		//////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////

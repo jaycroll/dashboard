@@ -36,10 +36,10 @@ public class SalesModel{
 		 Properties p = new Properties();
 		 p.load(new FileInputStream(projectFile+relativeWebPath));
 		 
-		 this.connectionURL=p.getProperty("connectionURL");
-		 this.dbUser=p.getProperty("dbUser");
-		 this.dbPassword=p.getProperty("dbPassword");
-		 this.salesDB=p.getProperty("salesDB");
+		 connectionURL=p.getProperty("connectionURL");
+		 dbUser=p.getProperty("dbUser");
+		 dbPassword=p.getProperty("dbPassword");
+		 salesDB=p.getProperty("salesDB");
 	 }
 	 
 	 
@@ -296,6 +296,7 @@ public class SalesModel{
 						  +" FROM salesteam.sales_order,salesteam.agents "
 						  +" WHERE salesteam.agents.agentuserid = '"+det.get("userid")+"' "
 						  +" AND salesteam.sales_order.agentid = salesteam.agents.agentid "
+						  +" AND salesteam.sales_order.paymentstatus"
 				  		  +" AND YEAR(salesteam.sales_order.salesinvoicecreateddate) =  '"+det.get("year")+"' "
 				  		  +" GROUP BY YEAR(salesteam.sales_order.salesinvoicecreateddate), MONTH(salesteam.sales_order.salesinvoicecreateddate)";
 				 // System.out.println(query);
@@ -426,7 +427,7 @@ public class SalesModel{
 								}		
 					   					query+=""
 			   							+ "FROM   targets "
-			   							+ "WHERE  target_group_id != 2  and department_id='2'";
+			   							+ "WHERE  target_group_id = 2  and department_id='2'";
 			   							
 			   							
 								   		 if(det.get("user_id") != null && det.get("user_id") != ""){
@@ -445,7 +446,7 @@ public class SalesModel{
 										}
 					   					
 					 rs = st.executeQuery(query);
-					  
+					 System.out.println(query);
 				 } catch (SQLException e) {
 					  System.err.println("SQLException: "
 				    	        +e.getMessage());
@@ -455,7 +456,59 @@ public class SalesModel{
 				 }	  
 				return rs;
 			}
-		 
+		 public ResultSet ldMonthTarget2(Map det,Boolean specDate){
+				
+			 	/////Notes here
+			 
+				String query="";
+				ResultSet rs=null;
+				
+				try{
+					 this.fetchProperties();
+					 Connection connection=null;
+					 Class.forName("com.mysql.jdbc.Driver");
+					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+					 
+					  Statement st = connection.createStatement();
+					  
+					   			query = "";
+					   			
+					   			if(det.get("user_id") != null && det.get("user_id") != ""){
+					   				query+="SELECT target_amount ";
+								}else{
+									query+="SELECT Ifnull(Sum(target_amount),0) as target_amount ";
+								}		
+					   					query+=""
+			   							+ "FROM   targets "
+			   							+ "WHERE  target_group_id = 2  and department_id='2'";
+			   							
+			   							
+								   		 if(det.get("user_id") != null && det.get("user_id") != ""){
+											  query+=" and user_id='"+det.get("user_id")+"'";
+											
+										}else{
+											query+=" and user_id='0'";
+											
+										}
+								   		 query+= "       AND Date_format(target_date, '%Y-%m') = "; 
+					   					if(specDate){
+												query += "      '"+det.get("month")+"' ";
+										}else{
+												query += "       Date_format(NOW() - INTERVAL 1 day, '%Y-%m' ";
+												query += "       ) ";	
+										}
+					   					
+					 rs = st.executeQuery(query);
+					 System.out.println(query);
+				 } catch (SQLException e) {
+					  System.err.println("SQLException: "
+				    	        +e.getMessage());
+				      System.err.println("SQL Query: "+query);
+				 } catch (Exception e){
+				 			System.out.println("Error in fetching"+e);
+				 }	  
+				return rs;
+			}
 		 
 		 
 		 public ResultSet ldYearTarget(Map det){

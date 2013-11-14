@@ -329,6 +329,7 @@ public class AUser extends HttpServlet {
 			iVariable.put("logged",true);	
 			
 			String userfirstname	= request.getParameter("userfirstname");
+			//System.oou
 			String userlastname	= request.getParameter("userlastname");
 			String username	= request.getParameter("username");
 			String password	= request.getParameter("password");

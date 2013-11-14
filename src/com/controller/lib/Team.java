@@ -14,6 +14,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -58,7 +60,6 @@ public class Team extends HttpServlet {
 		String action	= request.getParameter("action");
 		HttpSession sess=request.getSession();
 		CustomHelper ch=new CustomHelper();
-		
 		
 		if(ch.checkMemberSession(sess)){
 	
@@ -131,7 +132,8 @@ public class Team extends HttpServlet {
 					try {
 						detMonthTarget.put("month",ch.formatDate("yyyy-MM"));
 						detMonthTarget.put("user_id",agentlist.getString("userid"));
-						ResultSet rsMonthTarget=sales.ldMonthTarget(detMonthTarget,false);
+						detMonthTarget.put("year",ch.formatDate("yyyy"));
+						ResultSet rsMonthTarget=sales.ldMonthTarget2(detMonthTarget,false);
 						
 						if (rsMonthTarget.next()) {  
 							  do{
@@ -253,24 +255,28 @@ public class Team extends HttpServlet {
 					try {
 						
 						detMonthRevenue.put("month",ch.formatDate("yyyy-MM"));
-						detMonthRevenue.put("user_id",agentlist.getString("userid"));
+						detMonthRevenue.put("year",ch.formatDate("yyyy"));
+						detMonthRevenue.put("userid",agentlist.getString("userid"));
 						
-						ResultSet rsMonthRevenue=sales.ldMonthRevenue(detMonthRevenue,false);
+						ResultSet rsMonthRevenue=sales.loadAgentMonthlySales(detMonthRevenue,false);
 					
 						if (rsMonthRevenue.next()) {  
 						do{
-							request.setAttribute("monthlyrevenue_"+iCtr,rsMonthRevenue.getString("actual_revenue"));
-							strMonthRevenue=rsMonthRevenue.getString("actual_revenue");
+							request.setAttribute("monthlyrevenue_"+iCtr,rsMonthRevenue.getString("totalpayment"));
+							strMonthRevenue=rsMonthRevenue.getString("totalpayment");
 						} while (rsMonthRevenue.next());
 						}
-						
+						else{
+							
+							strMonthRevenue="00.00";
+						}
 					} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					}				
 									
 					//Compute Monthly Percentage
-					request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage(strMonthRevenue,strMonthTarget));
+					request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage(strMonthTarget,strMonthRevenue));
 					//request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage("3600000","4332000"));	
 					///////////////////////////////////////////////////////////////////////////
 					///////////////////////////////////////////////////////////////////////////

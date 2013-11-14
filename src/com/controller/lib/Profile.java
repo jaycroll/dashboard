@@ -16,8 +16,6 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -36,7 +34,7 @@ import com.model.lib.*;
  * Servlet implementation class Index
  */
 
-@WebServlet(description = "Profile servlet", urlPatterns = { "/Profile" })
+@WebServlet(description = "Area servlet", urlPatterns = { "/Profile" })
 
 public class Profile extends HttpServlet { 
 	private static final long serialVersionUID = 1L;
@@ -50,16 +48,14 @@ public class Profile extends HttpServlet {
         // TODO Auto-generated constructor stub
         
     }
-
+  
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		//String action	= request.getParameter("action");
-		String userid = request.getParameter("userid");
-		String year = request.getParameter("year");
+		String action	= request.getParameter("action");
 		HttpSession sess=request.getSession();
 		CustomHelper ch=new CustomHelper();
 		
@@ -72,76 +68,30 @@ public class Profile extends HttpServlet {
 			UserModel usr=new UserModel();
 			usr.projectFile=getServletContext().getRealPath("");
 			
-			SalesModel sales=new SalesModel();
-			sales.projectFile=getServletContext().getRealPath("");
-			
 			RequestDispatcher view=null;
 			Boolean useDispatcher=false;
-
-
 			
-			DecimalFormat numberFormat = new DecimalFormat("#.00");
-			Map salesM = new HashMap();
-			Map targetM = new HashMap();
-			float[] monthlySales = new float[13];
-			float[] monthlyTarget = new float[13];
-			
-			salesM.put("userid", userid);
-			targetM.put("userid", userid);
-			if(year==null){
-				int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-				salesM.put("year",currentYear);
-				targetM.put("year",currentYear);
-				ResultSet getSales = sales.loadAgentMonthlySales(salesM, true);
-				ResultSet getTargets = proj.loadAgentMonthlyTarget(targetM, true);
+			if(action==null){
 				
-				try{
-					if(getSales.next()){
-						monthlySales[0] = (float) 00.0;
-						do{
-							for(int i = 1; i<13; i++){
-								if(i == Integer.parseInt(getSales.getString("month"))){
-									
-									monthlySales[i] = Float.parseFloat(getSales.getString("totalpayment"));
-									
-								}
-							//System.out.println(getSales.getString("month"));
-							//System.out.println(i);
-							}
-							//System.out.println(getSales.getString("month"));
-						}while(getSales.next());
-					}
-				}catch(SQLException e){ e.printStackTrace(); }
-				try{
-					if(getTargets.next()){
-						monthlyTarget[0] = (float) 00.0;
-						do{
-							for(int i = 1; i<13; i++){
-								if(i == Integer.parseInt(getTargets.getString("month"))){
-									System.out.println("Validated: "+getTargets.getString("month"));
-									monthlyTarget[i] = Float.parseFloat(getTargets.getString("amount"));
-									
-								}
-							//System.out.println(getTargets.getString("month"));
-							//System.out.println(i);
-							}
-							System.out.println(getSales.getString("month"));
-						}while(getTargets.next());
-					}
-					
-				}catch(SQLException e){ e.printStackTrace(); }
+				
+				
+				Map det=new HashMap();
+				det.put("userid",request.getParameter("userid"));
+				ResultSet agentlist=usr.loadSalesUser(det);
+				request.setAttribute("agentlist",agentlist);
+				
+				
+				
+				request.setAttribute("graphContent",true);
+				useDispatcher=true;
+				view = request.getRequestDispatcher("profile/main.jsp");
+				////////////////////////////////////////////////////////
+				
 				
 				
 			}
 			
-			else{
-				salesM.put("year", year);
-				targetM.put("year",year);
-			}
-			request.setAttribute("monthlySales",monthlySales);
-			request.setAttribute("monthlyTargets",monthlyTarget);
-			useDispatcher=true;
-			view = request.getRequestDispatcher("profile/main.jsp");
+			
 			if(useDispatcher){	
 				response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 				response.setHeader("Pragma", "no-cache");
