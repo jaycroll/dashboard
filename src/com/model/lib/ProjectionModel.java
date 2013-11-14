@@ -257,10 +257,10 @@ public class ProjectionModel{
 				 
 				  Statement st = connection.createStatement();
 				  
-				   			query = "  SELECT SUM(target_amount) as amount, YEAR(target_date) as year, DATE_FORMAT(target_date,'%m') as month "
+				   			query = "  SELECT target_amount, YEAR(target_date) as year, DATE_FORMAT(target_date,'%m') as month "
 				   					+" FROM targets "
 				   					+" WHERE user_id='"+det.get("userid")+"' "
-				   					+" AND target_id!=3 "
+				   					+" AND target_group_id=2 "
 				   					+" AND department_id=2 "
 				   				    +" AND YEAR(target_date)='"+det.get("year")+"' "
 				   					+" GROUP BY YEAR(target_date), MONTH(target_date)";

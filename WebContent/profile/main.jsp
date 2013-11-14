@@ -10,8 +10,8 @@
 	RolePermission rpMain=new RolePermission();
 	rpMain.gAppProperties(request.getRealPath("/"));
 	CustomHelper ch = new CustomHelper();
-	float[] ActualSales = (float[]) request.getAttribute("monthlySales");
-	float[] ActualTarget = (float[]) request.getAttribute("monthlyTargets");
+	float[] iActualSales = (float[]) request.getAttribute("monthlySales");
+	float[] iActualTarget = (float[]) request.getAttribute("monthlyTargets");
 	String[] strMonths=ch.loadInitMonths();
 	DecimalFormat numberFormat = new DecimalFormat("#.00");
 %>
@@ -46,7 +46,8 @@
 	</div>
 	<div>
 	<!-- Form and Table here  -->
-		<table  class="pie line area bar" style='display:none;' >
+		<table>
+			<caption>Actual Sales and Target Per Month</caption>
 			<thead>
 				<tr>
 					<td></td>
@@ -59,13 +60,13 @@
 				<tr>
 					<th>Target</th>
 					<% for(int a=1;a<13;a++){ %>
-						<td><%=numberFormat.format(ActualTarget[a]) %></td>
+						<td><%=iActualTarget[a] %></td>
 					<% } %>
 				</tr>	
 				<tr>
 					<th>Actual</th>
 					<% for(int a=1;a<13;a++){ %>
-						<td><%=numberFormat.format(ActualSales[a])%></td>
+						<td><%=iActualSales[a]%></td>
 					<% } %>	
 				</tr>
 			</tbody>

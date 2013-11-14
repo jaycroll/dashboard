@@ -289,7 +289,7 @@ public class SalesModel{
 				 Connection connection=null;
 				 Class.forName("com.mysql.jdbc.Driver");
 				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
+				// System.out.println(det.get("userid")+" "+det.get("year"));
 				  Statement st = connection.createStatement();
 				  query =  " SELECT SUM(salesteam.sales_order.totalamountpaid) as totalpayment, "
 						  +" YEAR(salesteam.sales_order.salesinvoicecreateddate) as year, MONTH(salesteam.sales_order.salesinvoicecreateddate) as month  "
@@ -426,7 +426,7 @@ public class SalesModel{
 								}		
 					   					query+=""
 			   							+ "FROM   targets "
-			   							+ "WHERE  target_group_id = 2  and department_id='2'";
+			   							+ "WHERE  target_group_id != 2  and department_id='2'";
 			   							
 			   							
 								   		 if(det.get("user_id") != null && det.get("user_id") != ""){
