@@ -273,7 +273,10 @@ public String[] loadShortMonths(){
 	
 	public Integer computePercentage(String target, String actual){
 		double dPercentage=0;
-		
+		if(target==null){
+			target="0.000";
+		}
+		//System.out.println(target + " " + actual);
 		dPercentage = (Double.parseDouble(actual) / Double.parseDouble(target)) * 100;
 		//dPercentage=(Integer.parseInt(target) / Integer.parseInt(actual)) * 100;
 		

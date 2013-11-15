@@ -62,7 +62,9 @@
 		<% for(int i=0; i<=iCtr;i++){ %>
 		<tr>
 			<td  align='left'><a href="<%=sitePathInit%>Profile/<%=request.getAttribute("userid_"+i) %>" class="jq_viewProfile"><%=request.getAttribute("fullname_"+i) %></a></td>
+			
 			<td  align='center'><span class='green'><%=request.getAttribute("monthly_"+i) %></span> - <span class='blu'><%=request.getAttribute("monthlyrevenue_"+i) %></span> <%=request.getAttribute("monthlypercentage_"+i) %>%</td>
+
 			<td  align='center'><span class='green'><%=request.getAttribute("yearly_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlypercentage_"+i) %>%</td>
 			<td  align='center'><span class='green'><%=request.getAttribute("yearlytotal_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlytotalpercentage_"+i) %>%</td>
 		</tr>

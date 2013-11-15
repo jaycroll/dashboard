@@ -16,7 +16,7 @@
 		
 %>		
   <% if(!usrDet.isEmpty()){ %>
-  
+
   <div style='margin-left:30px;'>
   			<div class='grayTitle'><%=usrDet.get("userfirstname") %> <%=usrDet.get("userlastname") %></div>
   			<div class='gry fnt13'>Born On <%=ch.aDate((String) usrDet.get("birthdate"),"1")%></div>
@@ -28,6 +28,7 @@
 	</div>
 
   <% } %>	
+
 <table class="pie line area bar jq<%=request.getAttribute("user_id")%>" style='display:none;'>
 	<caption>Actual Sales and Target Per Month</caption>
 	<thead>

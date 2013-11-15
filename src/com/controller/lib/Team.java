@@ -221,7 +221,7 @@ public class Team extends HttpServlet {
 					do{
 						request.setAttribute("yearlytotal_"+iCtr,rsYearTotalTarget.getString("target_amount"));
 						strYearTotalTarget=rsYearTotalTarget.getString("target_amount");
-					
+						
 					} while (rsYearTotalTarget.next());
 					}else{
 					
@@ -263,20 +263,26 @@ public class Team extends HttpServlet {
 						if (rsMonthRevenue.next()) {  
 						do{
 							request.setAttribute("monthlyrevenue_"+iCtr,rsMonthRevenue.getString("totalpayment"));
-							strMonthRevenue=rsMonthRevenue.getString("totalpayment");
+							if(!rsMonthRevenue.getString("totalpayment").equals(null)){
+								
+								strMonthRevenue=rsMonthRevenue.getString("totalpayment");
+								
+							}
+
 						} while (rsMonthRevenue.next());
 						}
 						else{
-							
-							strMonthRevenue="00.00";
+							request.setAttribute("monthlyrevenue_"+iCtr,"0.000");
+							strMonthRevenue = "0.000";
 						}
 					} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					}				
-									
-					//Compute Monthly Percentage
-					request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage(strMonthTarget,strMonthRevenue));
+					}
+				
+						request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage(strMonthTarget,strMonthRevenue));
+					
+						//System.out.println(ch.computePercentage(strMonthTarget,strMonthRevenue));
 					//request.setAttribute("monthlypercentage_"+iCtr,ch.computePercentage("3600000","4332000"));	
 					///////////////////////////////////////////////////////////////////////////
 					///////////////////////////////////////////////////////////////////////////
@@ -291,16 +297,19 @@ public class Team extends HttpServlet {
 					
 					detYearRevenue.put("year",ch.formatDate("yyyy"));
 					detYearRevenue.put("user_id",agentlist.getString("userid"));
-					
-					ResultSet rsYearRevenue=sales.ldYearRevenue(detYearRevenue);
+					detYearRevenue.put("userid",agentlist.getString("userid"));
+					ResultSet rsYearRevenue=sales.loadAgentYearlySales(detYearRevenue,true);
 					
 					if (rsYearRevenue.next()) {  
 					do{
-					request.setAttribute("yearlyrevenue_"+iCtr,rsYearRevenue.getString("actual_revenue"));
-						strYearRevenue=rsYearRevenue.getString("actual_revenue");
+					request.setAttribute("yearlyrevenue_"+iCtr,rsYearRevenue.getString("totalpayment"));
+						strYearRevenue=rsYearRevenue.getString("totalpayment");
 					} while (rsYearRevenue.next());
 					}
-					
+					else{
+						request.setAttribute("yearlyrevenue_"+iCtr,"0.000");
+						strYearRevenue = "0.000";
+					}
 					} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -356,7 +365,9 @@ public class Team extends HttpServlet {
 								if(detSales.getString("monthNum").equals(String.format("%02d", i))){
 									iSales[i]=Float.parseFloat(detSales.getString("subTotal"));
 								}
-								
+								else{
+									iSales[i]=(float) 00.0;
+								}
 							}//end of loop
 						
 						} while (detSales.next());

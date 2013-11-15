@@ -291,7 +291,7 @@ public class SalesModel{
 				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
 				// System.out.println(det.get("userid")+" "+det.get("year"));
 				  Statement st = connection.createStatement();
-				  query =  " SELECT SUM(salesteam.sales_order.totalamountpaid) as totalpayment, "
+				  query =  " SELECT Ifnull(SUM(salesteam.sales_order.totalamountpaid),0) as totalpayment, "
 						  +" YEAR(salesteam.sales_order.salesinvoicecreateddate) as year, MONTH(salesteam.sales_order.salesinvoicecreateddate) as month  "
 						  +" FROM salesteam.sales_order,salesteam.agents "
 						  +" WHERE salesteam.agents.agentuserid = '"+det.get("userid")+"' "
@@ -317,7 +317,44 @@ public class SalesModel{
 			 }	  
 			return rs;
 		}
-
+		public ResultSet loadAgentYearlySales(Map det,Boolean byYear){
+			
+			String query="";
+			ResultSet rs=null;
+			
+			try{
+				 this.fetchProperties();
+				 Connection connection=null;
+				 Class.forName("com.mysql.jdbc.Driver");
+				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+				// System.out.println(det.get("userid")+" "+det.get("year"));
+				  Statement st = connection.createStatement();
+				  query =  " SELECT Ifnull(SUM(salesteam.sales_order.totalamountpaid),0) as totalpayment, "
+						  +" YEAR(salesteam.sales_order.salesinvoicecreateddate) as year, MONTH(salesteam.sales_order.salesinvoicecreateddate) as month  "
+						  +" FROM salesteam.sales_order,salesteam.agents "
+						  +" WHERE salesteam.agents.agentuserid = '"+det.get("userid")+"' "
+						  +" AND salesteam.sales_order.agentid = salesteam.agents.agentid "
+						  +" AND salesteam.sales_order.paymentstatus"
+				  		  +" AND YEAR(salesteam.sales_order.salesinvoicecreateddate) =  '"+det.get("year")+"' "
+				  		  +" GROUP BY YEAR(salesteam.sales_order.salesinvoicecreateddate)";
+				 // System.out.println(query);
+				/*
+				  if(det.get("userid") != null && det.get("userid") != ""){
+					  query+=" and `user`.userid='"+det.get("userid")+"'";
+				  }
+				  */
+		
+				  rs = st.executeQuery(query);
+				  
+			 } catch (SQLException e) {
+				  System.err.println("SQLException: "
+			    	        +e.getMessage());
+			      System.err.println("SQL Query: "+query);
+			 } catch (Exception e){
+			 			System.out.println("Error in fetching"+e);
+			 }	  
+			return rs;
+		}
 		
 		
 		public Boolean InsertSalesRevenue(Map det){
@@ -446,7 +483,7 @@ public class SalesModel{
 										}
 					   					
 					 rs = st.executeQuery(query);
-					 System.out.println(query);
+					 //System.out.println(query);
 				 } catch (SQLException e) {
 					  System.err.println("SQLException: "
 				    	        +e.getMessage());
@@ -499,7 +536,7 @@ public class SalesModel{
 										}
 					   					
 					 rs = st.executeQuery(query);
-					 System.out.println(query);
+					 //System.out.println(query);
 				 } catch (SQLException e) {
 					  System.err.println("SQLException: "
 				    	        +e.getMessage());
@@ -529,7 +566,7 @@ public class SalesModel{
 					  query = "";
 							  
 					  if(det.get("user_id") != null && det.get("user_id") != ""){
-			   				query+="SELECT target_amount ";
+			   				query+="SELECT Ifnull(SUM(target_amount),0) as target_amount ";
 						}else{
 							query+="SELECT Ifnull(Sum(target_amount),0) as target_amount ";
 						}	  
@@ -547,7 +584,7 @@ public class SalesModel{
 							  + "                                                INTERVAL 1 day, '%Y-%m' "
 							  + "                                                ) ";		   
 					  rs = st.executeQuery(query);
-					  
+					  System.out.println(query);
 				 } catch (SQLException e) {
 					  System.err.println("SQLException: "
 				    	        +e.getMessage());
