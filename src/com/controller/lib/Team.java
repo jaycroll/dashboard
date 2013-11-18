@@ -98,7 +98,8 @@ public class Team extends HttpServlet {
 				*/
 				
 				Map det=new HashMap();
-				ResultSet agentlist=usr.loadSalesUser(det);
+				//det.put();
+				ResultSet agentlist=usr.loadSalesTeam(det);
 				
 				Map detMonthTarget=new HashMap();
 				Map detYearTarget=new HashMap();

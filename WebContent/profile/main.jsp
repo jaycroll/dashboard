@@ -37,8 +37,8 @@
 <div id="menu-left">
 	<ul class="sub">
 	<li id="menu1"><a href="<%=sitePathInit%>Projection" title="menu1"><span class="displace"></span></a></li>
-	<li id="menu2"><a href="<%=sitePathInit%>Team" title="menu2" ><span class="displace"></span></a></li>
-    <li id="menu3"><a href="<%=sitePathInit%>Area"  title="menu3" class="active"><span class="displace"></span></a></li>
+	<li id="menu2"><a href="<%=sitePathInit%>Team" title="menu2"  class="active"><span class="displace"></span></a></li>
+    <li id="menu3"><a href="<%=sitePathInit%>Area"  title="menu3"><span class="displace"></span></a></li>
     </ul>
 </div>
 </div>

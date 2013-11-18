@@ -40,9 +40,15 @@
 	<li id="menu2"><a href="<%=sitePathInit%>Team" title="menu2" ><span class="displace"></span></a></li>
     <li id="menu3"><a href="<%=sitePathInit%>Area"  title="menu3" class="active"><span class="displace"></span></a></li>
     </ul>
+	
 </div>
 </div>
 
+    <p>Territory: <span style="text-align: center">
+    <select name="territory" class="text_12_tungsten" id="select2">
+      <option value="6">North Luzon</option>
+      <option value="7">South Luzon</option>
+    </select>
 
 <form id='formTarget'>
 <% if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),9,6)){	%> 

@@ -213,6 +213,7 @@ public class SalesModel{
 		 }	
 		return process;
 		}
+
 		
 	
 		public ResultSet loadFromSalesTeam(){
@@ -838,7 +839,50 @@ public class SalesModel{
 				 }	  
 				return rs;
 			}
-
+			public ResultSet loadSalesTeamArea(Map det){
+				
+				String query="";
+				ResultSet rs=null;
+				
+				try{
+					 this.fetchProperties();
+					 Connection connection=null;
+					 Class.forName("com.mysql.jdbc.Driver");
+					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+					 
+					  Statement st = connection.createStatement();
+					  
+					  query = ""
+							  + "SELECT "+this.salesDB+".territories.territoryname, "
+							  + "       "+this.salesDB+".areas.areaname, "
+							  + "       "+this.dashboardDB+".salesuser_bridge.agentid, "
+							  + "       "+this.dashboardDB+".salesuser_bridge.userid "
+							  + "FROM   "+this.dashboardDB+".salesuser_bridge "
+							  + "       INNER JOIN "+this.salesDB+".agent_areas "
+							  + "               ON "+this.dashboardDB+".salesuser_bridge.agentid = "
+							  + "                  "+this.salesDB+".agent_areas.agentid "
+							  + "       INNER JOIN "+this.salesDB+".areas "
+							  + "               ON "+this.salesDB+".agent_areas.areaid ="+this.salesDB+".areas.areaid "
+							  + "       INNER JOIN "+this.salesDB+".territories "
+							  + "               ON "+this.salesDB+".areas.territoryid = "
+							  + "                  "+this.salesDB+".territories.territoryid ";
+					  
+					  if(det.get("user_id") != null && det.get("user_id") != ""){
+						  query+=" and salesuser_bridge.userid='"+det.get("user_id")+"'";
+					  }
+					  
+					  
+					  rs = st.executeQuery(query);
+					  
+				 } catch (SQLException e) {
+					  System.err.println("SQLException: "
+				    	        +e.getMessage());
+				      System.err.println("SQL Query: "+query);
+				 } catch (Exception e){
+				 			System.out.println("Error in fetching"+e);
+				 }	  
+				return rs;
+			}
 		
 
 }
