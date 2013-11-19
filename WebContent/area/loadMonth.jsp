@@ -9,7 +9,6 @@
 		float[] iActualSales = (float[]) request.getAttribute("iActualSales");
 		float[] iActualTarget = (float[]) request.getAttribute("iActualTarget");
 		String[] strMonths=ch.loadInitMonths();
-		
 		Map usrDet=new HashMap();
 		usrDet = (Map)request.getAttribute("usrDet");
 		
@@ -19,9 +18,7 @@
   
   <div style='margin-left:30px;'>
   			<div class='grayTitle'><%=usrDet.get("userfirstname") %> <%=usrDet.get("userlastname") %></div>
-  			<div class='gry fnt13'>Born On <%=ch.aDate((String) usrDet.get("birthdate"),"1")%></div>
-  			
-  			
+  			<div class='gry fnt13'>Born On <%=ch.aDate((String) usrDet.get("birthdate"),"1")%></div>			
   			<div class='gry fnt13' style='margin-top:10px;'><%=usrDet.get("mobile") %></div>
   			<div class='gry fnt13'>Hired last <%=ch.aDate((String) usrDet.get("hireddate"),"1")%></div>
   			<div class='gry fnt13'>Handling  <%=request.getAttribute("agent_area")%></div>
@@ -42,6 +39,7 @@
 	</thead>
 	<tbody>
 		<tr>
+		
 			<th>Target</th>
 			<% for(int a=1;a<13;a++){ %>
 				<td><%=iActualTarget[a]%></td>

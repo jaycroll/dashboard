@@ -267,8 +267,7 @@ public class ProjectionModel{
 				
 				 
 				 rs = st.executeQuery(query);
-				 System.out.println(det.get("userid"));
-				 System.out.println(det.get("year"));
+
 			 } catch (SQLException e) {
 				  System.err.println("SQLException: "
 			    	        +e.getMessage());

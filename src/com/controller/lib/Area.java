@@ -68,6 +68,8 @@ public class Area extends HttpServlet {
 			UserModel usr=new UserModel();
 			usr.projectFile=getServletContext().getRealPath("");
 			
+			AreaModel area = new AreaModel();
+			area.projectFile = getServletContext().getRealPath("");
 			RequestDispatcher view=null;
 			Boolean useDispatcher=false;
 			
@@ -76,7 +78,30 @@ public class Area extends HttpServlet {
 				
 				
 				Map det=new HashMap();
+				det.put("territoryid",6);
+				
 				ResultSet agentlist=usr.loadSalesUser(det);
+				//query for getting salesagents/salesteamleader from territory goes here
+				try {
+					int first = 0;
+					int last = 0;
+					ResultSet getAreas = area.loadAreasFromTerritory(det);
+					if(getAreas.next()){
+						det.put("areaid",getAreas.getString("areaid"));
+						ResultSet getAgents = area.loadAgentsFromAreas(det);
+						ResultSet getTeamLeader = area.loadTeamLeaderFromAreas(det);
+						ResultSet getSalesMtd = area.loadAreaSalesMTD(det);
+						ResultSet getSalesYtd = area.loadAreaSalesYTD(det);
+						ResultSet getTargetMtd = area.loadAreaTargetMTD(det);
+						ResultSet getTargetYtd = area.loadAreaTargetYTD(det);
+						if(getSalesMtd.next()){
+							System.out.println(getSalesMtd.getString("totalsales"));
+						}
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
 				request.setAttribute("agentlist",agentlist);
 				
 				

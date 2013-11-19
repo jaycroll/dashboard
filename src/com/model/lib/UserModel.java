@@ -597,5 +597,64 @@ return process;
             return rs;
             
     }
+        public ResultSet loadSalesTeamFromArea(Map det){
+            
+            String query="";
+            ResultSet rs=null;
+            
+            try{
+                     this.fetchProperties();
+                     Connection connection=null;
+                     Class.forName("com.mysql.jdbc.Driver");
+                     connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+                     
+                      Statement st = connection.createStatement();
+                      query= "SELECT " +
+                                      " `user`.userid, " +
+                                      " `user`.userfirstname, " +
+                                      " `user`.`status`, " +
+                                      " `user`.email_address, " +
+                                      " `user`.mobile, " +
+                                      " `user`.roleid, " +
+                                      " `user`.createdby, " +
+                                      " `user`.createddate, " +
+                                      " `user`.userlastname, " +
+                                      " `user`.birthdate, " +
+                                      " `user`.hireddate, " +
+                                      " `roles`.rolename, " +
+                                      " roles.rolename, " +
+                                      " salesuser_bridge.userid, " +
+                                      " salesuser_bridge.agentid " +
+                                      " FROM " +
+                                      " salesuser_bridge " +
+                                      " Right Join `user` ON `user`.userid = salesuser_bridge.userid " +
+                                      " Inner Join roles ON `user`.roleid = roles.roleid "+ 
+                                      " where 1=1 ";
+                      
+                      if(det.get("roleid") != null && det.get("roleid") != ""){
+                              query+=" and `user`.roleid='"+det.get("roleid")+"'";
+                            
+                      }else{
+                              query+="and  ( `user`.roleid='4' or `user`.roleid='5' )";
+                      }
+                      
+                      if(det.get("userid") != null && det.get("userid") != ""){
+                              query+=" and `user`.userid = '"+det.get("userid")+"'";
+                      }
+                     
+                      rs = st.executeQuery(query);
+                     //st.close();
+             } catch (SQLException e) {
+                      System.err.println("SQLException: "
+                                +e.getMessage());
+                  System.err.println("SQL Query: "+query);
+             } catch (Exception e){
+                                     System.out.println("Error in fetching"+e);
+             }        
+           
+            return rs;
+            
+    }
+
         
 }
