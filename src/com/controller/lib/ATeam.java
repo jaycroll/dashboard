@@ -87,6 +87,7 @@ public class ATeam extends HttpServlet {
 			 det.put("year",ch.formatDate("yyyy"));
 			 det.put("user_id",user_id);
 			 det.put("userid",user_id);
+			 
 			 ResultSet detSales=sales.loadProjectionMonthly(det);
 			 
 			 
@@ -177,14 +178,14 @@ public class ATeam extends HttpServlet {
 		   
 	   }if(action.equals("loadMonth2")){
 		   
-		     String user_id	= request.getParameter("user_id");
-		   
+		     //String user_id	= request.getParameter("user_id");
+		     String areaid = request.getParameter("areaid");
 		   	 Map det=new HashMap();
-			 useDispatcher=true;
+			 useDispatcher=true; 	
 			 det.put("revenue_type", "Sales");
 			 det.put("year",ch.formatDate("yyyy"));
-			 det.put("user_id",user_id);
-			 det.put("userid",user_id);
+			 det.put("areaid",areaid);
+			 //det.put("userid",user_id);
 			 ResultSet detSales=sales.loadProjectionMonthly(det);
 			 
 			 
@@ -245,12 +246,12 @@ public class ATeam extends HttpServlet {
 		//////////////////////////////////////////////////////////////
 			//Load User Details
 			Map usrDet=new HashMap();
-			usrDet=usr.fetchUser(user_id);
+			usrDet=usr.fetchUser(areaid);
 			request.setAttribute("usrDet",usrDet);
-			request.setAttribute("user_id",user_id);
+			request.setAttribute("areaid",areaid);
 			
 			Map det2=new HashMap();
-			det2.put("user_id",user_id);
+			det2.put("areaid",areaid);
 			
 			
 			try {

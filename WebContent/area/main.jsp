@@ -1,6 +1,8 @@
 <%@ include file="../sub/header.jsp"%>
 
 <%@ page import="com.misc.lib.RolePermission" %> 
+<%@ page import="com.model.lib.*" %>
+<%@ page import="java.sql.*" %>
 <% 
 	HttpSession sMain=request.getSession();
 	RolePermission rpMain=new RolePermission();
@@ -45,11 +47,11 @@
 </div>
 
     <p>Territory: <span style="text-align: center">
-    <select name="territory" class="text_12_tungsten" id="select2">
+    <select name="territory" class="text_12_tungsten" id="select2" onchange="displayTerritory()">
       <option value="6">North Luzon</option>
-      <option value="7">South Luzon</option>
+      <option value="7" selected="selected">South Luzon</option>
     </select>
-
+	<h2 id="showValHere"></h2>
 <form id='formTarget'>
 <% if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),9,6)){	%> 
 <div id="content" style='float:left'>
@@ -87,20 +89,45 @@
 
 $(document).ready(function($){
 	$("#content").html("");	
-	<%	////Load Target
-	    ResultSet rs = (ResultSet) request.getAttribute("agentlist");
-		if (rs.next()) {  
-		do{
-	%>	
-		loadProjection(<%=rs.getString("userid") %>);
-	<%		
-		} while (rs.next());
-	    }
+    var str = "";
 
-  	%>
-	
+        $( "#select2 option:selected" ).each(function() {
+          str += $( this ).val();
+        	});
+
+
+
 });
+$("#select2").change(function(){
+	var str = "";
+    $( "#select2 option:selected" ).each(function() {
+      str += $( this ).val();
+      
+    	});
+	<%	////Load Target
+    ResultSet rs1 = (ResultSet) request.getAttribute("agentlist");
+	if (rs1.next()) {  
+	do{
+%>	
+	loadProjection(<%=rs1.getString("userid") %>);
+<%		
+	} while (rs1.next());
+    }
+	rs1.close();
 
+
+	ResultSet getTerritories = (ResultSet) request.getAttribute("territoryList");
+	if(getTerritories.next()){
+		do{
+%>
+			if(str == '<%=getTerritories.getString("territoryid")%>'){
+				$("#showValHere").append(str);
+			}	
+<%				
+		}while(getTerritories.next());
+	}
+	%>
+	}).change();
 function loadProjection(user_id){
 	
 	var user_id=user_id;
@@ -112,6 +139,7 @@ function loadProjection(user_id){
 		$(".visualize").css("margin-top","20px");
 	});
 }
+
 
 </script>
 

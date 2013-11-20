@@ -22,17 +22,21 @@ public class ProjectionModel{
 	 private String dbUser="";
 	 private String dbPassword="";
 	 public String projectFile="";
-	 
+	 public Connection connection=null;
 		
-	 public void fetchProperties() throws IOException{
+	 public void fetchProperties() throws IOException, SQLException, ClassNotFoundException{
 		 
 		 String relativeWebPath = "/WEB-INF/app.properties";
 		 Properties p = new Properties();
 		 p.load(new FileInputStream(projectFile+relativeWebPath));
-		 
-		 this.connectionURL=p.getProperty("connectionURL");
-		 this.dbUser=p.getProperty("dbUser");
-		 this.dbPassword=p.getProperty("dbPassword");
+         
+         this.connectionURL=p.getProperty("connectionURL");
+         this.dbUser=p.getProperty("dbUser");
+         this.dbPassword=p.getProperty("dbPassword");
+         Class.forName("com.mysql.jdbc.Driver");
+		 this.connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+		
+	
 	 }
 	 
 	 
@@ -45,11 +49,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  
 				  query = ""
 						  + "SELECT ( (SELECT Ifnull(Sum(revenue_report.amount), 0) AS thisyear "
@@ -114,12 +114,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
-				  
+				 Statement st = this.connection.createStatement();
 				  /* query= ""
 						  + "SELECT Sum(revenue_report.amount)                     AS subTotal, "
 						  + "       Date_format(revenue_report.revenue_date, '%m') AS monthNum "
@@ -165,11 +160,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  
 				   			query = ""
 								  + "SELECT Ifnull(Sum(CASE "
@@ -202,7 +193,7 @@ public class ProjectionModel{
 		}
 	 
 	 
-	 public ResultSet ldMonthTarget(Map det,Boolean specDate){
+	 public ResultSet ldMonthTarget(Map det,Boolean specDate) throws SQLException{
 			
 		 	/////Notes here
 		 
@@ -211,11 +202,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  
 				   			query = ""
 		   							+ "SELECT Ifnull(Sum(target_amount),0) as target_amount "
@@ -227,21 +214,27 @@ public class ProjectionModel{
 											query += "      '"+det.get("month")+"' ";
 									}else{
 											query += "       Date_format(NOW() - INTERVAL 1 day, '%Y-%m' ";
-											query += "       ) ";	
+											query += "       ); ";	
 									}
 				
 						
 				 rs = st.executeQuery(query);
-				  
+				 
 			 } catch (SQLException e) {
 				  System.err.println("SQLException: "
 			    	        +e.getMessage());
 			      System.err.println("SQL Query: "+query);
+			  
 			 } catch (Exception e){
 			 			System.out.println("Error in fetching"+e);
-			 }	  
+			 }
+			
+			
 			return rs;
 		}
+	 public void killProcess() throws SQLException{
+		
+	 }
 	 public ResultSet loadAgentMonthlyTarget(Map det,Boolean byYear){
 			
 		 	/////Notes here
@@ -251,11 +244,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  
 				   			query = "  SELECT target_amount, YEAR(target_date) as year, DATE_FORMAT(target_date,'%m') as month "
 				   					+" FROM targets "
@@ -289,11 +278,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  
 				   			query = ""
 		   							+ "SELECT Ifnull(Sum(CASE "
@@ -327,11 +312,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  
 				  query = ""
 						  + "SELECT Ifnull(Sum(target_amount),0) as target_amount "
@@ -362,11 +343,7 @@ public class ProjectionModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  
 				  query =    "SELECT  Ifnull(Sum(target_amount),0) as target_amount "
 							 + "FROM   targets "

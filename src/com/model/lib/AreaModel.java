@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 
+import com.mysql.jdbc.Driver;
 import java.security.*;
 import java.math.*;
 
@@ -24,9 +25,9 @@ public class AreaModel{
          public String projectFile="";
          public String salesDB="";
          public String dashboardDB="";
-         
+         public Connection connection=null;
                 
-         public void fetchProperties() throws IOException{
+         public void fetchProperties() throws IOException, SQLException, ClassNotFoundException{
                  
                  String relativeWebPath = "/WEB-INF/app.properties";
                  Properties p = new Properties();
@@ -37,8 +38,34 @@ public class AreaModel{
                  this.dbPassword=p.getProperty("dbPassword");
                  this.salesDB=p.getProperty("salesDB");
                  this.dashboardDB=p.getProperty("dashboardDB");
+                 Class.forName("com.mysql.jdbc.Driver");
+                 this.connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
          }
-          
+         public ResultSet loadTerritory(){
+             
+             String query="";
+             ResultSet rs=null;
+             
+             try{
+                      this.fetchProperties();
+                       Statement st = this.connection.createStatement();
+                       query= "SELECT "+this.salesDB+".territories.territoryname, "+this.salesDB+".territories.territoryid "
+                    		 +"FROM "+this.salesDB+".territories "
+                    		 +"WHERE "+this.salesDB+".territories.territoryid !='' ";
+                     // System.out.println(query);
+                       rs = st.executeQuery(query);
+                     
+              } catch (SQLException e) {
+                       System.err.println("SQLException: "
+                                 +e.getMessage());
+                   System.err.println("SQL Query: "+query);
+              } catch (Exception e){
+                                      System.out.println("Error in fetching"+e);
+              }        
+            
+             return rs;
+             
+         } 
          public ResultSet loadAreasFromTerritory(Map det){
              
              String query="";
@@ -46,11 +73,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT "+this.salesDB+".areas.areaname, "+this.salesDB+".areas.areaid "
                     		 +"FROM "+this.salesDB+".areas, "+this.salesDB+".territories "
                     		 +"WHERE "+this.salesDB+".territories.territoryid ="+det.get("territoryid")+" "
@@ -76,11 +99,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT "+this.salesDB+".agents.agentid, user.userid, "+this.salesDB+".areas.areaid "
                     		 +"FROM "+this.salesDB+".agents, "+this.salesDB+".agent_areas, "+this.salesDB+".areas, user "
                     		 +"WHERE "+this.salesDB+".areas.areaid ="+det.get("areaid")+" "
@@ -109,11 +128,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT "+this.salesDB+".agents.agentid, user.userid, "+this.salesDB+".areas.areaid "
                     		 +"FROM "+this.salesDB+".agents, "+this.salesDB+".agent_areas, "+this.salesDB+".areas, user "
                     		 +"WHERE "+this.salesDB+".areas.areaid ="+det.get("areaid")+" "
@@ -142,11 +157,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT (SELECT "+this.salesDB+".areas.areaid "
                     		 +"FROM "+this.salesDB+".areas, "+this.salesDB+".territories "
                     		 +"WHERE "+this.salesDB+".territories.territoryid ="+det.get("territoryid")+" "
@@ -178,11 +189,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT Ifnull(SUM("+this.salesDB+".sales_order.totalamountpaid),0) as totalsales "
                     		  +" FROM "+this.salesDB+".sales_order, salesteam.agents, "+this.salesDB+".agent_areas, "+this.salesDB+".areas "
                     		  +" WHERE "+this.salesDB+".areas.areaid = '"+det.get("areaid")+"' "
@@ -213,11 +220,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT Ifnull(SUM("+this.salesDB+".sales_order.totalamountpaid),0) as totalsales "
                     		  +" FROM "+this.salesDB+".sales_order, "+this.salesDB+".territories,salesteam.agents, "+this.salesDB+".agent_areas, "+this.salesDB+".areas "
                     		  +" WHERE "+this.salesDB+".areas.areaid= '"+det.get("areaid")+"' "
@@ -246,11 +249,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT Ifnull(SUM(target_amount),0) as target_amount, MONTH(target_date) as month "
                     		  +"FROM targets, user, "+this.salesDB+".areas, "+this.salesDB+".agent_areas, "+this.salesDB+".territories, "+this.salesDB+".agents "
                     		  +"WHERE "+this.salesDB+".areas.areaid ='"+det.get("areaid")+"' "
@@ -282,11 +281,7 @@ public class AreaModel{
              
              try{
                       this.fetchProperties();
-                      Connection connection=null;
-                      Class.forName("com.mysql.jdbc.Driver");
-                      connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                      
-                       Statement st = connection.createStatement();
+                      Statement st = this.connection.createStatement();
                        query= "SELECT Ifnull(SUM(target_amount),0) as target_amount, MONTH(target_date) as month "
                     		  +"FROM targets, user, "+this.salesDB+".areas, "+this.salesDB+".agent_areas, "+this.salesDB+".territories, "+this.salesDB+".agents "
                     		  +"WHERE "+this.salesDB+".areas.areaid ='"+det.get("areaid")+"' "

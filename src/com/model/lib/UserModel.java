@@ -24,9 +24,9 @@ public class UserModel{
          public String projectFile="";
          public String salesDB="";
          public String dashboardDB="";
-         
+         public Connection connection=null;
                 
-         public void fetchProperties() throws IOException{
+         public void fetchProperties() throws IOException,SQLException, ClassNotFoundException{
                  
                  String relativeWebPath = "/WEB-INF/app.properties";
                  Properties p = new Properties();
@@ -37,6 +37,8 @@ public class UserModel{
                  this.dbPassword=p.getProperty("dbPassword");
                  this.salesDB=p.getProperty("salesDB");
                  this.dashboardDB=p.getProperty("dashboardDB");
+                 Class.forName("com.mysql.jdbc.Driver");
+                 this.connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
          }
           
          
@@ -48,11 +50,7 @@ public class UserModel{
                                 
                          ResultSet rs=null;
                          this.fetchProperties();
-                         Connection connection=null;
-                         Class.forName("com.mysql.jdbc.Driver");
-                         connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                         
-                          Statement st = connection.createStatement();
+                         Statement st = this.connection.createStatement();
                           query="Select * from user where userid='"+iUserId+"'";
                           
                           rs = st.executeQuery(query);
@@ -96,11 +94,7 @@ public class UserModel{
                                 
                          ResultSet rs=null;
                          this.fetchProperties();
-                         Connection connection=null;
-                         Class.forName("com.mysql.jdbc.Driver");
-                         connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                         
-                          Statement st = connection.createStatement();
+                         Statement st = this.connection.createStatement();
                           query="Select * from roles where roleid='"+iRoleId+"'";
                         
                           rs = st.executeQuery(query);
@@ -140,11 +134,7 @@ public class UserModel{
                         
                          ResultSet rs=null;
                          this.fetchProperties();
-                         Connection connection=null;
-                         Class.forName("com.mysql.jdbc.Driver");
-                         connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                         
-                          Statement st = connection.createStatement();
+                         Statement st = this.connection.createStatement();
                           //query="Select * from user where username='"+username+"' and password='"+ch.generateHash(password)+"'";
                           query="SELECT"+
                                         " roles.rolename,"+
@@ -212,11 +202,7 @@ public class UserModel{
                         
                         try{
                                  this.fetchProperties();
-                                 Connection connection=null;
-                                 Class.forName("com.mysql.jdbc.Driver");
-                                 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                                 
-                                  Statement st = connection.createStatement();
+                                 Statement st = this.connection.createStatement();
                                   query="SELECT"+
                                                 " `user`.userid,"+
                                                 " `user`.userfirstname,"+
@@ -256,11 +242,7 @@ public class UserModel{
                         
                         try{
                                  this.fetchProperties();
-                                 Connection connection=null;
-                                 Class.forName("com.mysql.jdbc.Driver");
-                                 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                                 
-                                  Statement st = connection.createStatement();
+                                 Statement st = this.connection.createStatement();
                                   query="SELECT"+
                                                 " *"+
                                                 " FROM"+
@@ -285,12 +267,8 @@ public class UserModel{
                                 Boolean process=false;
                         try{
                                  this.fetchProperties();
-                                 Connection connection=null;
-                                 Class.forName("com.mysql.jdbc.Driver");
-                                 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
                                  CustomHelper ch=new CustomHelper();
-                                 
-                                  Statement st = connection.createStatement();
+                                 Statement st = this.connection.createStatement();
                                    query="INSERT INTO user("+
                                                                 "userfirstname,"+
                                                                 "userlastname,"+
@@ -339,12 +317,8 @@ public class UserModel{
                         Boolean process=false;
                 try{
                          this.fetchProperties();
-                         Connection connection=null;
-                         Class.forName("com.mysql.jdbc.Driver");
-                         connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
                          CustomHelper ch=new CustomHelper();
-                         
-                          Statement st = connection.createStatement();
+                         Statement st = this.connection.createStatement();
                            
                            query="UPDATE user set " +
                                            "userfirstname='" +det.get("userfirstname")+"',"+
@@ -384,12 +358,8 @@ public Boolean DeletetUser(String userid){
                                 Boolean process=false;
                         try{
                                  this.fetchProperties();
-                                 Connection connection=null;
-                                 Class.forName("com.mysql.jdbc.Driver");
-                                 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
                                  CustomHelper ch=new CustomHelper();
-                                 
-                                  Statement st = connection.createStatement();
+                                 Statement st = this.connection.createStatement();
                                   query="DELETE FROM user WHERE userid='"+userid+"'";
                                   st.executeUpdate(query);
                                   process=true;
@@ -415,11 +385,7 @@ public ResultSet loadBridgeUserAgent(){
         
         try{
                  this.fetchProperties();
-                 Connection connection=null;
-                 Class.forName("com.mysql.jdbc.Driver");
-                 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                 
-                  Statement st = connection.createStatement();
+                 Statement st = this.connection.createStatement();
                   
                   query="SELECT "+this.salesDB+".`user`.userid AS salesuserid, "
                                   + "   "+this.dashboardDB+".`user`.userid, "
@@ -460,12 +426,8 @@ public Boolean InsertBridgeAgent(Map det){
         Boolean process=false;
 try{
          this.fetchProperties();
-         Connection connection=null;
-         Class.forName("com.mysql.jdbc.Driver");
-         connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
          CustomHelper ch=new CustomHelper();
-         
-          Statement st = connection.createStatement();
+         Statement st = this.connection.createStatement();
           query="INSERT IGNORE INTO salesuser_bridge (userid,agentid,salesuserid)" +
                           "VALUES('"+det.get("userid")+"','"+det.get("agentid")+"','"+det.get("salesuserid")+"')";
           st.executeUpdate(query);
@@ -488,12 +450,8 @@ return process;
                 
                 try{
                          this.fetchProperties();
-                         Connection connection=null;
-                         Class.forName("com.mysql.jdbc.Driver");
-                         connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                         
-                          Statement st = connection.createStatement();
-                          query= "SELECT " +
+                         Statement st = this.connection.createStatement();
+                         query= "SELECT " +
                                           " `user`.userid, " +
                                           " `user`.userfirstname, " +
                                           " `user`.`status`, " +
@@ -546,12 +504,8 @@ return process;
             
             try{
                      this.fetchProperties();
-                     Connection connection=null;
-                     Class.forName("com.mysql.jdbc.Driver");
-                     connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                     
-                      Statement st = connection.createStatement();
-                      query= "SELECT " +
+                     Statement st = this.connection.createStatement();
+                     query= "SELECT " +
                                       " `user`.userid, " +
                                       " `user`.userfirstname, " +
                                       " `user`.`status`, " +
@@ -604,12 +558,8 @@ return process;
             
             try{
                      this.fetchProperties();
-                     Connection connection=null;
-                     Class.forName("com.mysql.jdbc.Driver");
-                     connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-                     
-                      Statement st = connection.createStatement();
-                      query= "SELECT " +
+                     Statement st = this.connection.createStatement();
+                     query= "SELECT " +
                                       " `user`.userid, " +
                                       " `user`.userfirstname, " +
                                       " `user`.`status`, " +

@@ -26,11 +26,11 @@ public class SalesModel{
 	 public int  iSalesInfo=0;
 	 public String salesDB="";
 	 public String dashboardDB="";
-	 
+	 public Connection connection=null;
 	 
 	 
 		
-	 public void fetchProperties() throws IOException{
+	 public void fetchProperties() throws IOException, SQLException, ClassNotFoundException{
 		 
 		 String relativeWebPath = "/WEB-INF/app.properties";
 		 Properties p = new Properties();
@@ -40,6 +40,8 @@ public class SalesModel{
 		 dbUser=p.getProperty("dbUser");
 		 dbPassword=p.getProperty("dbPassword");
 		 salesDB=p.getProperty("salesDB");
+		 Class.forName("com.mysql.jdbc.Driver");
+		 this.connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
 	 }
 	 
 	 
@@ -50,11 +52,7 @@ public class SalesModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
+				 Statement st = this.connection.createStatement();
 				  	query+="SELECT channel.channel_name, "
 							+ "       revenue_report.channel_id, "
 							+ "       DATE_FORMAT(revenue_report.revenue_date, '%m/%d/%Y') as revenue_date, "
@@ -104,12 +102,7 @@ public class SalesModel{
 			Boolean process=false;
 		try{
 			 this.fetchProperties();
-			 Connection connection=null;
-			 Class.forName("com.mysql.jdbc.Driver");
-			 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-			 CustomHelper ch=new CustomHelper();
-			 
-			  Statement st = connection.createStatement();
+			 Statement st = this.connection.createStatement();
 			  
 			  String queryColumn="";
 			  String queryValue="";
@@ -153,14 +146,9 @@ public class SalesModel{
 			Boolean process=false;
 		try{
 			 this.fetchProperties();
-			 Connection connection=null;
-			 Class.forName("com.mysql.jdbc.Driver");
-			 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
 			 CustomHelper ch=new CustomHelper();
-			 
-			  Statement st = connection.createStatement();
-			  
-			   query="UPDATE revenue_report set " +
+			 Statement st = this.connection.createStatement();
+			 query="UPDATE revenue_report set " +
 				   	 " amount='" +det.get("amount")+"'"+
 				   	 " where channel_id='" +det.get("channel_id")+"'" +
 				   	 " and revenue_date='" +det.get("revenue_date")+"'" +
@@ -189,13 +177,9 @@ public class SalesModel{
 			Boolean process=false;
 		try{
 			 this.fetchProperties();
-			 Connection connection=null;
-			 Class.forName("com.mysql.jdbc.Driver");
-			 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
 			 CustomHelper ch=new CustomHelper();
-			 
-			  Statement st = connection.createStatement();
-			  query="DELETE FROM revenue_report " +
+			 Statement st = this.connection.createStatement();
+			 query="DELETE FROM revenue_report " +
 			  		 " where channel_id='" +det.get("channel_id")+"'" +
 				   	 " and revenue_date='" +det.get("revenue_date")+"'" +
 				   	 " and revenue_type='" +det.get("revenue_type")+"'";
@@ -223,12 +207,8 @@ public class SalesModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
-				  query=    "SELECT "+this.salesDB+".sales_order.orderid, "
+				 Statement st = this.connection.createStatement();
+				 query=    "SELECT "+this.salesDB+".sales_order.orderid, "
 						  + "       "+this.salesDB+".sales_order.salesinvoice, "
 						  + "       "+this.salesDB+".sales_order.accountid, "
 						  + "       "+this.salesDB+".sales_order.purchase_date, "
@@ -287,12 +267,8 @@ public class SalesModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				// System.out.println(det.get("userid")+" "+det.get("year"));
-				  Statement st = connection.createStatement();
-				  query =  " SELECT Ifnull(SUM(salesteam.sales_order.totalamountpaid),0) as totalpayment, "
+				 Statement st = this.connection.createStatement();
+				 query =  " SELECT Ifnull(SUM(salesteam.sales_order.totalamountpaid),0) as totalpayment, "
 						  +" YEAR(salesteam.sales_order.salesinvoicecreateddate) as year, MONTH(salesteam.sales_order.salesinvoicecreateddate) as month  "
 						  +" FROM salesteam.sales_order,salesteam.agents "
 						  +" WHERE salesteam.agents.agentuserid = '"+det.get("userid")+"' "
@@ -326,11 +302,8 @@ public class SalesModel{
 			try{
 				 this.fetchProperties();
 				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				// System.out.println(det.get("userid")+" "+det.get("year"));
-				  Statement st = connection.createStatement();
-				  query =  " SELECT Ifnull(SUM(salesteam.sales_order.totalamountpaid),0) as totalpayment, "
+				 Statement st = this.connection.createStatement();
+				 query =  " SELECT Ifnull(SUM(salesteam.sales_order.totalamountpaid),0) as totalpayment, "
 						  +" YEAR(salesteam.sales_order.salesinvoicecreateddate) as year, MONTH(salesteam.sales_order.salesinvoicecreateddate) as month  "
 						  +" FROM salesteam.sales_order,salesteam.agents "
 						  +" WHERE salesteam.agents.agentuserid = '"+det.get("userid")+"' "
@@ -364,13 +337,9 @@ public class SalesModel{
 			Boolean process=false;
 		try{
 			 this.fetchProperties();
-			 Connection connection=null;
-			 Class.forName("com.mysql.jdbc.Driver");
-			 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
 			 CustomHelper ch=new CustomHelper();
-			 
-			  Statement st = connection.createStatement();
-			  query="INSERT IGNORE INTO sales_revenue (orderid,agentid,areaid,territoryid,amount,completeddate)" +
+			 Statement st = this.connection.createStatement();
+			 query="INSERT IGNORE INTO sales_revenue (orderid,agentid,areaid,territoryid,amount,completeddate)" +
 			  		"VALUES('"+det.get("orderid")+"','"+det.get("agentid")+"','"+det.get("areaid")+"','"+det.get("territoryid")+"','"+det.get("amount")+"','"+det.get("completeddate")+"')";
 			 
 			  st.executeUpdate(query);
@@ -397,12 +366,8 @@ public class SalesModel{
 			
 			try{
 				 this.fetchProperties();
-				 Connection connection=null;
-				 Class.forName("com.mysql.jdbc.Driver");
-				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-				 
-				  Statement st = connection.createStatement();
-				  query=    "Select * from  revenue_report"
+				 Statement st = this.connection.createStatement();
+				 query=    "Select * from  revenue_report"
 						  + " where 1=1 ";
 				  
 				  if(det.get("channel_id") != null && det.get("channel_id") != ""){
@@ -450,13 +415,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					   			query = "";
+					 Statement st = this.connection.createStatement();
+					 query = "";
 					   			
 					   			if(det.get("user_id") != null && det.get("user_id") != ""){
 					   				query+="SELECT target_amount ";
@@ -503,13 +463,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					   			query = "";
+					 Statement st = this.connection.createStatement();
+					 query = "";
 					   			
 					   			if(det.get("user_id") != null && det.get("user_id") != ""){
 					   				query+="SELECT target_amount ";
@@ -558,13 +513,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					  query = "";
+					 Statement st = this.connection.createStatement();
+					 query = "";
 							  
 					  if(det.get("user_id") != null && det.get("user_id") != ""){
 			   				query+="SELECT Ifnull(SUM(target_amount),0) as target_amount ";
@@ -606,14 +556,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					  
-					  if(det.get("user_id") != null && det.get("user_id") != ""){
+					 Statement st = this.connection.createStatement();
+					 if(det.get("user_id") != null && det.get("user_id") != ""){
 			   				query+="SELECT target_amount ";
 						}else{
 							query+="SELECT Ifnull(Sum(target_amount),0) as target_amount ";
@@ -654,13 +598,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					   			query = ""
+					 Statement st = this.connection.createStatement();
+					 query = ""
 									  + "SELECT Ifnull(Sum(CASE "
 									  + "                    WHEN revenue_type = 'Sales' THEN revenue_report.amount "
 									  + "                    ELSE 0 "
@@ -707,13 +646,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					   			query = ""
+					 Statement st = this.connection.createStatement();
+					 query = ""
 			   							+ "SELECT Ifnull(Sum(CASE "
 			   							+ "                    WHEN revenue_type = 'Sales' THEN revenue_report.amount "
 			   							+ "                    ELSE 0 "
@@ -754,14 +688,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-			
-				 query="SELECT Ifnull(Sum(CASE "
+					 Statement st = this.connection.createStatement();
+					 query="SELECT Ifnull(Sum(CASE "
 					  + "                    WHEN revenue_type = 'Sales' THEN revenue_report.amount "
 					  + "                    ELSE 0 "
 					  + "                  end) - Sum(CASE "
@@ -802,13 +730,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					  query = ""
+					 Statement st = this.connection.createStatement();
+					 query = ""
 							  + "SELECT "+this.salesDB+".territories.territoryname, "
 							  + "       "+this.salesDB+".areas.areaname, "
 							  + "       "+this.dashboardDB+".salesuser_bridge.agentid, "
@@ -846,13 +769,8 @@ public class SalesModel{
 				
 				try{
 					 this.fetchProperties();
-					 Connection connection=null;
-					 Class.forName("com.mysql.jdbc.Driver");
-					 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
-					 
-					  Statement st = connection.createStatement();
-					  
-					  query = ""
+					 Statement st = this.connection.createStatement();
+					 query = ""
 							  + "SELECT "+this.salesDB+".territories.territoryname, "
 							  + "       "+this.salesDB+".areas.areaname, "
 							  + "       "+this.dashboardDB+".salesuser_bridge.agentid, "
