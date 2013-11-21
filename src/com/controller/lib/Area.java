@@ -79,14 +79,52 @@ public class Area extends HttpServlet {
 				
 				Map det=new HashMap();
 				det.put("territoryid",6);
-				
+				Map territoryid = new HashMap();
+				Map areaid = new HashMap();
 				ResultSet agentlist=usr.loadSalesUser(det);
 				ResultSet getTerritory = area.loadTerritory();
-				ResultSet getTerritory2 = area.loadTerritory();
-				//query for getting salesagents/salesteamleader from territory goes here
-
+				
+				String[] territories = new String[100];
+				String[] areas = new String[100];//<--sucks cause i made this one static :/ i'll call you pro if you it dynamic :D
+				int Areaid = 0;
+				int Territoryid = 0;
+				try{
+					if(getTerritory.next()){
+						do{
+							Territoryid = Integer.parseInt(getTerritory.getString("territoryid"));
+							for(int i = 1; i < territories.length; i++){
+								if(i == Territoryid){
+									territories[i] = getTerritory.getString("territoryname");
+									//System.out.println(territories[i]);
+									areaid.put("territoryid",i);
+									ResultSet getArea = area.loadAreasFromTerritory(areaid);
+									try{
+										if(getArea.next()){
+											do{
+												Areaid = Integer.parseInt(getArea.getString("areaid"));
+												for(int j = 1; j < areas.length; j++){
+													if(j == Areaid){
+														areas[j] = getArea.getString("areaid");
+														//System.out.println(areas[j]);
+													}
+												}
+											}while(getArea.next());
+										}
+									}catch(SQLException e){
+										e.printStackTrace();
+									}
+								}
+							}
+						}while(getTerritory.next());
+					}
+					
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+				
+				request.setAttribute("areas",areas);
+				request.setAttribute("territories",territories);
 				request.setAttribute("territoryList", getTerritory);
-				request.setAttribute("territoryList2", getTerritory2);
 				request.setAttribute("agentlist",agentlist);
 				//request.setAttribute("loadTerritory", getTerritory);
 				

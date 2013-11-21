@@ -7,7 +7,8 @@
 	HttpSession sMain=request.getSession();
 	RolePermission rpMain=new RolePermission();
 	rpMain.gAppProperties(request.getRealPath("/"));
-	
+	String[] territories = (String[]) request.getAttribute("territories");
+	String[] areas = (String[]) request.getAttribute("areas");
 %>
 
 <%	
@@ -48,8 +49,15 @@
 
     <p>Territory: <span style="text-align: center">
     <select name="territory" class="text_12_tungsten" id="select2" onchange="displayTerritory()">
-      <option value="6">North Luzon</option>
-      <option value="7" selected="selected">South Luzon</option>
+    <%
+    	for(int i = 1; i<territories.length;i++){
+    		if(territories[i]!=null){
+    			%>
+    				<option value="i"><%=territories[i] %></option>
+    			<%
+    		}
+    	}
+    %>
     </select>
 	<h2 id="showValHere"></h2>
 <form id='formTarget'>
@@ -104,30 +112,18 @@ $("#select2").change(function(){
       str += $( this ).val();
       
     	});
-	<%	////Load Target
-    ResultSet rs1 = (ResultSet) request.getAttribute("agentlist");
-	if (rs1.next()) {  
-	do{
-%>	
-	loadProjection(<%=rs1.getString("userid") %>);
-<%		
-	} while (rs1.next());
-    }
-	rs1.close();
-
-
-	ResultSet getTerritories = (ResultSet) request.getAttribute("territoryList");
-	if(getTerritories.next()){
-		do{
-%>
-			if(str == '<%=getTerritories.getString("territoryid")%>'){
+    $("#content").empty();	
+	<%
+		for(int i=1;i<territories.length;i++){
+	%>
+			if(str==<%=i%>){
 				$("#showValHere").append(str);
-			}	
-<%				
-		}while(getTerritories.next());
-	}
+			}
+	<%
+		}
 	%>
 	}).change();
+
 function loadProjection(user_id){
 	
 	var user_id=user_id;
