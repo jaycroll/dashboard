@@ -19,7 +19,7 @@
 	Boolean graphContent = (Boolean) request.getAttribute("graphContent");
 %>    
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 <link rel="icon" type="image/png" href="images/favicon.ico" />
@@ -38,7 +38,7 @@
 <script type='text/javascript' src='<%=sitePathInit%>js/jquery.simplemodal.js'></script>
 <script type='text/javascript' src='<%=sitePathInit%>js/basic.js'></script>
 <script type='text/javascript' src='<%=sitePathInit%>include/custom.jsp'></script>
-
+<script type='text/javascript' src='<%=sitePathInit%>js/Chart.js'></script>
 <% if(graphContent!=null && graphContent==true){ %>
 	<link type="text/css" rel="stylesheet" href="<%=sitePathInit%>css/visualize.css"/>
 	<link type="text/css" rel="stylesheet" href="<%=sitePathInit%>css/visualize-light.css"/>

@@ -9,6 +9,10 @@
 	rpMain.gAppProperties(request.getRealPath("/"));
 	String[] territories = (String[]) request.getAttribute("territories");
 	String[] areas = (String[]) request.getAttribute("areas");
+	String[] isSelected = (String[]) request.getAttribute("isSelected");
+	String selected = request.getParameter("selected");
+	
+
 %>
 
 <%	
@@ -39,21 +43,22 @@
 <div id="menu-right" class="lucida_12_tungsten_b"> Hello, <%=sess.getAttribute("username")%> (<%=sess.getAttribute("rolename")%>). <a href="<%=sitePathInit%>User/logout"><span class="lucida_12_red_b">Logout</span></a></div>
 <div id="menu-left">
 	<ul class="sub">
-	<li id="menu1"><a href="<%=sitePathInit%>Projection" title="menu1"><span class="displace"></span></a></li>
+	<li id="menu1" ><a href="<%=sitePathInit%>Projection" title="menu1"><span class="displace"></span></a></li>
 	<li id="menu2"><a href="<%=sitePathInit%>Team" title="menu2" ><span class="displace"></span></a></li>
-    <li id="menu3"><a href="<%=sitePathInit%>Area"  title="menu3" class="active"><span class="displace"></span></a></li>
+    <li id="menu3"><a href="<%=sitePathInit%>Area"  title="menu3"class="active" ><span class="displace"></span></a></li>
     </ul>
 	
 </div>
 </div>
-
+	<p>Target - Actual % (Achievment)
     <p>Territory: <span style="text-align: center">
-    <select name="territory" class="text_12_tungsten" id="select2" onchange="displayTerritory()">
+    <select name="territory" class="text_12_tungsten" id="select2">
+    <option value="" selected=""></option>
     <%
     	for(int i = 1; i<territories.length;i++){
     		if(territories[i]!=null){
     			%>
-    				<option value="i"><%=territories[i] %></option>
+    				<option value="<%=i %>" ><%=territories[i] %></option>
     			<%
     		}
     	}
@@ -97,13 +102,6 @@
 
 $(document).ready(function($){
 	$("#content").html("");	
-    var str = "";
-
-        $( "#select2 option:selected" ).each(function() {
-          str += $( this ).val();
-        	});
-
-
 
 });
 $("#select2").change(function(){
@@ -115,26 +113,25 @@ $("#select2").change(function(){
     $("#content").empty();	
 	<%
 		for(int i=1;i<territories.length;i++){
+			if(territories[i]!=null){
 	%>
-			if(str==<%=i%>){
-				$("#showValHere").append(str);
-			}
+				if(str==<%=i%>){
+					
+					loadAreas(str);
+				}
 	<%
+			}
 		}
 	%>
 	}).change();
-
-function loadProjection(user_id){
-	
-	var user_id=user_id;
-	
-	$.post("<%=sitePathInit%>ATeam",{action:'loadMonth',user_id:user_id},
+function loadAreas(territoryid){
+	var territoryid = territoryid;
+	$.post("<%=sitePathInit%>AArea",{action:'loadAreas',territoryid:territoryid},
 			   function(data){
 		$("#content").append(data);	
-		$('.jq'+user_id).visualize({type: 'bar', barDirection: 'vertical'});
-		$(".visualize").css("margin-top","20px");
 	});
 }
+
 
 
 </script>

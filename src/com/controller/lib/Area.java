@@ -86,6 +86,7 @@ public class Area extends HttpServlet {
 				
 				String[] territories = new String[100];
 				String[] areas = new String[100];//<--sucks cause i made this one static :/ i'll call you pro if you it dynamic :D
+				String[] isSelected = new String[100];
 				int Areaid = 0;
 				int Territoryid = 0;
 				try{
@@ -97,7 +98,7 @@ public class Area extends HttpServlet {
 									territories[i] = getTerritory.getString("territoryname");
 									//System.out.println(territories[i]);
 									areaid.put("territoryid",i);
-									ResultSet getArea = area.loadAreasFromTerritory(areaid);
+									ResultSet getArea = proj.loadAreasFromTerritory(areaid);
 									try{
 										if(getArea.next()){
 											do{
@@ -123,6 +124,7 @@ public class Area extends HttpServlet {
 				}
 				
 				request.setAttribute("areas",areas);
+				request.setAttribute("isSelected",isSelected);
 				request.setAttribute("territories",territories);
 				request.setAttribute("territoryList", getTerritory);
 				request.setAttribute("agentlist",agentlist);

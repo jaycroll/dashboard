@@ -170,7 +170,7 @@ public class ATeam extends HttpServlet {
 		
 			request.setAttribute("iActualSales",iActualSales);
 			request.setAttribute("iActualTarget",iActualTarget);
-			view = request.getRequestDispatcher("area/loadMonth.jsp");
+			view = request.getRequestDispatcher("profile/loadMonth.jsp");
 			
 			response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 			response.setHeader("Pragma", "no-cache");

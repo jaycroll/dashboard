@@ -268,14 +268,14 @@ public class SalesModel{
 			try{
 				 this.fetchProperties();
 				 Statement st = this.connection.createStatement();
-				 query =  " SELECT Ifnull(SUM(salesteam.sales_order.totalamountpaid),0) as totalpayment, "
-						  +" YEAR(salesteam.sales_order.salesinvoicecreateddate) as year, MONTH(salesteam.sales_order.salesinvoicecreateddate) as month  "
-						  +" FROM salesteam.sales_order,salesteam.agents "
-						  +" WHERE salesteam.agents.agentuserid = '"+det.get("userid")+"' "
-						  +" AND salesteam.sales_order.agentid = salesteam.agents.agentid "
-						  +" AND salesteam.sales_order.paymentstatus"
-				  		  +" AND YEAR(salesteam.sales_order.salesinvoicecreateddate) =  '"+det.get("year")+"' "
-				  		  +" GROUP BY YEAR(salesteam.sales_order.salesinvoicecreateddate), MONTH(salesteam.sales_order.salesinvoicecreateddate)";
+				 query =  " SELECT Ifnull(SUM("+this.salesDB+".sales_order.totalamountpaid),0) as totalpayment, "
+						  +" YEAR("+this.salesDB+".sales_order.salesinvoicecreateddate) as year, MONTH("+this.salesDB+".sales_order.salesinvoicecreateddate) as month  "
+						  +" FROM "+this.salesDB+".sales_order,"+this.salesDB+".agents "
+						  +" WHERE "+this.salesDB+".agents.agentuserid = '"+det.get("userid")+"' "
+						  +" AND "+this.salesDB+".sales_order.agentid = "+this.salesDB+".agents.agentid "
+						  +" AND "+this.salesDB+".sales_order.paymentstatus"
+				  		  +" AND YEAR("+this.salesDB+".sales_order.salesinvoicecreateddate) =  '"+det.get("year")+"' "
+				  		  +" GROUP BY YEAR("+this.salesDB+".sales_order.salesinvoicecreateddate), MONTH("+this.salesDB+".sales_order.salesinvoicecreateddate)";
 				 // System.out.println(query);
 				/*
 				  if(det.get("userid") != null && det.get("userid") != ""){
