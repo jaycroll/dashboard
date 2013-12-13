@@ -48,7 +48,11 @@
     <to>/User?action=$1&amp;param=$2</to>
 </rule>
 
- 
+ <rule>
+    <name></name>
+    <from>^/Product/([a-z]+)/([a-z0-9]+)$</from>
+  	<to>/Product?action=$1&amp;param=$2</to>
+</rule>
  <rule>
     <name></name>
     <from>^/Account/([a-z]+)/([a-z0-9]+)$</from>

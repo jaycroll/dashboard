@@ -8,7 +8,6 @@
 <% 
 	String sitePathInitSub =request.getContextPath()+"/";
 %>    
-
 <div class='divCenter txtCenter'>
   <form id="formAddRole" name="form1" method="post" action="">
 	<div class='jq_AddRoleStatus txtCenter'>&nbsp;</div>

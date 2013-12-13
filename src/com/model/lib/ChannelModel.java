@@ -210,6 +210,70 @@ public class ChannelModel{
 			 }	  
 			return rs;
 		}
+	  public ResultSet loadChannelByLocation(Map det){
+			
+			String query="";
+			ResultSet rs=null;
+			
+			try{
+				 this.fetchProperties();
+				 Connection connection=null;
+				 Class.forName("com.mysql.jdbc.Driver");
+				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+				 
+				  Statement st = connection.createStatement();
+				  	query+=" SELECT channel_group.channel_group_name, "
+							+ "       channel.channel_id, "
+							+ "       channel.channel_name, "
+							+ "       channel.channel_group_id, "
+							+ "       channel.channel_automated, "
+							+ "       channel.app_id, "
+							+ "       ifnull(app.app_name,'') as app_name "
+							+ "FROM   channel "
+							+ "       INNER JOIN channel_group "
+							+ "               ON channel.channel_group_id = channel_group.channel_group_id "
+							+ "       LEFT JOIN app "
+							+ "               ON channel.app_id = app.app_id "
+						    + " where 1=1 "
+						    + "AND channel_group.category='"+det.get("location")+"'";
+				  
+				  
+				  if(det.get("channel_id") != null && det.get("channel_id") != ""){
+					  query+=" and channel.channel_id='"+det.get("channel_id")+"'";
+				  }
+				  
+				  if(det.get("channel_name") != null && det.get("channel_name") != ""){
+					  query+=" and channel.channel_name LIKE '%"+det.get("channel_name")+"%' ";
+				  }
+				  
+				  
+				  if(det.get("channel_group_id") != null && det.get("channel_group_id") != ""){
+					  query+=" and channel.channel_group_id='"+det.get("channel_group_id")+"'";
+				  }
+				  
+				  
+				  if(det.get("channel_automated") != null && det.get("channel_automated") != ""){
+					  query+=" and channel.channel_automated='"+det.get("channel_automated")+"'";
+				  }
+				  
+				  if(det.get("app_id") != null && det.get("app_id") != ""){
+					  query+=" and channel.app_id='"+det.get("app_id")+"'";
+				  }
+				  
+
+				  rs = st.executeQuery(query);
+				  
+				
+				   
+			 } catch (SQLException e) {
+				  System.err.println("SQLException: "
+			    	        +e.getMessage());
+			      System.err.println("SQL Query: "+query);
+			 } catch (Exception e){
+			 			System.out.println("Error in fetching"+e);
+			 }	  
+			return rs;
+		}
 	  
 	  
 	  

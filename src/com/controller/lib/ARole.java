@@ -72,8 +72,13 @@ public class ARole extends HttpServlet {
 			
 			ResultSet moduleList=role.loadModule();
 			ResultSet privilegeList=role.loadPrivilege();
+			int a = 0;
+			String ha="";
+				
 			request.setAttribute("moduleList",moduleList);
 			request.setAttribute("privilegeList",privilegeList);
+			
+			request.setAttribute("ha",ha);
 			view = request.getRequestDispatcher("role/initAddRole.jsp");
 		 	
 		 	response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");

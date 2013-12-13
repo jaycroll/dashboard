@@ -81,10 +81,10 @@
 	for(int j = 1;j<testArray.length;j++){
 		if(testArray[j][0][0][0]!=null){
 %>
-		<div id="dsp"><%=testArray[j][5][11][0]%></div>
+		<div id="dsp"></div>
 		<br>
 		<br>
-		<div><%=testArray[j][0][0][0] %></div>
+		
 		<div style="border: 1px solid #000000;width:700px;">
 		
 		<canvas id="<%=testArray[j][1][0][0]%>" width="600" height="300" ></canvas>
@@ -92,6 +92,7 @@
 				<div><div style="background-color:#0adcef;width:10px;height:10px"></div>Actual</div>			
 		</div>
 		<br>
+		<div><%=testArray[j][0][0][0] %></div>
 		<br>
 		<div id="teamlead">Team Leader: </div>
 		<div id="users">Sales Team:<br></div>	

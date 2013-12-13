@@ -677,6 +677,46 @@ public class SalesModel{
 				 }	  
 				return rs;
 			}
+		 public ResultSet ldYearRevenue2(Map det){
+				
+			 	/////Notes here
+			 
+				String query="";
+				ResultSet rs=null;
+				
+				try{
+					 this.fetchProperties();
+					 Statement st = this.connection.createStatement();
+					 query = ""
+			   							+ "SELECT Ifnull(Sum(CASE "
+			   							+ "                    WHEN revenue_type = 'Sales' THEN revenue_report.amount "
+			   							+ "                    ELSE 0 "
+			   							+ "                  end),0) -  Ifnull(Sum(CASE "
+			   							+ "                               WHEN revenue_type = 'Refund' THEN revenue_report.amount - 0 "
+			   							+ "                             end), 0) AS actual_revenue "
+			   							+ "FROM   revenue_report "
+			   							+ " Inner Join sales_revenue ON revenue_report.reference = sales_revenue.orderid"
+			   							+ " Inner Join salesuser_bridge ON sales_revenue.agentid = salesuser_bridge.agentid "
+			   							+ "WHERE  Date_format(revenue_date, '%Y') = Date_format(NOW() - INTERVAL 1 day, "
+			   							+ "                                         '%Y')   and channel_id='"+det.get("channelid")+"'";
+					   			
+					   			
+					   			if(det.get("user_id") != null && det.get("user_id") != ""){
+									  query+=" and salesuser_bridge.userid='"+det.get("user_id")+"'";
+								}
+					   
+					   			
+					  rs = st.executeQuery(query);
+					  
+				 } catch (SQLException e) {
+					  System.err.println("SQLException: "
+				    	        +e.getMessage());
+				      System.err.println("SQL Query: "+query);
+				 } catch (Exception e){
+				 			System.out.println("Error in fetching"+e);
+				 }	  
+				return rs;
+			}
 		 
 		 
 		 public ResultSet loadProjectionMonthly(Map det){

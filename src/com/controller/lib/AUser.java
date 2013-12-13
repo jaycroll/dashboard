@@ -57,10 +57,14 @@ public class AUser extends HttpServlet {
 		
 		Map iVariable=new HashMap();
 		
-		String action	= request.getParameter("action");
+		String action	="";
+		if(!request.getParameter("action").isEmpty()){
+			action=request.getParameter("action");
+		}
+		
 		UserModel usr=new UserModel();
 		CustomHelper ch=new CustomHelper();
-		usr.projectFile=getServletContext().getRealPath("");
+		usr.projectFile=getServletContext().getRealPath("/");
 		
 		RolePermission rp=new RolePermission();
 		rp.settingUrl=getServletContext().getRealPath("/");

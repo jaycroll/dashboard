@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.security.*;
 import java.math.*;
-
 import javax.servlet.http.HttpSession;
 
 public class ProjectionModel{
@@ -29,9 +28,9 @@ public class ProjectionModel{
 		 String relativeWebPath = "/WEB-INF/app.properties";
 		 Properties p = new Properties();
 		 p.load(new FileInputStream(projectFile+relativeWebPath));
-         
+         //System.out.println(projectFile);
          this.connectionURL=p.getProperty("connectionURL");
-         this.dbUser=p.getProperty("dbUser");
+         this.dbUser=p.getProperty("dbUser");	
          this.dbPassword=p.getProperty("dbPassword");
          this.salesDB=p.getProperty("salesDB");
          Class.forName("com.mysql.jdbc.Driver");
@@ -125,6 +124,42 @@ public class ProjectionModel{
 						  + "GROUP  BY Date_format(revenue_report.revenue_date, '%m-%y') ";
 						 */
 				  
+		
+			 query="SELECT Ifnull(Sum(CASE "
+				  + "                    WHEN revenue_type = 'Sales' THEN amount "
+				  + "                    ELSE 0 "
+				  + "                  end) - Sum(CASE "
+				  + "                               WHEN revenue_type = 'Refund' THEN amount "
+				  + "                               ELSE 0 "
+				  + "                             end), 0)                 AS subTotal, "
+				  + "       Date_format(revenue_report.revenue_date, '%m') AS monthNum "
+				  + "FROM   revenue_report "
+				  + "WHERE  revenue_type = 'Sales' "
+				  + "       AND Date_format(revenue_report.revenue_date, '%Y') = '"+det.get("year")+"' "
+				  + "GROUP  BY Date_format(revenue_report.revenue_date, '%m-%y') ";
+				   
+				  rs = st.executeQuery(query);
+				  
+			 } catch (SQLException e) {
+				  System.err.println("SQLException: "
+			    	        +e.getMessage());
+			      System.err.println("SQL Query: "+query);
+			 } catch (Exception e){
+			 			System.out.println("Error in fetching"+e);
+			 }	  
+			return rs;
+		}
+	 public ResultSet loadProductProjectionMonthly(Map det){
+			
+		 	/////Notes here
+		 
+			String query="";
+			ResultSet rs=null;
+			
+			try{
+				 this.fetchProperties();
+				 Statement st = this.connection.createStatement();
+
 		
 			 query="SELECT Ifnull(Sum(CASE "
 				  + "                    WHEN revenue_type = 'Sales' THEN amount "

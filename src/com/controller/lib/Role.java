@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,7 +64,7 @@ public class Role extends HttpServlet {
 				 Map det=new HashMap();
 				 ResultSet roleList=role.loadRole();
 					request.setAttribute("roleList",roleList);
-					view = request.getRequestDispatcher("role/result_RoleList.jsp");
+					view = request.getRequestDispatcher("role/main.jsp");
 			 	
 					response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 					response.setHeader("Pragma", "no-cache");
@@ -102,8 +103,19 @@ public class Role extends HttpServlet {
 			ResultSet moduleList=role.loadModule();
 			ResultSet privilegeList=role.loadPrivilege();
 			request.setAttribute("moduleList",moduleList);
+			try {
+				if(moduleList.next()){
+					do{
+						System.out.println(moduleList.getString("modulename"));
+					}while(moduleList.next());
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			request.setAttribute("privilegeList",privilegeList);
-			view = request.getRequestDispatcher("role/initAddRole.jsp");
+			
+			view = request.getRequestDispatcher("role/initAddRole.jsp"); 
 		 	
 		 	response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 			response.setHeader("Pragma", "no-cache");
