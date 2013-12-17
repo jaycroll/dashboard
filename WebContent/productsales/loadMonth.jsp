@@ -5,7 +5,7 @@
 <%  
 		String sitePathInitMin =request.getContextPath()+"/";
 		CustomHelper ch=new CustomHelper();
-		String[] channels = (String[]) request.getAttribute("channels"); 
+		int[] channels = (int[]) request.getAttribute("channels"); 
 		String[][][] productArray2 = (String[][][]) request.getAttribute("productArray2");
 		
 %>				
@@ -38,33 +38,32 @@
 	}			
 	var monthlySales = new Array();
 	var monthlyTarget = new Array();
-	$("#test").append("asd");
 </script>
 <div id="test"></div>
 <%
-	for(int i=0; i<channels.length;i++){
+for(int i=0; i<channels.length;i++){
+	%>
+		<canvas id="<%=productArray2[i][0][0] %>" width="600" height="300" ></canvas>
+	<%
+	for(int j = 0;j<productArray2[i][1].length;j++){
+		if(productArray2[i][1][j]!=null){
 		%>
-			<canvas id="<%=productArray2[i][0][0] %>" width="600" height="300" ></canvas>
+			<script>
+				monthlySales[<%=j%>]=<%=productArray2[i][1][j]%>;
+				
+			</script>
 		<%
-		for(int j = 0;j<productArray2[i][1].length;j++){
-			if(productArray2[i][1][j]!=null){
+		}
+		else{
 			%>
 				<script>
-					monthlySales[<%=j%>]=<%=productArray2[i][1][j]%>;
-					$("#test").append(monthlySales[<%=j%>]);
-				</script>
+				monthlySales[<%=j%>]="0";
+				
+			</script>
 			<%
-			}
-			else{
-				%>
-					<script>
-					monthlySales[<%=j%>]="0";
-					$("#test").append(monthlySales[<%=j%>]);
-				</script>
-				<%
-			}
 		}
-		
-	
 	}
+	
+
+}
 %>

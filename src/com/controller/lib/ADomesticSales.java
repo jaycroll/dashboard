@@ -46,7 +46,7 @@ public class ADomesticSales extends HttpServlet{
 			salesModel.projectFile = getServletContext().getRealPath("");
 			RequestDispatcher view = null;
 			Boolean useDispatcher = false;
-			System.out.println("it gets here");
+			//System.out.println("it gets here");
 			if(ch.checkMemberSession(session)){
 				
 				if(action.equals("loadMonth")){
@@ -74,8 +74,8 @@ public class ADomesticSales extends HttpServlet{
 								
 										try{
 											if(yearSales.next()){
-												
-												productArray[i[0]][1][Integer.parseInt(yearSales.getString("monthNum"))] = yearSales.getString("actual_revenue");
+												int month = Integer.parseInt(yearSales.getString("monthNum"));
+												productArray[i[0]][1][month] = yearSales.getString("actual_revenue");
 												///System.out.println(productArray[i[0]][1]);
 											}
 										}catch(SQLException e){

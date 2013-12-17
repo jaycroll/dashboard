@@ -134,10 +134,8 @@ $(".jqSection .ibtntabs").live('click',function () {
   			
   		}
   		$("#content").empty();
-			$.get("<%=sitePathInit%>ADomesticSales",{action:$(this).attr("alt")},
-				
+			$.post("<%=sitePathInit%>ADomesticSales",{action:$(this).attr("alt")},
 					function(data){
-							//Submit Form	
 							$("#content").append(data);
 		});
   	}else{
