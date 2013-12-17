@@ -18,14 +18,15 @@ import javax.servlet.http.HttpSession;
 
 
 
+
 import com.model.lib.*;
 
-@WebServlet(description="Product Sales Projection", urlPatterns={"/DomesticProducts"})
+@WebServlet(description="Product Sales Projection", urlPatterns={"/InternationalProducts"})
 
-public class DomesticSales extends HttpServlet{
+public class InternationalSales extends HttpServlet{
 		private static final long serialVersionID = 1L;
 		
-		public DomesticSales(){
+		public InternationalSales(){
 			super();
 		}
 
@@ -53,10 +54,10 @@ public class DomesticSales extends HttpServlet{
 					useDispatcher = true;
 					view = request.getRequestDispatcher("productsales/main.jsp");	
 					request.setAttribute("asd","asd");
-					ProjectionMap.put("location","Domestic");
+					ProjectionMap.put("location","International");
 					String[][] productArray = new String[100][100];
 					String[] loc = new String[1];
-					loc[0] = "DomesticProducts";
+					loc[0] = "InternationalProducts";
 					request.setAttribute("loc", loc);
 					ResultSet channels = chModel.loadChannelByLocation(ProjectionMap);
 					int[]  i = new int[1];
@@ -108,10 +109,8 @@ public class DomesticSales extends HttpServlet{
 		/**
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */
-		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
-		}
-
+	
 	}
+	
 
 

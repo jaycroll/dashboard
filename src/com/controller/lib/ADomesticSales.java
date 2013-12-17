@@ -20,16 +20,19 @@ import javax.servlet.http.HttpSession;
 
 import com.model.lib.*;
 
-@WebServlet(description="Product Sales Projection", urlPatterns={"/DomesticProducts"})
+@WebServlet(description="Product Sales Projection", urlPatterns={"/ADomesticSales"})
 
-public class DomesticSales extends HttpServlet{
+public class ADomesticSales extends HttpServlet{
 		private static final long serialVersionID = 1L;
 		
-		public DomesticSales(){
+		public ADomesticSales(){
 			super();
 		}
-
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+			
+		
+		}
+		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 			
 			String action = request.getParameter("action");
 			HttpSession session = request.getSession();
@@ -43,49 +46,44 @@ public class DomesticSales extends HttpServlet{
 			salesModel.projectFile = getServletContext().getRealPath("");
 			RequestDispatcher view = null;
 			Boolean useDispatcher = false;
+			System.out.println("it gets here");
 			if(ch.checkMemberSession(session)){
-
-				if(action==null){
+				
+				if(action.equals("loadMonth")){
 					Map ProjectionMap = new HashMap();
 					Map requestMap = new HashMap();
-					
-					
+
 					useDispatcher = true;
-					view = request.getRequestDispatcher("productsales/main.jsp");	
-					request.setAttribute("asd","asd");
+					view = request.getRequestDispatcher("productsales/loadMonth.jsp");	
+					//request.setAttribute("asd","asd");
+					
 					ProjectionMap.put("location","Domestic");
-					String[][] productArray = new String[100][100];
-					String[] loc = new String[1];
-					loc[0] = "DomesticProducts";
-					request.setAttribute("loc", loc);
+					String[][][] productArray = new String[100][100][100];
+					
 					ResultSet channels = chModel.loadChannelByLocation(ProjectionMap);
 					int[]  i = new int[1];
+					
 					try{
 						if(channels.next()){
 							do{
 								ProjectionMap.put("channelid",channels.getString("channel_id"));
-								productArray[i[0]][0] = channels.getString("channel_id");
+								productArray[i[0]][0][0] = channels.getString("channel_id");
 								//System.out.println(productArray[i][0][0]);
 								ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
 								ResultSet monthSales = salesModel.ldMonthRevenue2(ProjectionMap,false);
-								try{
-									if(yearSales.next()){
-										productArray[i[0]][1] = yearSales.getString("actual_revenue");
-										///System.out.println(productArray[i[0]][1]);
-									}
-								}catch(SQLException e){
-									
-								}
-								try{
-									if(monthSales.next()){
-										productArray[i[0]][2] = monthSales.getString("actual_revenue");
-										//System.out.println(productArray[i[0]][2]);
-									}
-								}catch(SQLException e){
-									e.printStackTrace();
-								}
-								productArray[i[0]][3] = channels.getString("channel_name");
-								i[0]++;
+								
+										try{
+											if(yearSales.next()){
+												
+												productArray[i[0]][1][Integer.parseInt(yearSales.getString("monthNum"))] = yearSales.getString("actual_revenue");
+												///System.out.println(productArray[i[0]][1]);
+											}
+										}catch(SQLException e){
+											
+										}
+										productArray[i[0]][2][0] = channels.getString("channel_name");
+										i[0]++;
+								
 							}while(channels.next());
 							
 						}
@@ -93,7 +91,7 @@ public class DomesticSales extends HttpServlet{
 						e.printStackTrace();
 					}
 					
-					request.setAttribute("productArray",productArray);
+					request.setAttribute("productArray2",productArray);
 					request.setAttribute("channels", i);
 					//System.out.println(i[0]);
 					
@@ -108,10 +106,8 @@ public class DomesticSales extends HttpServlet{
 		/**
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */
-		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
-		}
-
+	
 	}
+	
 
 
