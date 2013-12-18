@@ -66,22 +66,24 @@ public class ADomesticSales extends HttpServlet{
 					try{
 						if(channels.next()){
 							do{
+								System.out.println(channels.getString("channel_id")+": ");
 								ProjectionMap.put("channelid",channels.getString("channel_id"));
 								productArray[i[0]][0][0] = channels.getString("channel_id");
-								//System.out.println(productArray[i][0][0]);
-								ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
-								ResultSet monthSales = salesModel.ldMonthRevenue2(ProjectionMap,false);
-								
+								//System.out.println(productArray[i[0]][0][0]);
+								//ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
+								ResultSet monthSales = salesModel.ldProductMonthlyRevenue(ProjectionMap,false);
 										try{
-											if(yearSales.next()){
-												int month = Integer.parseInt(yearSales.getString("monthNum"));
-												productArray[i[0]][1][month] = yearSales.getString("actual_revenue");
-												///System.out.println(productArray[i[0]][1]);
+											if(monthSales.next()){
+												do{
+													productArray[i[0]][1][Integer.parseInt(monthSales.getString("month"))] = monthSales.getString("actual_revenue");
+													System.out.println(Integer.parseInt(monthSales.getString("month"))+"-"+productArray[i[0]][1][Integer.parseInt(monthSales.getString("month"))]);
+												}while(monthSales.next());
+												
 											}
 										}catch(SQLException e){
 											
 										}
-										productArray[i[0]][2][0] = channels.getString("channel_name");
+										productArray[i[0]][3][0] = channels.getString("channel_name");
 										i[0]++;
 								
 							}while(channels.next());

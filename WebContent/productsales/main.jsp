@@ -133,6 +133,7 @@ $(".jqSection .ibtntabs").live('click',function () {
   		if(mainModule){		
   			
   		}
+  		
   		$("#content").empty();
 			$.post("<%=sitePathInit%>ADomesticSales",{action:$(this).attr("alt")},
 					function(data){

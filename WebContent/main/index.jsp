@@ -13,7 +13,7 @@
 <div id="icons" style="margin:0px auto;">
 <a href="Projection"><img src="<%=sitePathInit%>images/icon1.png" border="0" style="float:left; margin:0 10px;" /></a>
 <a href="#"><img src="<%=sitePathInit%>images/grayscale_velocity.png" border="0" style="float:left; margin:0 10px;" /></a>
-<a href="<%=sitePathInit%>/DomesticProducts"><img src="<%=sitePathInit%>images/icon3.png" border="0" style="float:left; margin:0 30px;" /></a>
+<a href="<%=sitePathInit%>DomesticProducts"><img src="<%=sitePathInit%>images/icon3.png" border="0" style="float:left; margin:0 30px;" /></a>
 <a href="<%=sitePathInit%>User"><img src="images/access.png" width="90" height="110" border="0"  style="float:left; margin:0 10px;" /></a>
 </div>
 

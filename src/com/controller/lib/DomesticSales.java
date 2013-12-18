@@ -52,7 +52,7 @@ public class DomesticSales extends HttpServlet{
 					
 					useDispatcher = true;
 					view = request.getRequestDispatcher("productsales/main.jsp");	
-					request.setAttribute("asd","asd");
+					
 					ProjectionMap.put("location","Domestic");
 					String[][] productArray = new String[100][100];
 					String[] loc = new String[1];

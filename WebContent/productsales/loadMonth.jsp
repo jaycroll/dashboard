@@ -18,6 +18,7 @@
 		var ctx = $("#"+area).get(0).getContext("2d");
 		var myNewChart = new Chart(ctx);
 		var areas = new Array();
+
 		var data = {
 				labels : ["J","F","M","A","M","J","J","A","S","O","N","D"],
 				datasets : [
@@ -29,41 +30,47 @@
 					{
 						fillColor : "rgba(151,187,205,0.5)",
 						strokeColor : "rgba(151,187,205,1)",
-						data : mT
+						data: mT
 					}
 				]
 			};
 
 		var myNewChart = new Chart(ctx).Bar(data);
 	}			
-	var monthlySales = new Array();
-	var monthlyTarget = new Array();
-</script>
-<div id="test"></div>
-<%
-for(int i=0; i<channels.length;i++){
-	%>
-		<canvas id="<%=productArray2[i][0][0] %>" width="600" height="300" ></canvas>
-	<%
-	for(int j = 0;j<productArray2[i][1].length;j++){
-		if(productArray2[i][1][j]!=null){
-		%>
-			<script>
-				monthlySales[<%=j%>]=<%=productArray2[i][1][j]%>;
-				
-			</script>
-		<%
-		}
-		else{
-			%>
-				<script>
-				monthlySales[<%=j%>]="0";
-				
-			</script>
-			<%
-		}
-	}
 	
 
+</script>
+<div id="test"></div>
+<div id="test2"></div>
+<%
+for(int i=0; i<channels[0];i++){
+	if(productArray2[i][0][0] != null){
+	%>
+		<script>
+		var monthlySales = new Array();
+		var monthlyTarget = new Array();
+		for(var x = 1;x<<%=channels[0]%>;x++ ){
+			monthlyTarget.push("35000");
+		}
+		</script>
+		<br><br>
+		<div style="border: 1px solid #000000;width:700px;"><div><%=productArray2[i][3][0] %></div><canvas id="<%=productArray2[i][0][0] %>" width="600" height="300" ></canvas></div>
+		<br><br>
+		
+	<%
+		for(int j = 0; j<productArray2[i][1].length;j++){
+			if(productArray2[i][1][j]!=null){
+	%>
+					<script>
+						monthlySales[<%=j%>-1] = <%=productArray2[i][1][j]%>;
+					</script>
+				<%
+			}
+
+		}
+	%>
+		<script>createMonthlyGraph(<%=productArray2[i][0][0] %>,monthlySales,monthlyTarget);</script>
+	<%
+	}
 }
 %>
