@@ -20,16 +20,19 @@ import javax.servlet.http.HttpSession;
 
 import com.model.lib.*;
 
-@WebServlet(description="Product Sales Projection", urlPatterns={"/DomesticProducts"})
+@WebServlet(description="Product Sales Projection", urlPatterns={"/AInternationalSales"})
 
-public class DomesticSales extends HttpServlet{
+public class AInternationalSales extends HttpServlet{
 		private static final long serialVersionID = 1L;
 		
-		public DomesticSales(){
+		public AInternationalSales(){
 			super();
 		}
-
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+			
+		
+		}
+		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 			
 			String action = request.getParameter("action");
 			HttpSession session = request.getSession();
@@ -43,62 +46,54 @@ public class DomesticSales extends HttpServlet{
 			salesModel.projectFile = getServletContext().getRealPath("");
 			RequestDispatcher view = null;
 			Boolean useDispatcher = false;
-			String[] classCSS = new String[3];
-			classCSS[0] = "active";
-			classCSS[1] =  "";
-			classCSS[2] = "ADomesticSales";
+			//System.out.println("it gets here");
 			if(ch.checkMemberSession(session)){
-
-				if(action==null){
+				
+				if(action.equals("loadMonth")){
 					Map ProjectionMap = new HashMap();
 					Map requestMap = new HashMap();
-					
-					
+
 					useDispatcher = true;
-					view = request.getRequestDispatcher("productsales/main.jsp");	
+					view = request.getRequestDispatcher("productsales/loadMonth.jsp");	
+					//request.setAttribute("asd","asd");
 					
-					ProjectionMap.put("location","Domestic");
-					String[][] productArray = new String[100][100];
-					String[] loc = new String[1];
-					loc[0] = "DomesticProducts";
-					request.setAttribute("loc", loc);
+					ProjectionMap.put("location","International");
+					String[][][] productArray = new String[100][100][100];
+					
 					ResultSet channels = chModel.loadChannelByLocation(ProjectionMap);
-					
 					int[]  i = new int[1];
+					
 					try{
 						if(channels.next()){
 							do{
+								System.out.println(channels.getString("channel_id")+": ");
 								ProjectionMap.put("channelid",channels.getString("channel_id"));
-								productArray[i[0]][0] = channels.getString("channel_id");
-								//System.out.println(productArray[i][0][0]);
-								ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
-								ResultSet monthSales = salesModel.ldMonthRevenue2(ProjectionMap,false);
-								try{
-									if(yearSales.next()){
-										productArray[i[0]][1] = yearSales.getString("actual_revenue");
-										///System.out.println(productArray[i[0]][1]);
-									}
-								}catch(SQLException e){
-									
-								}
-								try{
-									if(monthSales.next()){
-										productArray[i[0]][2] = monthSales.getString("actual_revenue");
-										//System.out.println(productArray[i[0]][2]);
-									}
-								}catch(SQLException e){
-									e.printStackTrace();
-								}
-								productArray[i[0]][3] = channels.getString("channel_name");
-								i[0]++;
+								productArray[i[0]][0][0] = channels.getString("channel_id");
+								//System.out.println(productArray[i[0]][0][0]);
+								//ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
+								ResultSet monthSales = salesModel.ldProductMonthlyRevenue(ProjectionMap,false);
+										try{
+											if(monthSales.next()){
+												do{
+													productArray[i[0]][1][Integer.parseInt(monthSales.getString("month"))] = monthSales.getString("actual_revenue");
+													System.out.println(Integer.parseInt(monthSales.getString("month"))+"-"+productArray[i[0]][1][Integer.parseInt(monthSales.getString("month"))]);
+												}while(monthSales.next());
+												
+											}
+										}catch(SQLException e){
+											
+										}
+										productArray[i[0]][3][0] = channels.getString("channel_name");
+										i[0]++;
+								
 							}while(channels.next());
 							
 						}
 					}catch(SQLException e){
 						e.printStackTrace();
 					}
-					request.setAttribute("classCSS",classCSS);
-					request.setAttribute("productArray",productArray);
+					
+					request.setAttribute("productArray2",productArray);
 					request.setAttribute("channels", i);
 					//System.out.println(i[0]);
 					
@@ -113,10 +108,8 @@ public class DomesticSales extends HttpServlet{
 		/**
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */
-		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
-		}
-
+	
 	}
+	
 
 

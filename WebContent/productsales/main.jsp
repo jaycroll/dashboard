@@ -10,7 +10,7 @@
 	String[][] productArray = (String[][]) request.getAttribute("productArray");
 	int[] arrayLength = (int[]) request.getAttribute("channels");
 	String[] loc = (String[]) request.getAttribute("loc");
-
+	String[] classCss = (String[]) request.getAttribute("classCSS");
 %>
 <div id="header" align="center"><img src="<%=sitePathInit%>images/ppe-blk.png"/></div>
 <div id="title">
@@ -22,8 +22,8 @@
 <div id="menu-right" class="lucida_12_tungsten_b"> Hello, <%=sess.getAttribute("username")%> (<%=sess.getAttribute("rolename")%>). <a href="<%=sitePathInit%>User/logout"><span class="lucida_12_red_b">Logout</span></a></div>
 <div id="menu-left">
 	<ul class="map">
-	<li id="domestic"><a href="<%=sitePathInit%>DomesticProducts" title="menu1" ><span class="displace"></span></a></li>
-	<li id="international"><a href="<%=sitePathInit%>InternationalProducts" title="menu2" class="active"><span class="displace"></span></a></li>
+	<li id="domestic"><a href="<%=sitePathInit%>DomesticProducts" title="menu1" class="<%=classCss[0]%>"><span class="displace"></span></a></li>
+	<li id="international"><a href="<%=sitePathInit%>InternationalProducts" title="menu2" class="<%=classCss[1]%>"><span class="displace"></span></a></li>
 
     </ul>
 </div>
@@ -135,7 +135,7 @@ $(".jqSection .ibtntabs").live('click',function () {
   		}
   		
   		$("#content").empty();
-			$.post("<%=sitePathInit%>ADomesticSales",{action:$(this).attr("alt")},
+			$.post("<%=sitePathInit%><%=classCss[2]%>",{action:$(this).attr("alt")},
 					function(data){
 							$("#content").append(data);
 		});

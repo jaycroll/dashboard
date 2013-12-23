@@ -44,6 +44,10 @@ public class InternationalSales extends HttpServlet{
 			salesModel.projectFile = getServletContext().getRealPath("");
 			RequestDispatcher view = null;
 			Boolean useDispatcher = false;
+			String[] classCSS = new String[3];
+			classCSS[0] = "";
+			classCSS[1] = "active";
+			classCSS[2] = "AInternationalSales";
 			if(ch.checkMemberSession(session)){
 
 				if(action==null){
@@ -53,11 +57,11 @@ public class InternationalSales extends HttpServlet{
 					
 					useDispatcher = true;
 					view = request.getRequestDispatcher("productsales/main.jsp");	
-					request.setAttribute("asd","asd");
+					
 					ProjectionMap.put("location","International");
 					String[][] productArray = new String[100][100];
 					String[] loc = new String[1];
-					loc[0] = "InternationalProducts";
+					loc[0] = "DomesticProducts";
 					request.setAttribute("loc", loc);
 					ResultSet channels = chModel.loadChannelByLocation(ProjectionMap);
 					int[]  i = new int[1];
@@ -93,7 +97,7 @@ public class InternationalSales extends HttpServlet{
 					}catch(SQLException e){
 						e.printStackTrace();
 					}
-					
+					request.setAttribute("classCSS",classCSS);
 					request.setAttribute("productArray",productArray);
 					request.setAttribute("channels", i);
 					//System.out.println(i[0]);
@@ -109,8 +113,10 @@ public class InternationalSales extends HttpServlet{
 		/**
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */
-	
+		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+		}
+
 	}
-	
 
 
