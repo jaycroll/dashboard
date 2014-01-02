@@ -16,7 +16,7 @@
 	function createMonthlyGraph(area,mS,mT){
 		var area = area;
 		var ctx = $("#"+area).get(0).getContext("2d");
-		var myNewChart = new Chart(ctx);
+		var myNewChart = new Chart(ctx); 
 		var areas = new Array();
 
 		var data = {
@@ -50,7 +50,7 @@ for(int i=0; i<channels[0];i++){
 		var monthlySales = new Array();
 		var monthlyTarget = new Array();
 		for(var x = 1;x<<%=channels[0]%>;x++ ){
-			monthlyTarget.push("35000");
+			
 		}
 		</script>
 		<br><br>

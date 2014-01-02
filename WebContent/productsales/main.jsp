@@ -91,9 +91,7 @@
 					actual.push("<%=productArray[i][1]%>");
 					actual.push("<%=productArray[i][1]%>");
 					
-					target.push("10000");
-					target.push("10000");
-					target.push("10000");
+
 					createYTDGraph(<%=productArray[i][0]%>,actual,target);
 				</script>
 			<%
