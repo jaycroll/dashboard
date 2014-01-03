@@ -398,6 +398,7 @@ ul.access li#access3 a{float:left; display: block; width: 181px; margin: 0 0px; 
 ul.access li#access4 a{float:left; display: block; width: 181px; margin: 0 0px; height: 50px; text-decoration: none; background: url("../images/target_management.jpg");}
 ul.access li#access5 a{float:left; display: block; width: 181px; margin: 0 0px; height: 50px; text-decoration: none; background: url("../images/channel_management.jpg");}
 ul.access li#access6 a{float:left; display: block; width: 181px; margin: 0 0px; height: 50px; text-decoration: none; background: url("../images/sales_management.jpg");}
+ul.access li#access7 a{float:left; display: block; width: 216px; margin: 0 0px; height: 50px; text-decoration: none; background: url("../images/product_target.jpg");}
 
 ul.access li#access1 a:visited{background-position: -181px 0;}
 ul.access li#access2 a:visited{background-position: -181px 0;}
@@ -405,6 +406,7 @@ ul.access li#access3 a:visited{background-position: -181px 0;}
 ul.access li#access4 a:visited{background-position: -181px 0;}
 ul.access li#access5 a:visited{background-position: -181px 0;}
 ul.access li#access6 a:visited{background-position: -181px 0;}
+ul.access li#access7 a:visited{background-position: -216px 0;}
 
 ul.access li#access1 a:hover{background-position: -181px 0;}
 ul.access li#access2 a:hover{background-position:-181px 0;}
@@ -412,6 +414,7 @@ ul.access li#access3 a:hover{background-position: -181px 0;}
 ul.access li#access4 a:hover{background-position: -181px 0;}
 ul.access li#access5 a:hover{background-position: -181px 0;}
 ul.access li#access6 a:hover{background-position: -181px 0;}
+ul.access li#access7 a:hover{background-position: -216px 0;}
 
 ul.access li#access1 a.active {background-position:  -181px 0;}
 ul.access li#access2 a.active {background-position:  -181px 0;}
@@ -419,7 +422,7 @@ ul.access li#access3 a.active {background-position:  -181px 0;}
 ul.access li#access4 a.active {background-position:  -181px 0;}
 ul.access li#access5 a.active {background-position:  -181px 0;}
 ul.access li#access6 a.active {background-position:  -181px 0;}
-
+ul.access li#access7 a.active {background-position:  -216px 0;}
 /********************************************** end of ACTION STATE****************************************************/
 
 ul.sales

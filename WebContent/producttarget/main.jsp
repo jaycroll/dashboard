@@ -52,7 +52,8 @@
             <li id='access1' ><a href="<%=sitePathInit%>User" alt='loadUser' class=' ibtntabs' title='User Management'></a></li>
             <li id='access2' ><a href="<%=sitePathInit%>Roles" alt='loadRole' class='ibtntabs' title='Role Management'></a></li>
             <li id='access3' ><a href="<%=sitePathInit%>Privilege" alt='loadPrivilege' class='ibtntabs' title='Privileges Management'></a></li>
-     	 	<li id='access4' ><a href="<%=sitePathInit%>Target" alt='loadPrivilege' class='ibtntabs active' title='Target Management'></a></li>
+     	 	<li id='access4' ><a href="<%=sitePathInit%>Target" alt='loadPrivilege' class='ibtntabs' title='Target Management'></a></li>
+     	 	<li id='access7' ><a href="<%=sitePathInit%>ProductTarget" alt='loadPrivilege' class='ibtntabs active' title='Product Target Management'></a></li>
      	 	<li id='access5' ><a href="<%=sitePathInit%>Channel" alt='loadPrivilege' class='ibtntabs' title='Channel Management'></a></li>
      	 	<li id='access6' ><a href="<%=sitePathInit%>Sales"  class='ibtntabs' title='Sales Management'></a></li>
      	 </ul>
@@ -71,10 +72,10 @@
     <tr class="text12_tungsten_bold">
       <td width="75" style="text-align: center"></td>
       <td style="text-align: center">Target Date</td>
-       <td style="text-align: center">Department</td>
-      <td style="text-align: center">Target Group</td>
+       <td style="text-align: center">Target Group</td>
+      <td style="text-align: center">Target Category</td>
       <td style="text-align: center">Target Amount</td>
-      <td style="text-align: center">User ID</td>
+      <td style="text-align: center">Channel Name</td>
       <td width="75" style="text-align: center">&nbsp;</td>
     </tr>
     <tr>
@@ -89,32 +90,11 @@
         <img src="images/calendar.png" width="28" height="28" hspace="5" align="absmiddle" /></td>
       <% } %> 
        <td style="text-align: center">
+       
       <% if(searchPriv){ %> 
-       <select name="department_id" class="text_12_tungsten jqTargetInput" id="select">
+       <select name="target_group_id" class="text_12_tungsten jqTargetInput" id="select">
            <option value=''></option>
            <%  
-			
-           ResultSet listDepartment = (ResultSet) request.getAttribute("listDepartment");
-			
-			if (listDepartment.next()) {  
-			
-		  	do{
-			%>
-	        <option value='<%=listDepartment.getString("department_id")%>'><%=listDepartment.getString("department_name")%></option>
-	        <%		
-			 	} while (listDepartment.next());
-		    	}	
-			%>
-      </select>
-      <% } %>
-      </td>
-      <td style="text-align: center">
-      
-       <% if(searchPriv){ %> 
-      <select name="target_group_id" class="text_12_tungsten jqTargetInput" id="select">
-        	<option value=''></option>
-        <%  
-			
            ResultSet listTargetGroup = (ResultSet) request.getAttribute("listTargetGroup");
 			
 			if (listTargetGroup.next()) {  
@@ -125,7 +105,18 @@
 	        <%		
 			 	} while (listTargetGroup.next());
 		    	}	
+           
 			%>
+      </select>
+      <% } %>
+      </td>
+      <td style="text-align: center">
+      
+       <% if(searchPriv){ %> 
+      <select name="category" class="text_12_tungsten jqTargetInput" id="select">
+        	<option value=''></option>
+        	<option value='Domestic'>Domestic</option>
+        	<option value='International'>International</option>
       </select>
       <% } %>
       </td>
@@ -136,7 +127,21 @@
       </td>
       <td style="text-align: center">
        <% if(searchPriv){ %> 
-      <input name="user" class='jqTargetInput' type="text" id="textfield3" size="20"   style='width:100px;'/>
+         <select name="channel_id" class="text_12_tungsten jqTargetInput" id="select">
+           <option value=''></option>
+           <%  
+	       ResultSet listChannel = (ResultSet) request.getAttribute("listChannel");
+			
+			if (listChannel.next()) {  
+			
+		  	do{
+			%>
+	        <option value='<%=listChannel.getString("channel_id")%>'><%=listChannel.getString("channel_name")%></option>
+	        <%		
+			 	} while (listChannel.next());
+		    	}	
+			%> 
+      </select>
        <% } %>
       </td>
       <td class="text10_red" style="text-align: center"></td>
@@ -145,7 +150,7 @@
     <tbody class='tblTargetList'>
     
      <% if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),4,6)){	%>  
-     <%@ include file="../target/result_TargetList.jsp"%>
+     <%@ include file="../producttarget/result_TargetList.jsp"%>
      
      <% }else{ %>    		
       <tr><td colspan='7'>

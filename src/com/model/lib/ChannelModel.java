@@ -319,6 +319,8 @@ public class ChannelModel{
 		public Boolean DeleteChannel(String channel_id){
 			
 			String query="";
+			
+			
 			Boolean process=false;
 		try{
 			 this.fetchProperties();

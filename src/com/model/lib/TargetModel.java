@@ -9,7 +9,6 @@ import java.util.Date;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-
 import java.security.*;
 import java.math.*;
 
@@ -260,9 +259,138 @@ public class TargetModel{
 			 }	  
 			return rs;
 		}
+	  public ResultSet loadProductTarget(Map det){
+			
+			String query="";
+			ResultSet rs=null;
+			
+			try{
+				 this.fetchProperties();
+				 Connection connection=null;
+				 Class.forName("com.mysql.jdbc.Driver");
+				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+				 
+				  Statement st = connection.createStatement();
+				  query= "SELECT product_targets.target_id, "
+						  + "       DATE_FORMAT(product_targets.target_date, '%m/%d/%Y') as target_date, "
+						  + "       product_targets.target_amount, "
+						  + "       product_targets.target_group_id, "
+						  + "       product_targets.target_datecreated, "
+						  + "       product_targets.channel_id, "	
+						  + "       product_targets.target_group_id, "
+						  + "       target_group.target_group_name, "
+						  + "		channel.channel_name, "
+						  + "		channel_group.category  "	
+						  + "FROM   product_targets "	
+						  + "       INNER JOIN target_group "
+						  + "               ON product_targets.target_group_id = target_group.target_group_id "
+						  + "       INNER JOIN channel "
+						  + "               ON product_targets.channel_id = channel.channel_id "
+						  + "       INNER JOIN channel_group "
+						  + "               ON channel.channel_group_id = channel_group.channel_group_id "
+						  + " where 1=1 ";
+				  
+				  
+				  if(det.get("target_id") != null && det.get("target_id,") != ""){
+					  query+=" and product_targets.target_id='"+det.get("target_id")+"'";
+				  }
+				  
+				  if(det.get("target_date") != null && det.get("target_date,") != ""){
+					  query+=" and product_targets.target_date='"+det.get("target_date")+"'";
+				  }
+				  
+
+				  if(det.get("target_amount") != null && det.get("target_amount") != ""){
+					  query+=" and product_targets.target_amount LIKE '%"+det.get("target_amount")+"%'";
+				  }
+				  
+				
+				  if(det.get("target_group_id") != null && det.get("target_group_id") != ""){
+					  query+=" and product_targets.target_group_id='"+det.get("target_group_id")+"'";
+				  }
+				  if(det.get("channel_id") != null && det.get("channel_id") != ""){
+					  query+=" and product_targets.channel_id='"+det.get("channel_id")+"'";
+				  }
+				  if(det.get("category") != null && det.get("category") != ""){
+					  query+=" and channel_group.category='"+det.get("category")+"'";
+				  }
+				 
+				  
+				  rs = st.executeQuery(query);
+				  
+			 } catch (SQLException e) {
+				  System.err.println("SQLException: "
+			    	        +e.getMessage());
+			      System.err.println("SQL Query: "+query);
+			 } catch (Exception e){
+			 			System.out.println("Error in fetching"+e);
+			 }	  
+			return rs;
+		}
 	  
-	  
-	  
+	  public ResultSet loadChannel(Map det){
+			
+			String query="";
+			ResultSet rs=null;
+			
+			try{
+				 this.fetchProperties();
+				 Connection connection=null;
+				 Class.forName("com.mysql.jdbc.Driver");
+				 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+				 
+				  Statement st = connection.createStatement();
+				  	query+=" SELECT channel_group.channel_group_name, "
+							+ "       channel.channel_id, "
+							+ "       channel.channel_name, "
+							+ "       channel.channel_group_id, "
+							+ "       channel.channel_automated, "
+							+ "       channel.app_id, "
+							+ "       ifnull(app.app_name,'') as app_name "
+							+ "FROM   channel "
+							+ "       INNER JOIN channel_group "
+							+ "               ON channel.channel_group_id = channel_group.channel_group_id "
+							+ "       LEFT JOIN app "
+							+ "               ON channel.app_id = app.app_id "
+						    + " where 1=1 ";
+				  
+				  
+				  if(det.get("channel_id") != null && det.get("channel_id") != ""){
+					  query+=" and channel.channel_id='"+det.get("channel_id")+"'";
+				  }
+				  
+				  if(det.get("channel_name") != null && det.get("channel_name") != ""){
+					  query+=" and channel.channel_name LIKE '%"+det.get("channel_name")+"%' ";
+				  }
+				  
+				  
+				  if(det.get("channel_group_id") != null && det.get("channel_group_id") != ""){
+					  query+=" and channel.channel_group_id='"+det.get("channel_group_id")+"'";
+				  }
+				  
+				  
+				  if(det.get("channel_automated") != null && det.get("channel_automated") != ""){
+					  query+=" and channel.channel_automated='"+det.get("channel_automated")+"'";
+				  }
+				  
+				  if(det.get("app_id") != null && det.get("app_id") != ""){
+					  query+=" and channel.app_id='"+det.get("app_id")+"'";
+				  }
+				  
+
+				  rs = st.executeQuery(query);
+				  
+				
+				   
+			 } catch (SQLException e) {
+				  System.err.println("SQLException: "
+			    	        +e.getMessage());
+			      System.err.println("SQL Query: "+query);
+			 } catch (Exception e){
+			 			System.out.println("Error in fetching"+e);
+			 }	  
+			return rs;
+		}
 
 		
 		public Boolean UpdateTarget(Map det){

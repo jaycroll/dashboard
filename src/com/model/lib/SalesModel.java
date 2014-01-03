@@ -672,6 +672,44 @@ public class SalesModel{
 				 }	  
 				return rs;
 			}
+		 public ResultSet ldMonthRevenue2(Map det,Boolean specDate){
+				
+			 	/////Notes here
+			 
+				String query="";
+				ResultSet rs=null;
+				
+				try{
+					 this.fetchProperties();
+					 Statement st = this.connection.createStatement();
+					 query = ""
+									  + "SELECT Ifnull(Sum(CASE "
+									  + "                    WHEN revenue_type = 'Sales' THEN revenue_report.amount "
+									  + "                    ELSE 0 "
+									  + "                  end) - Sum(CASE "
+									  + "                               WHEN revenue_type = 'Refund' THEN revenue_report.amount ELSE 0 "
+									  + "                             end), 0) AS actual_revenue "
+									  + "FROM   revenue_report "
+									  + "WHERE   channel_id='"+det.get("channelid")+"'" 
+									  +" AND MONTH(revenue_date) = MONTH(NOW()) AND DAY(revenue_date) < DAY(NOW()) AND Date_format(revenue_date, '%Y-%m')";
+					   			
+					   		
+					   				if(det.get("user_id") != null && det.get("user_id") != ""){
+										  query+=" and salesuser_bridge.userid='"+det.get("user_id")+"'";
+									}
+					   				
+					  rs = st.executeQuery(query);
+					  
+				 } catch (SQLException e) {
+					  System.err.println("SQLException: "
+				    	        +e.getMessage());
+				      System.err.println("SQL Query: "+query);
+				 } catch (Exception e){
+				 			System.out.println("Error in fetching"+e);
+				 }	  
+				return rs;
+			}
+		 
 		 public ResultSet ldProductMonthlyRevenue(Map det,Boolean specDate){
 				
 			 	/////Notes here

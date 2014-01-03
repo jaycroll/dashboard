@@ -36,8 +36,9 @@
             <li id='access1' ><a href="<%=sitePathInitS%>User" alt='loadUser' class=' ibtntabs' title='User Management'></a></li>
             <li id='access2' ><a href="<%=sitePathInitS%>Roles" alt='loadRole' class='ibtntabs' title='Role Management'></a></li>
             <li id='access3' ><a href="<%=sitePathInitS%>Privilege" alt='loadPrivilege' class='ibtntabs active' title='Privileges Management'></a></li>
-     	 	<li id='access4' ><a href="<%=sitePathInitS%>Target" alt='loadPrivilege' class='ibtntabs' title='Privileges Management'></a></li>
-     	 	<li id='access5' ><a href="<%=sitePathInitS%>Channel" alt='loadPrivilege' class='ibtntabs' title='Privileges Management'></a></li>
+     	 	<li id='access4' ><a href="<%=sitePathInitS%>Target" alt='loadPrivilege' class='ibtntabs' title='Target Management'></a></li>
+     	 	<li id='access7' ><a href="<%=sitePathInit%>ProductTarget" alt='loadPrivilege' class='ibtntabs' title='Product Target Management'></a></li>
+     	 	<li id='access5' ><a href="<%=sitePathInitS%>Channel" alt='loadPrivilege' class='ibtntabs' title='Channel Management'></a></li>
      	 	<li id='access6' ><a href="<%=sitePathInitS%>Sales"  class='ibtntabs' title='Sales Management'></a></li>
      	 </ul>
 

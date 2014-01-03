@@ -57,21 +57,7 @@
         </td>
       </tr>
       
-       <tr>
-        <td width="250" class="text12_tungsten" align='left'>Department</td>
-        <td width="200" align="left" class="text10_red">
-        		<select name='department_id' class='text_12_tungsten jq_DeparmentSelect'>
-				        <%		
-				    				ResultSet rst = (ResultSet) request.getAttribute("listDepartment");							
-									if (rst.next()) {  
-									 do{
-						%>			<option value='<%=rst.getString("department_id")%>' <% if(rst.getString("department_id").equals(rs.getString("department_id").toString())){ %>selected<% }%>><%=rst.getString("department_name")%></option>
-				    	<% 			} while (rst.next());
-										}
-						%>	
-        		</select>
-        </td>
-      </tr>
+      
       
        <tr>
         <td width="250" class="text12_tungsten" align='left'>User</td>

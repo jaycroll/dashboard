@@ -70,7 +70,7 @@ public class AProductTarget extends HttpServlet {
 			ResultSet listTargetGroup=tar.loadTargetGroup();
 			request.setAttribute("listTargetGroup",listTargetGroup);
 			
-			view = request.getRequestDispatcher("target/initAddTarget.jsp");
+			view = request.getRequestDispatcher("producttarget/initAddTarget.jsp");
 		 	response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 			response.setHeader("Pragma", "no-cache");
 			view.forward(request, response);
@@ -180,8 +180,10 @@ public class AProductTarget extends HttpServlet {
 			String target_date	= request.getParameter("target_date");
 			String target_amount	= request.getParameter("target_amount");
 			String target_group_id	= request.getParameter("target_group_id");
+			String category = request.getParameter("category");
+			String channel_id = request.getParameter("channel_id");
 			String user	= request.getParameter("user");
-			String department_id	= request.getParameter("department_id");
+			
 			
 			if(target_date != null && target_date != ""){
 				det.put("target_date",ch.transposeDate(target_date));
@@ -189,14 +191,15 @@ public class AProductTarget extends HttpServlet {
 			
 			det.put("target_amount",target_amount);
 			det.put("target_group_id",target_group_id);
-			det.put("department_id",department_id);
+			det.put("category",category);
+			det.put("channel_id",channel_id);
 			det.put("user",user);
 			
 			
-			ResultSet listTarget=tar.loadTarget(det);
+			ResultSet listTarget=tar.loadProductTarget(det);
 			request.setAttribute("listTarget",listTarget);
 			
-		 	view = request.getRequestDispatcher("target/result_TargetList.jsp");
+		 	view = request.getRequestDispatcher("producttarget/result_TargetList.jsp");
 		 	
 		 	response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 			response.setHeader("Pragma", "no-cache");
@@ -206,71 +209,70 @@ public class AProductTarget extends HttpServlet {
 			
 			String target_id	= request.getParameter("target_id");
 	 		
-			ResultSet listDepartment=tar.loadDepartment();
-			request.setAttribute("listDepartment",listDepartment);
+		
 			
 			ResultSet listTargetGroup=tar.loadTargetGroup();
 			request.setAttribute("listTargetGroup",listTargetGroup);
 			
 			Map det=new HashMap();
 			det.put("target_id",target_id);
-			ResultSet detTarget=tar.loadTarget(det);
+			ResultSet detTarget=tar.loadProductTarget(det);
 			request.setAttribute("detTarget",detTarget);
 			
-			ResultSet fetDynamicDepartment=tar.loadTarget(det);
+			ResultSet fetDynamicDepartment=tar.loadProductTarget(det);
 			
 			String html="";
 			String strSelected="";
 			html+="<option value='0'>All</option>";
-			 try {
-					if (fetDynamicDepartment.next()) {  
-				
-						do{
-								
-							Map det2=new HashMap();
-							det2.put("department_id",fetDynamicDepartment.getString("department_id"));
-							ResultSet rs2=tar.loadDepartmentUser(det2);
-							
-							 try {
-								if (rs2.next()) {  
-							
-									do{
-										
-										
-										if(fetDynamicDepartment.getString("userid")==null){
-											   strSelected="";
-										}else{
-											if(rs2.getString("userid").equals(fetDynamicDepartment.getString("userid").toString())){
-												strSelected="selected";
-											}else{
-												strSelected="";
-											}
-										}	
-										
-										  html+="<option value='"+rs2.getString("userid")+"' "+strSelected+">"+rs2.getString("userfirstname")+" "+rs2.getString("userlastname")+"</option>";
-									} while (rs2.next());
-									
-									}
-								
-							} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
-							 	
-							
-							
-							
-						} while (fetDynamicDepartment.next());
-						
-						}
-					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//			 try {
+//					if (fetDynamicDepartment.next()) {  
+//				
+//						do{
+//								
+//							Map det2=new HashMap();
+//							det2.put("department_id",fetDynamicDepartment.getString("department_id"));
+//							ResultSet rs2=tar.loadDepartmentUser(det2);
+//							
+//							 try {
+//								if (rs2.next()) {  
+//							
+//									do{
+//										
+//										
+//										if(fetDynamicDepartment.getString("userid")==null){
+//											   strSelected="";
+//										}else{
+//											if(rs2.getString("userid").equals(fetDynamicDepartment.getString("userid").toString())){
+//												strSelected="selected";
+//											}else{
+//												strSelected="";
+//											}
+//										}	
+//										
+//										  html+="<option value='"+rs2.getString("userid")+"' "+strSelected+">"+rs2.getString("userfirstname")+" "+rs2.getString("userlastname")+"</option>";
+//									} while (rs2.next());
+//									
+//									}
+//								
+//							} catch (SQLException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}	
+//							 	
+//							
+//							
+//							
+//						} while (fetDynamicDepartment.next());
+//						
+//						}
+//					
+//				} catch (SQLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			 request.setAttribute("optionHtml",html);
 			
-			view = request.getRequestDispatcher("target/initEditTarget.jsp");
+			view = request.getRequestDispatcher("producttarget/initEditTarget.jsp");
 	 		response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 			response.setHeader("Pragma", "no-cache");
 			view.forward(request, response);
@@ -352,10 +354,10 @@ public class AProductTarget extends HttpServlet {
 			
 			Map det=new HashMap();
 			det.put("target_id",target_id);
-			ResultSet detTarget=tar.loadTarget(det);
+			ResultSet detTarget=tar.loadProductTarget(det);
 			request.setAttribute("detTarget",detTarget);
 		 	
-			view = request.getRequestDispatcher("target/initDeleteTarget.jsp");
+			view = request.getRequestDispatcher("producttarget/initDeleteTarget.jsp");
 		 	
 		 	response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 			response.setHeader("Pragma", "no-cache");

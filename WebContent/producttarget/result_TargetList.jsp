@@ -24,15 +24,15 @@
 	<tr>
       <td class="lucida_10_red  <% if(deleteTarget){ %>jq_DeleteTarget hnd <% } %>"  alt="<%=rs.getString("target_id")%>" style="text-align: center"><% if(deleteTarget){ %>x<% } %></td>
       <td style="text-align: center"><%=rs.getString("target_date")%></td>
-	  <td style="text-align: center"><%=rs.getString("department_name")%></td>
       <td style="text-align: center"><%=rs.getString("target_group_name")%></td>
+      <td style="text-align: center"><%=rs.getString("category")%></td>
       <td style="text-align: center"><%=rs.getString("target_amount")%></td>
       <td style="text-align: center">
       	<%
-      			if(rs.getString("userid")==null){
+      			if(rs.getString("channel_id")==null){
       					out.println("");
       			}else{
-      					out.println(rs.getString("userfirstname")+" "+rs.getString("userlastname"));
+      					out.println(rs.getString("channel_name"));
       			}
       	%></td>
       <td class="lucida_10_red <% if(editTarget){ %>jq_EditTarget hnd<% } %>"  alt="<%=rs.getString("target_id")%>" style="text-align: center">

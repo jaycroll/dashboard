@@ -42,6 +42,7 @@
             <li id='access2' ><a href="<%=sitePathInit%>Roles" alt='loadRole' class='ibtntabs' title='Role Management'></a></li>
             <li id='access3' ><a href="<%=sitePathInit%>Privilege" alt='loadPrivilege' class='ibtntabs' title='Privileges Management'></a></li>
      	 	<li id='access4' ><a href="<%=sitePathInit%>Target" alt='loadPrivilege' class='ibtntabs' title='Target Management'></a></li>
+     	 	<li id='access7' ><a href="<%=sitePathInit%>ProductTarget" alt='loadPrivilege' class='ibtntabs' title='Product Target Management'></a></li>
      	 	<li id='access5' ><a href="<%=sitePathInit%>Channel" alt='loadPrivilege' class='ibtntabs active' title='Channel Management'></a></li>
      	 	<li id='access6' ><a href="<%=sitePathInit%>Sales"  class='ibtntabs' title='Sales Management'></a></li>
      	 </ul>

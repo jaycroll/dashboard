@@ -61,8 +61,9 @@ public class ProductTarget extends HttpServlet {
 		
 		 TargetModel tar=new TargetModel();
 		 tar.projectFile=getServletContext().getRealPath("");
-		
-		
+		 ChannelModel channel = new ChannelModel();
+		 channel.projectFile = getServletContext().getRealPath("");
+		 
 		if(ch.checkMemberSession(sess)){
 	
 			ProjectionModel proj=new ProjectionModel();
@@ -76,17 +77,20 @@ public class ProductTarget extends HttpServlet {
 				 Map det=new HashMap();
 				 request.setAttribute("banner","dashboard");
 				 useDispatcher=true;
+				 //For some weird reason it wont accept the request coming from the ChannelModel and wont display the response
+				 //Ill try to look that up later
 				 
-				 ResultSet listTarget=tar.loadTarget(det);
+				 ResultSet listChannel = tar.loadChannel(det);
+				 request.setAttribute("listChannel",listChannel);
+			
+				 
+				 ResultSet listTarget=tar.loadProductTarget(det);
 				 request.setAttribute("listTarget",listTarget);
-				 
-				 ResultSet listDepartment=tar.loadDepartment();
-				 request.setAttribute("listDepartment",listDepartment);
 				 
 				 ResultSet listTargetGroup=tar.loadTargetGroup();
 				 request.setAttribute("listTargetGroup",listTargetGroup);
 				 
-				 view = request.getRequestDispatcher("target/main.jsp");
+				 view = request.getRequestDispatcher("producttarget/main.jsp");
 				
 				////////////////////////////////////////////////////////
 				
