@@ -365,7 +365,7 @@ $(".jqTargetInput").keyup(function(event) {
 
 
 
-$(".jq_DeleteTarget").click(function () {
+$(".jq_DeleteTarget").click(function() {
 	
 	if(checkLogged()){
 		
@@ -391,7 +391,7 @@ $(".jq_DeleteTarget").click(function () {
 
 
 
-$(".jq_ConfirmDeleteTarget").click(function () {
+$(".jq_ConfirmDeleteTarget").click(function() {
 	if(checkLogged()){
 		
 		
