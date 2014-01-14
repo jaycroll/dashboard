@@ -127,6 +127,44 @@ String vModuleStatusName="";
 </div>
 <script type='text/javascript'>
 $(document).ready(function($){
+	$(".jq_togglePrivilege").click(function () {
+		$(this).parent(".rolePrivilege").find(".rolePrivilegeSettings").toggle();
+	});
+	
+	
+	$(".jqRoleSettings").change(function () {
+		if($(this).find('option:selected').val()=='enabled'){
+			$(this).parents(".jqRoleSpecSettings").find(".jqGroupSpecSetting").show();
+		}else{
+			$(this).parents(".jqRoleSpecSettings").find(".jqGroupSpecSetting").hide();
+		}
+	});
+	$(".jq_ConfirmEditRole").click(function () {
+		if(checkLogged()){
+			
+			$.post("<%=sitePathInitSub%>ARole",$("#formEditRole").serialize(),
+					   function(data){
+					
+								$(".jq_EditRoleStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_EditRoleStatus").removeClass("red");
+								$(".jq_EditRoleStatus").addClass("lnkGrn");
+								loadRole();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_EditRoleStatus").removeClass("lnkGrn");	
+								$(".jq_EditRoleStatus").addClass("red");
+							}
+			},"json");
+			 setTimeout(function(){
+				 window.location.reload();
+			 },1000);
+		}else{
+			window.location='<%=sitePathInitSub%>';
+		}
+	
+	});
 	$(".rolePrivilegeSettings").hide();
 });
 </script>

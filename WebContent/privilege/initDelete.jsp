@@ -14,3 +14,31 @@
 		</div>
 		<div class='clr'>&nbsp;</div>
 </div>
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmDeletePrivilege").click(function () {
+		if(checkLogged()){
+			
+			$.post("<%=sitePathInitSub%>APrivilege",{action:'processDelete',privilegeid:$(this).attr("alt")},
+					   function(data){
+				
+							$(".jq_DeletePrivilegeStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_DeletePrivilegeStatus").removeClass("red");		
+								setTimeout("$.modal.close()",2000);
+								setTimeout(function () { location.reload(1); }, 2000);
+							}else{
+								$(".jq_DeletePrivilegeStatus").addClass("red");	
+							}
+			},"json");
+			setTimeout(function(){
+				 window.location.reload();
+			 },1000);
+		}else{
+			window.location='<%=sitePathInitSub%>';
+		}
+	
+	});
+});
+</script>

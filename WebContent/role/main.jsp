@@ -69,170 +69,80 @@
 
 <script type='text/javascript'>
 $(document).ready(function($){
-		
+
 	
+	$(".jq_AddRole").click(function () {
 		
-	
-	
-		
-		
-		////////////////////////////////////////////////////////
-		/////////////////////////Role//////////////////////////
-		
-		
-		$(".jq_AddRole").click(function () {
-			
-			if(checkLogged()){
-					
-					$.post("<%=sitePathInit%>ARole",{action:'initAdd'},
-							   function(data){
-										$('.basic-container').html(data);
-										initModalScroll();
-					});
-			}else{
-				window.location='<%=sitePathInit%>';	
-			}
-		});
-		 
-		
-		$(".jq_ConfirmAddRole").live('click',function () {
-			if(checkLogged()){
+		if(checkLogged()){
 				
-				$.post("<%=sitePathInit%>ARole",$("#formAddRole").serialize(),
-						   function(data){
-						
-								$(".jq_AddRoleStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_AddRoleStatus").removeClass("red");
-									$(".jq_AddRoleStatus").addClass("lnkGrn");
-									loadRole();
-									setTimeout("$.modal.close()",2000);
-								}else{
-									$(".jq_AddRoleStatus").removeClass("lnkGrn");	
-									$(".jq_AddRoleStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
-		
-		
-		
-		$(".jq_DeleteRole").live('click',function () {
-			
-			if(checkLogged()){
-					
-					$.post("<%=sitePathInit%>ARole",{action:'initDelete',roleid:$(this).attr("alt")},
-							   function(data){
-										$('.basic-container').html(data);
-										initModal();
-					});
-			}else{
-				window.location='<%=sitePathInit%>';	
-			}
-		});	
-		
-		
-		$(".jq_ConfirmDeleteRole").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>ARole",{action:'processDelete',roleid:$(this).attr("alt")},
-						   function(data){
-					
-								$(".jq_DeleteRoleStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_DeleteRoleStatus").removeClass("red");		
-									setTimeout("$.modal.close()",2000);
-									loadRole();
-								}else{
-									$(".jq_DeleteRoleStatus").addClass("red");	
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
-		
-		
-		
-		$(".jq_EditRole").live('click',function () {
-			
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>ARole",{action:'initEdit',roleid:$(this).attr("alt")},
+				$.post("<%=sitePathInit%>ARole",{action:'initAdd'},
 						   function(data){
 									$('.basic-container').html(data);
 									initModalScroll();
 				});
-			}else{
-				window.location='<%=sitePathInit%>';	
-			}
-		});	
+		}else{
+			window.location='<%=sitePathInit%>';	
+		}
+	});
+	 
+	
+
+	
+	
+	
+	$(".jq_DeleteRole").click(function () {
 		
-		
-		
-		$(".jq_ConfirmEditRole").live('click',function () {
-			if(checkLogged()){
+		if(checkLogged()){
 				
-				$.post("<%=sitePathInit%>ARole",$("#formEditRole").serialize(),
+				$.post("<%=sitePathInit%>ARole",{action:'initDelete',roleid:$(this).attr("alt")},
 						   function(data){
-						
-									$(".jq_EditRoleStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_EditRoleStatus").removeClass("red");
-									$(".jq_EditRoleStatus").addClass("lnkGrn");
-									loadRole();
-									setTimeout("$.modal.close()",2000);
-								}else{
-									$(".jq_EditRoleStatus").removeClass("lnkGrn");	
-									$(".jq_EditRoleStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
+									$('.basic-container').html(data);
+									initModal();
+				});
+		}else{
+			window.location='<%=sitePathInit%>';	
+		}
+	});	
+	
+	
+	
+	
+	
+	$(".jq_EditRole").click(function () {
 		
-		});
-		
-		
-		
-		
-		
-		
-		
+		if(checkLogged()){
+			
+			$.post("<%=sitePathInit%>ARole",{action:'initEdit',roleid:$(this).attr("alt")},
+					   function(data){
+								$('.basic-container').html(data);
+								initModalScroll();
+			});
+		}else{
+			window.location='<%=sitePathInit%>';	
+		}
+	});	
+	
+	
+	
+	
+
+	
+	
+	
+	
 });	
 
-function loadUser(){
-		$.post("<%=sitePathInit%>AUser",$("#formUserList").serialize(),
-				   function(data){
-			$(".tblUserlist").html(data);	
-		});
-}
 
 
 function loadRole(){
-	$.post("<%=sitePathInit%>ARole",$("#formRoleList").serialize(),
-			   function(data){
-		$(".tblRolelist").html(data);	
-	});
+$.post("<%=sitePathInit%>ARole",$("#formRoleList").serialize(),
+		   function(data){
+	$(".tblRolelist").html(data);	
+});
 }
 
 
-function loadPrivilege(){
-	$.post("<%=sitePathInit%>APrivilege",$("#formPrivilegeList").serialize(),
-			   function(data){
-		$(".tblPrivilegelist").html(data);	
-	});
-}
+
 
 
 </script>			

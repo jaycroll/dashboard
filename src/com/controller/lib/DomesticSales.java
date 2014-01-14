@@ -29,6 +29,7 @@ public class DomesticSales extends HttpServlet{
 			super();
 		}
 
+		@Override
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 			
 			String action = request.getParameter("action");
@@ -113,6 +114,7 @@ public class DomesticSales extends HttpServlet{
 		/**
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */
+		@Override
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
 		}

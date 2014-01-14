@@ -28,10 +28,12 @@ public class ADomesticSales extends HttpServlet{
 		public ADomesticSales(){
 			super();
 		}
+		@Override
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 			
 		
 		}
+		@Override
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 			
 			String action = request.getParameter("action");

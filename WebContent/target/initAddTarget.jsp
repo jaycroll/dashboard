@@ -88,4 +88,43 @@
 	<input type='hidden' name='action' value='processAddTarget' >
 	</form>
 </div>
-         
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmAddTarget").click(function () {
+		if(checkLogged()){
+			
+			if(checkPermission(4,1)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+			
+			$.post("<%=sitePathInit%>ATarget",$("#formAddTarget").serialize(),
+					   function(data){
+					
+							$(".jq_AddTargetStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_AddTargetStatus").removeClass("red");
+								$(".jq_AddTargetStatus").addClass("lnkGrn");
+								loadTarget();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_AddTargetStatus").removeClass("lnkGrn");	
+								$(".jq_AddTargetStatus").addClass("red");
+							}
+			},"json");
+		
+			}
+			setTimeout(function(){
+				window.location.reload();
+			},1000);	
+		}else{
+			window.location='<%=sitePathInit%>';
+		}
+		
+	});
+});
+</script>

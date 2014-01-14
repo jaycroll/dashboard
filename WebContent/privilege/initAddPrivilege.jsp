@@ -39,4 +39,34 @@
 	</form>
 	 <div class='clr'>&nbsp;</div>
 </div>
-         
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmAddPrivilege").click(function () {
+		if(checkLogged()){
+			
+			$.post("<%=sitePathInitSub%>APrivilege",$("#formAddPrivilege").serialize(),
+					   function(data){
+					
+							$(".jq_AddPrivilegeStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_AddPrivilegeStatus").removeClass("red");
+								$(".jq_AddPrivilegeStatus").addClass("lnkGrn");
+								
+								setTimeout("$.modal.close()",2000);
+								setTimeout(function () { location.reload(1); }, 2000);
+							}else{
+								$(".jq_AddPrivilegeStatus").removeClass("lnkGrn");	
+								$(".jq_AddPrivilegeStatus").addClass("red");
+							}
+			},"json");
+			setTimeout(function(){
+				 window.location.reload();
+			 },1000);
+		}else{
+			window.location='<%=sitePathInitSub%>';
+		}
+	
+	});
+});
+</script>

@@ -1,10 +1,7 @@
 package com.controller.lib;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,9 +23,11 @@ public class AProfile extends HttpServlet{
 	public AProfile(){
 		super();
 	}
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		

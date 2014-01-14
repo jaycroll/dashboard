@@ -113,7 +113,7 @@
 <input type='hidden' name='action' class='jqAction' value='loadDefault'> 
 </form>
 <script>
-$(".jqSection .ibtntabs").live('click',function () {
+$(".jqSection .ibtntabs").click(function () {
 	
 	if(checkLogged()){
 			

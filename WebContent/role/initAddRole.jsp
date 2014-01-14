@@ -107,10 +107,34 @@
 	 <div class='clr'>&nbsp;</div>
 </div>
 <script type='text/javascript'>
-$(document).ready(function($){
-
+$(document).ready(function(){
+	$(".jq_ConfirmAddRole").click(function () {
+		if(checkLogged()){
+			
+			$.post("<%=sitePathInitSub%>ARole",$("#formAddRole").serialize(),
+					   function(data){
+					
+							$(".jq_AddRoleStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_AddRoleStatus").removeClass("red");
+								$(".jq_AddRoleStatus").addClass("lnkGrn");
+								loadRole();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_AddRoleStatus").removeClass("lnkGrn");	
+								$(".jq_AddRoleStatus").addClass("red");
+							}
+			},"json");
+			
+		}else{
+			window.location='<%=sitePathInitSub%>';
+		}
+	
+	});
 	$(".rolePrivilegeSettings").hide();
 
 });
+
 </script>
          

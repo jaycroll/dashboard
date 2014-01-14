@@ -109,74 +109,8 @@ else{ %>
 <br/>
 <script type='text/javascript'>
 $(document).ready(function($){
-		
-	
-		$(".jq_UserTabs .ibtntabs").live('click',function () {
-			
-			if(checkLogged()){
-				$(".jq_UserTabs").find(".ibtntabs").removeClass("active");	
-				$(this).addClass("active");
-				
-				
-				
-				var mainModule=true;
-				
-				if($(this).attr("alt")=='loadUser'){
-				
-					if(checkPermission(1,6)){
-						mainModule=true;
-					}else{
-						mainModule=false;
-					}
-				
-				}
-				
-				
-				if($(this).attr("alt")=='loadRole'){
-					
-					if(checkPermission(2,6)){
-						mainModule=true;
-					}else{
-						mainModule=false;
-					}
-				
-				}
-				
-				
-			   if($(this).attr("alt")=='loadPrivilege'){
-					
-					if(checkPermission(3,6)){
-						mainModule=true;
-					}else{
-						mainModule=false;
-					}
-				
-				}
-				
-				
-					
-				if(mainModule){
-					$.post("<%=sitePathInit%>AUser",{action:$(this).attr("alt")},
-							   function(data){
-										//Submit Form	
-										$(".jq_AccessManagementView").html(data);
-									
-					});
-				}	
-			}else{
-					window.location='<%=sitePathInit%>';
-			}	
-		});
-	
-	
 
-
-		
-		
-		////////////////////////////////////////////////////////
-		/////////////////////////Privilege//////////////////////////
-		
-		$(".jq_AddPrivilege").live('click',function () {
+		$(".jq_AddPrivilege").click(function () {
 			
 			if(checkLogged()){
 					
@@ -191,36 +125,8 @@ $(document).ready(function($){
 		});
 		
 		
-	
 		
-		$(".jq_ConfirmAddPrivilege").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>APrivilege",$("#formAddPrivilege").serialize(),
-						   function(data){
-						
-								$(".jq_AddPrivilegeStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_AddPrivilegeStatus").removeClass("red");
-									$(".jq_AddPrivilegeStatus").addClass("lnkGrn");
-									
-									setTimeout("$.modal.close()",2000);
-									setTimeout(function () { location.reload(1); }, 2000);
-								}else{
-									$(".jq_AddPrivilegeStatus").removeClass("lnkGrn");	
-									$(".jq_AddPrivilegeStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
-		
-		
-	$(".jq_EditPrivilege").live('click',function () {
+	$(".jq_EditPrivilege").click(function () {
 			
 			if(checkLogged()){
 				
@@ -250,35 +156,11 @@ $(document).ready(function($){
 		});	
 		
 	
-		$(".jq_ConfirmEditPrivilege").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>APrivilege",$("#formEditPrivilege").serialize(),
-						   function(data){
-						
-									$(".jq_EditPrivilegeStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_EditPrivilegeStatus").removeClass("red");
-									$(".jq_EditPrivilegeStatus").addClass("lnkGrn");
-									
-									setTimeout("$.modal.close()",2000);
-									setTimeout(function () { location.reload(1); }, 2000);
-								}else{
-									$(".jq_EditPrivilegeStatus").removeClass("lnkGrn");	
-									$(".jq_EditPrivilegeStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});	
 		
 		
 		
-		$(".jq_DeletePrivilege").live('click',function () {
+		
+		$(".jq_DeletePrivilege").click(function () {
 			
 			if(checkLogged()){
 					
@@ -293,37 +175,16 @@ $(document).ready(function($){
 		});	
 		
 		
-		$(".jq_ConfirmDeletePrivilege").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>APrivilege",{action:'processDelete',privilegeid:$(this).attr("alt")},
-						   function(data){
-					
-								$(".jq_DeletePrivilegeStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_DeletePrivilegeStatus").removeClass("red");		
-									setTimeout("$.modal.close()",2000);
-									setTimeout(function () { location.reload(1); }, 2000);
-								}else{
-									$(".jq_DeletePrivilegeStatus").addClass("red");	
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
 		
 		
 		
-		$(".jq_togglePrivilege").live('click',function () {
+		
+		$(".jq_togglePrivilege").click(function () {
 			$(this).parent(".rolePrivilege").find(".rolePrivilegeSettings").toggle();
 		});
 		
 		
-		$(".jqRoleSettings").live('change',function () {
+		$(".jqRoleSettings").change(function () {
 			if($(this).find('option:selected').val()=='enabled'){
 				$(this).parents(".jqRoleSpecSettings").find(".jqGroupSpecSetting").show();
 			}else{
@@ -335,21 +196,6 @@ $(document).ready(function($){
 		
 		
 });	
-
-function loadUser(){
-		$.post("<%=sitePathInit%>AUser",$("#formUserList").serialize(),
-				   function(data){
-			$(".tblUserlist").html(data);	
-		});
-}
-
-
-function loadRole(){
-	$.post("<%=sitePathInit%>ARole",$("#formRoleList").serialize(),
-			   function(data){
-		$(".tblRolelist").html(data);	
-	});
-}
 
 
 function loadPrivilege(){

@@ -98,4 +98,46 @@
 		
 	    }	
 %>	
+
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmEditTarget").click(function () {
+		if(checkLogged()){
+			
+			
+			var mainModule=false;
+			if(checkPermission(4,2)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+			$.post("<%=sitePathInit%>ATarget",$("#formEditTarget").serialize(),
+					   function(data){
+					
+								$(".jq_EditTargetStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_EditTargetStatus").removeClass("red");
+								$(".jq_EditTargetStatus").addClass("lnkGrn");
+								loadTarget();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_EditTargetStatus").removeClass("lnkGrn");	
+								$(".jq_EditTargetStatus").addClass("red");
+							}
+			},"json");
+			
+			}
+			setTimeout(function(){
+				window.location.reload();
+			},1000);	
+		}else{
+			window.location='<%=sitePathInit%>';
+		}
+
+	});
+});
+</script>
          

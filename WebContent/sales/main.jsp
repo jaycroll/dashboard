@@ -182,7 +182,7 @@ $(document).ready(function($){
 	
 	
 	
-$(".jq_AddSales").live('click',function () {
+$(".jq_AddSales").click(function () {
 		
 		if(checkLogged()){
 				
@@ -206,7 +206,7 @@ $(".jq_AddSales").live('click',function () {
 });
 	
 	
-$(".jq_ConfirmAddSales").live('click',function () {
+$(".jq_ConfirmAddSales").click(function () {
 	if(checkLogged()){
 		
 		var mainModule=false;
@@ -241,7 +241,7 @@ $(".jq_ConfirmAddSales").live('click',function () {
 });
 
 
-$(".jq_EditSales").live('click',function () {
+$(".jq_EditSales").click(function () {
 	if(checkLogged()){
 		
 		
@@ -266,7 +266,7 @@ $(".jq_EditSales").live('click',function () {
 	}
 });	
 
-$(".jq_ConfirmEditSales").live('click',function () {
+$(".jq_ConfirmEditSales").click(function () {
 	if(checkLogged()){
 		
 		
@@ -306,7 +306,7 @@ $(".jq_ConfirmEditSales").live('click',function () {
 
 
 
-$(".jqSalesInput").live("change",function(event) {
+$(".jqSalesInput").change(function(event) {
 	
 	
 	var mainModule=false;
@@ -324,7 +324,7 @@ $(".jqSalesInput").live("change",function(event) {
 });
 
 
-$(".jqSalesInput").live("keyup",function(event) {
+$(".jqSalesInput").keyup(function(event) {
 	
 	
 	var mainModule=false;
@@ -340,7 +340,7 @@ $(".jqSalesInput").live("keyup",function(event) {
 });
 
 
-$(".jq_DeleteSales").live('click',function () {
+$(".jq_DeleteSales").click(function () {
 	
 	if(checkLogged()){
 			
@@ -367,7 +367,7 @@ $(".jq_DeleteSales").live('click',function () {
 });	
 
 
-$(".jq_ConfirmDeleteSales").live('click',function () {
+$(".jq_ConfirmDeleteSales").click(function () {
 	if(checkLogged()){
 		
 		var mainModule=false;

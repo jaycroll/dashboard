@@ -7,18 +7,18 @@
 $(document).ready(function($){
 
 	
-	 $(".jq_InitLogin").live('click',function () {
+	 $(".jq_InitLogin").click(function () {
 			loginModule();
 	  });
 	 
 	 
-	 $('#formLogin input').live('keypress', function (e) {
+	 $('#formLogin input').keypress( function (e) {
 			if(e.which == 13){
 				loginModule();
 			}	
 	 });
 		  
-	 $(".jq_btnLogin").live('click',function () {
+	 $(".jq_btnLogin").click(function () {
 				loginModule();
 	 });
 	   

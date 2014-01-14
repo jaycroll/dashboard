@@ -114,7 +114,7 @@ $(document).ready(function($){
                         loadTarget("graphs");
         <% } %>
 
-        $(".jqSection .ibtntabs").live('click',function () {
+        $(".jqSection .ibtntabs").click(function () {
 
                 if(checkLogged()){
 

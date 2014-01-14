@@ -1,17 +1,9 @@
 package com.model.lib;
 
-import com.misc.lib.CustomHelper;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.security.*;
-import java.math.*;
-import javax.servlet.http.HttpSession;
 
 public class ProjectionModel{
 	

@@ -38,3 +38,34 @@ CustomHelper ch=new CustomHelper();
 	</form>
 	 <div class='clr'>&nbsp;</div>
 </div>
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmEditPrivilege").click(function () {
+		if(checkLogged()){
+			
+			$.post("<%=sitePathInitSub%>APrivilege",$("#formEditPrivilege").serialize(),
+					   function(data){
+					
+								$(".jq_EditPrivilegeStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_EditPrivilegeStatus").removeClass("red");
+								$(".jq_EditPrivilegeStatus").addClass("lnkGrn");
+								
+								setTimeout("$.modal.close()",2000);
+								setTimeout(function () { location.reload(1); }, 2000);
+							}else{
+								$(".jq_EditPrivilegeStatus").removeClass("lnkGrn");	
+								$(".jq_EditPrivilegeStatus").addClass("red");
+							}
+			},"json");
+			setTimeout(function(){
+				 window.location.reload();
+			 },1000);
+		}else{
+			window.location='<%=sitePathInitSub%>';
+		}
+	
+	});	
+});
+</script>

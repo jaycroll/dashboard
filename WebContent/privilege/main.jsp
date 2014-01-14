@@ -70,269 +70,7 @@
 <script type='text/javascript'>
 $(document).ready(function($){
 		
-	
-		$(".jq_UserTabs .ibtntabs").live('click',function () {
-			
-			if(checkLogged()){
-				$(".jq_UserTabs").find(".ibtntabs").removeClass("active");	
-				$(this).addClass("active");
-				
-				
-				
-				var mainModule=true;
-				
-				if($(this).attr("alt")=='loadUser'){
-				
-					if(checkPermission(1,6)){
-						mainModule=true;
-					}else{
-						mainModule=false;
-					}
-				
-				}
-				
-				
-				if($(this).attr("alt")=='loadRole'){
-					
-					if(checkPermission(2,6)){
-						mainModule=true;
-					}else{
-						mainModule=false;
-					}
-				
-				}
-				
-				
-			   if($(this).attr("alt")=='loadPrivilege'){
-					
-					if(checkPermission(3,6)){
-						mainModule=true;
-					}else{
-						mainModule=false;
-					}
-				
-				}
-				
-				
-					
-				if(mainModule){
-					$.post("<%=sitePathInit%>AUser",{action:$(this).attr("alt")},
-							   function(data){
-										//Submit Form	
-										$(".jq_AccessManagementView").html(data);
-									
-					});
-				}	
-			}else{
-					window.location='<%=sitePathInit%>';
-			}	
-		});
-	
-	
-		$(".jq_DeleteAccess").live('click',function () {
-		
-			if(checkLogged()){
-					
-					$.post("<%=sitePathInit%>AUser",{action:'initDelete',userid:$(this).attr("alt")},
-							   function(data){
-										$('.basic-container').html(data);
-										initModal();
-					});
-			}else{
-				window.location='<%=sitePathInit%>';	
-			}
-		});	
-		
-		
-		$(".jq_ConfirmDeleteAccess").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>AUser",{action:'processDelete',userid:$(this).attr("alt")},
-						   function(data){
-					
-								$(".jq_DeleteUserStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_DeleteUserStatus").removeClass("red");	
-									loadUser();
-									setTimeout("$.modal.close()",2000);
-								}else{
-									$(".jq_DeleteUserStatus").addClass("red");	
-								}
-								
-								
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
-		
-		
-		$(".jq_btnAddAccess").live('click',function () {
-			
-			$.post("<%=sitePathInit%>AUser",$("#formAddAccess").serialize(),
-					   function(data){
-							if(!data.logged){
-									window.location='<%=sitePathInit%>';
-							}else{
-								
-							  if(!data.process){	
-								$.each(data, function(index, value) {
-									$("."+index).html(value).fadeIn("fast");
-								});
-									//$(".jq_Loading").hide();
-									//$(".btnProcess").show();
-							   }else{
-								   window.location='<%=sitePathInit%>User';
-							   }	
-							
-							}
-							
-			}, "json");
-			
-		});
-		
-		
-		
-		$('.iUserSelect').live('change', function(){
-			loadUser();
-		});
-		
-		
-		////////////////////////////////////////////////////////
-		/////////////////////////Role//////////////////////////
-		
-		
-		$(".jq_AddRole").live('click',function () {
-			
-			if(checkLogged()){
-					
-					$.post("<%=sitePathInit%>ARole",{action:'initAdd'},
-							   function(data){
-										$('.basic-container').html(data);
-										initModalScroll();
-					});
-			}else{
-				window.location='<%=sitePathInit%>';	
-			}
-		});
-		 
-		
-		$(".jq_ConfirmAddRole").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>ARole",$("#formAddRole").serialize(),
-						   function(data){
-						
-								$(".jq_AddRoleStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_AddRoleStatus").removeClass("red");
-									$(".jq_AddRoleStatus").addClass("lnkGrn");
-									loadRole();
-									setTimeout("$.modal.close()",2000);
-								}else{
-									$(".jq_AddRoleStatus").removeClass("lnkGrn");	
-									$(".jq_AddRoleStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
-		
-		
-		
-		$(".jq_DeleteRole").live('click',function () {
-			
-			if(checkLogged()){
-					
-					$.post("<%=sitePathInit%>ARole",{action:'initDelete',roleid:$(this).attr("alt")},
-							   function(data){
-										$('.basic-container').html(data);
-										initModal();
-					});
-			}else{
-				window.location='<%=sitePathInit%>';	
-			}
-		});	
-		
-		
-		$(".jq_ConfirmDeleteRole").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>ARole",{action:'processDelete',roleid:$(this).attr("alt")},
-						   function(data){
-					
-								$(".jq_DeleteRoleStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_DeleteRoleStatus").removeClass("red");		
-									setTimeout("$.modal.close()",2000);
-									loadRole();
-								}else{
-									$(".jq_DeleteRoleStatus").addClass("red");	
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
-		
-		
-		
-		$(".jq_EditRole").live('click',function () {
-			
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>ARole",{action:'initEdit',roleid:$(this).attr("alt")},
-						   function(data){
-									$('.basic-container').html(data);
-									initModalScroll();
-				});
-			}else{
-				window.location='<%=sitePathInit%>';	
-			}
-		});	
-		
-		
-		
-		$(".jq_ConfirmEditRole").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>ARole",$("#formEditRole").serialize(),
-						   function(data){
-						
-									$(".jq_EditRoleStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_EditRoleStatus").removeClass("red");
-									$(".jq_EditRoleStatus").addClass("lnkGrn");
-									loadRole();
-									setTimeout("$.modal.close()",2000);
-								}else{
-									$(".jq_EditRoleStatus").removeClass("lnkGrn");	
-									$(".jq_EditRoleStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
-		
-		
-		////////////////////////////////////////////////////////
-		/////////////////////////Privilege//////////////////////////
-		
-		$(".jq_AddPrivilege").live('click',function () {
+		$(".jq_AddPrivilege").click(function() {
 			
 			if(checkLogged()){
 					
@@ -347,35 +85,10 @@ $(document).ready(function($){
 		});
 		
 		
-	
-		
-		$(".jq_ConfirmAddPrivilege").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>APrivilege",$("#formAddPrivilege").serialize(),
-						   function(data){
-						
-								$(".jq_AddPrivilegeStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_AddPrivilegeStatus").removeClass("red");
-									$(".jq_AddPrivilegeStatus").addClass("lnkGrn");
-									loadPrivilege();
-									setTimeout("$.modal.close()",2000);
-								}else{
-									$(".jq_AddPrivilegeStatus").removeClass("lnkGrn");	
-									$(".jq_AddPrivilegeStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
+
 		
 		
-	$(".jq_EditPrivilege").live('click',function () {
+	$(".jq_EditPrivilege").click(function() {
 			
 			if(checkLogged()){
 				
@@ -404,35 +117,10 @@ $(document).ready(function($){
 			}
 		});	
 		
-	
-		$(".jq_ConfirmEditPrivilege").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>APrivilege",$("#formEditPrivilege").serialize(),
-						   function(data){
-						
-									$(".jq_EditPrivilegeStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_EditPrivilegeStatus").removeClass("red");
-									$(".jq_EditPrivilegeStatus").addClass("lnkGrn");
-									loadPrivilege();
-									setTimeout("$.modal.close()",2000);
-								}else{
-									$(".jq_EditPrivilegeStatus").removeClass("lnkGrn");	
-									$(".jq_EditPrivilegeStatus").addClass("red");
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});	
+
 		
 		
-		
-		$(".jq_DeletePrivilege").live('click',function () {
+		$(".jq_DeletePrivilege").click(function () {
 			
 			if(checkLogged()){
 					
@@ -447,63 +135,17 @@ $(document).ready(function($){
 		});	
 		
 		
-		$(".jq_ConfirmDeletePrivilege").live('click',function () {
-			if(checkLogged()){
-				
-				$.post("<%=sitePathInit%>APrivilege",{action:'processDelete',privilegeid:$(this).attr("alt")},
-						   function(data){
-					
-								$(".jq_DeletePrivilegeStatus").html(data.status);	
-								
-								if(data.process){
-									$(".jq_DeletePrivilegeStatus").removeClass("red");		
-									setTimeout("$.modal.close()",2000);
-									loadPrivilege(); 
-								}else{
-									$(".jq_DeletePrivilegeStatus").addClass("red");	
-								}
-				},"json");
-				
-			}else{
-				window.location='<%=sitePathInit%>';
-			}
-		
-		});
+
 		
 		
-		
-		$(".jq_togglePrivilege").live('click',function () {
-			$(this).parent(".rolePrivilege").find(".rolePrivilegeSettings").toggle();
-		});
-		
-		
-		$(".jqRoleSettings").live('change',function () {
-			if($(this).find('option:selected').val()=='enabled'){
-				$(this).parents(".jqRoleSpecSettings").find(".jqGroupSpecSetting").show();
-			}else{
-				$(this).parents(".jqRoleSpecSettings").find(".jqGroupSpecSetting").hide();
-			}
-		});
+
 		
 		
 		
 		
 });	
 
-function loadUser(){
-		$.post("<%=sitePathInit%>AUser",$("#formUserList").serialize(),
-				   function(data){
-			$(".tblUserlist").html(data);	
-		});
-}
 
-
-function loadRole(){
-	$.post("<%=sitePathInit%>ARole",$("#formRoleList").serialize(),
-			   function(data){
-		$(".tblRolelist").html(data);	
-	});
-}
 
 
 function loadPrivilege(){

@@ -13,3 +13,34 @@
 		</div><br />
 		<div class='clr'>&nbsp;</div>
 </div>
+<script>
+	$(document).ready(function(){
+		$(".jq_ConfirmDeleteAccess").click(function () {
+			if(checkLogged()){
+				
+				$.post("<%=sitePathInitSub%>AUser",{action:'processDelete',userid:$(this).attr("alt")},
+						   function(data){
+					
+								$(".jq_DeleteUserStatus").html(data.status);	
+								
+								if(data.process){
+									$(".jq_DeleteUserStatus").removeClass("red");	
+									loadUser();
+									setTimeout("$.modal.close()",2000);
+								}else{
+									$(".jq_DeleteUserStatus").addClass("red");	
+								}
+								
+								
+				},"json");
+				setTimeout(function(){
+					 window.location.reload();
+				 },1000);
+				
+			}else{
+				window.location='<%=sitePathInitSub%>';
+			}
+		
+		});
+	});
+</script>

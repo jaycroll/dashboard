@@ -28,36 +28,56 @@
 	</div>
 
   <% } %>	
+<script>
 
-<table class="pie line area bar jq<%=request.getAttribute("user_id")%>" style='display:none;'>
-	<caption>Actual Sales and Target Per Month</caption>
-	<thead>
-		<tr>
-			<td></td>
-			
+function createMTDGraph(area,am,tm){
+	var area = area;
+	var ctx = $("#"+area).get(0).getContext("2d");
+	var myNewChart = new Chart(ctx);
+	var areas = new Array();
+	var months = new Array();
 	<% for(int a=1;a<13;a++){ %>			
-			<th><%=strMonths[a]%></th>
-	<% } %>		
-			
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<th>Target</th>
-			<% for(int a=1;a<13;a++){ %>
-				<td><%=iActualTarget[a]%></td>
-			<% } %>
-		</tr>
-		
-		
-			<tr>
-			<th>Actual</th>
-			<% for(int a=1;a<13;a++){ %>
-				<td><%=iActualSales[a]%></td>
-			<% } %>
-			
-		</tr>
-	</tbody>
-</table>
+		months[<%=a%>-1]="<%=strMonths[a]%>";
+	<% } %>	
+	var data = {
+			labels : months,
+			datasets : [
 
-<Div style='margin-bottom:20px;'>&nbsp;</Div>
+				{
+					fillColor : "rgba(41,171,226,1)",
+					strokeColor : "rgba(41,171,226,1)",
+					data : am
+				},
+				{
+					fillColor : "rgba(25,131,43,1)",
+					strokeColor : "rgba(25,131,43,1)",
+					data : tm
+				}
+			]
+			
+		};
+	var options={
+			scaleOverride:true,				
+			scaleSteps: 10,
+			scaleStepWidth: 71*123,
+			scaleStartValue: 100000
+	};
+	var thisNewChart = new Chart(ctx).Bar(data,options);
+}			
+</script>
+<div style="border: 1px solid #000000;width:700px;">
+		<h2>Actual Sales and Target</h2>
+		<canvas  id="mtd" width="600" height="300" ></canvas>
+				<div><div style="background-color:#000fff;width:10px;height:10px"></div>Target</div>
+				<div><div style="background-color:#0adcef;width:10px;height:10px"></div>Actual</div>	
+		<script>
+			var ActualM = new Array();
+			var TargetM = new Array();
+			<% for(int a=1;a<13;a++){ %>
+				TargetM[<%=a%>-1]='<%=iActualTarget[a]%>';
+				ActualM[<%=a%>-1]='<%=iActualSales[a]%>';
+			<% } %>
+			createMTDGraph("mtd",ActualM,TargetM);
+		</script>		
+</div>
+

@@ -75,7 +75,7 @@ $(document).ready(function($){
 
 	
 	
-	$(".jqSection .ibtntabs").live('click',function () {
+	$(".jqSection .ibtntabs").click(function () {
 		
 		if(checkLogged()){
 				
@@ -102,9 +102,10 @@ $(document).ready(function($){
 	
 /*
 	
-	$(".jq_AreaTabs .ibtntabs").live('click',function () {
+	$(".jq_AreaTabs .ibtntabs").click(function () {
 		
 		if(checkLogged()){
+			
 			$(".jq_AreaTabs").find(".ibtntabs").removeClass("selected");	
 			$(this).addClass("selected");
 			
@@ -127,6 +128,7 @@ $(document).ready(function($){
 function loadTarget(){
 	$.post("<%=sitePathInit%>AProjection",$("#formTarget").serialize(),
 			   function(data){
+		$("#content").empty();
 		$("#content").html(data);	
 		$('table.bar').visualize({type: 'bar', barDirection: 'vertical'});
 		$('#content').click(function() {

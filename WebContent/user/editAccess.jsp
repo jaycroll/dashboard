@@ -229,7 +229,7 @@ $(document).ready(function($){
 	
 <% if(rpM.verifyModule(Integer.parseInt(seM.getAttribute("roleid").toString()),1,2)){ %>   
 
-	$(".jq_btnEditAccess").live('click',function () {
+	$(".jq_btnEditAccess").click(function() {
 		
 		$.post("<%=sitePathInit%>AUser",$("#formEditAccess").serialize(),
 				   function(data){

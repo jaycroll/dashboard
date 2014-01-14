@@ -1,20 +1,10 @@
 package com.misc.lib;
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-
-import java.security.*;
-import java.math.*;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 
 
@@ -75,7 +65,7 @@ public class RolePermission{
 				 status=true;
 			 }else{ 
 				 
-				 if((int)this.adjustChar((String)dtr.get("privilege_mode"),privilegeid)==1){
+				 if(this.adjustChar((String)dtr.get("privilege_mode"),privilegeid)==1){
 					 status=true;
 				 }else{
 					 status=false;

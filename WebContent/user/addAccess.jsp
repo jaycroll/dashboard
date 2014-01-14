@@ -180,7 +180,7 @@ $(document).ready(function($){
 	
 	checkPermission(1,1);
 	
-	$(".jq_btnAddAccess").live('click',function () {
+	$(".jq_btnAddAccess").click(function () {
 		
 		$.post("<%=sitePathInit%>AUser",$("#formAddAccess").serialize(),
 				   function(data){
@@ -201,14 +201,11 @@ $(document).ready(function($){
 						}
 						
 		}, "json");
+		setTimeout(function(){
+			 window.location.reload();
+		 },1000);
 		
-	});
-	
-	
-	
-				
-		
-		
+	});	
 });				
 </script>
 <%@ include file="../sub/footer.jsp"%>

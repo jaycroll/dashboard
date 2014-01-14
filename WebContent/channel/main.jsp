@@ -177,7 +177,7 @@ $(document).ready(function($){
 	
 	
 	
-$(".jq_AddChannel").live('click',function () {
+$(".jq_AddChannel").click(function() {
 		
 		if(checkLogged()){
 			if(checkPermission(6,1)){
@@ -201,7 +201,7 @@ $(".jq_AddChannel").live('click',function () {
 });
 	
 	
-$(".jq_ConfirmAddChannel").live('click',function () {
+$(".jq_ConfirmAddChannel").click(function() {
 	if(checkLogged()){
 		
 		if(checkPermission(6,1)){
@@ -238,7 +238,7 @@ $(".jq_ConfirmAddChannel").live('click',function () {
 
 
 
-$(".jq_EditChannel").live('click',function () {
+$(".jq_EditChannel").click(function () {
 	
 	if(checkLogged()){
 		
@@ -264,7 +264,7 @@ $(".jq_EditChannel").live('click',function () {
 
 
 
-$(".jq_ConfirmEditChannel").live('click',function () {
+$(".jq_ConfirmEditChannel").click(function () {
 	if(checkLogged()){
 		var mainModule=false;
 		if(checkPermission(6,2)){
@@ -301,7 +301,7 @@ $(".jq_ConfirmEditChannel").live('click',function () {
 
 
 
-$(".jqChannelInput").live("change",function(event) {
+$(".jqChannelInput").change(function(event) {
 	
 	var mainModule=false;
 	if(checkPermission(6,7)){
@@ -316,7 +316,7 @@ $(".jqChannelInput").live("change",function(event) {
 });
 
 
-$(".jqChannelInput").live("keyup",function(event) {
+$(".jqChannelInput").keyup(function(event) {
 	
 	var mainModule=false;
 	if(checkPermission(6,7)){
@@ -333,7 +333,7 @@ $(".jqChannelInput").live("keyup",function(event) {
 
 
 
-$(".jq_DeleteChannel").live('click',function () {
+$(".jq_DeleteChannel").click(function () {
 	
 	if(checkLogged()){
 		
@@ -359,7 +359,7 @@ $(".jq_DeleteChannel").live('click',function () {
 
 
 
-$(".jq_ConfirmDeleteChannel").live('click',function () {
+$(".jq_ConfirmDeleteChannel").click(function () {
 	if(checkLogged()){
 		
 		var mainModule=false;

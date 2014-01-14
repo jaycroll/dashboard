@@ -53,20 +53,19 @@
 <div class='margintop30px'>
 	<table style='width:900px;' class='gridtable' cellpadding='10' cellspacing='0'>
 		<tr class='grayTitle'>
-			<td  align='center'>Sales Agent</td>
-			<td  align='center'>MTD</td>
-			<td  align='center'>YTD</td>
-			<td  align='center'>Total</td>
+			<td  align='center' class='col2'>MTD</td>
+			<td  align='center' class='col2'>YTD</td>
+			<td  align='center'class='col2'>Total</td>
 		</tr>
 
 		<% for(int i=0; i<=iCtr;i++){ %>
 		<tr>
-			<td  align='left'><a href="<%=sitePathInit%>Profile/<%=request.getAttribute("userid_"+i) %>" class="jq_viewProfile"><%=request.getAttribute("fullname_"+i) %></a></td>
+			<td  align='left' class='col1'><a href="<%=sitePathInit%>Profile/<%=request.getAttribute("userid_"+i) %>" class="jq_viewProfile"><%=request.getAttribute("fullname_"+i) %></a></td>
 			
-			<td  align='center'><span class='green'><%=request.getAttribute("monthly_"+i) %></span> - <span class='blu'><%=request.getAttribute("monthlyrevenue_"+i) %></span> <%=request.getAttribute("monthlypercentage_"+i) %>%</td>
+			<td  align='center' class='col2'><span class='green'><%=request.getAttribute("monthly_"+i) %></span> -  <span class='blu'><%=request.getAttribute("monthlyrevenue_"+i) %></span> <%=request.getAttribute("monthlypercentage_"+i) %>%</td>
 
-			<td  align='center'><span class='green'><%=request.getAttribute("yearly_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlypercentage_"+i) %>%</td>
-			<td  align='center'><span class='green'><%=request.getAttribute("yearlytotal_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlytotalpercentage_"+i) %>%</td>
+			<td  align='center' class='col2'><span class='green'><%=request.getAttribute("yearly_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlypercentage_"+i) %>%</td>
+			<td  align='center' class='col2'><span class='green'><%=request.getAttribute("yearlytotal_"+i) %></span> - <span class='blu'><%=request.getAttribute("yearlyrevenue_"+i) %></span> <%=request.getAttribute("yearlytotalpercentage_"+i) %>%</td>
 		</tr>
 		<% } %>
 		<% /*
@@ -108,7 +107,7 @@ $(document).ready(function($){
 	
 	
 	
-	$(".jqSection .ibtntabs").live('click',function () {
+	$(".jqSection .ibtntabs").click(function () {
 		
 		if(checkLogged()){
 			$(".jqSection").find(".ibtntabs").removeClass("active");	
@@ -120,7 +119,7 @@ $(document).ready(function($){
 				window.location='<%=sitePathInit%>';
 		}	
 	});
-	(".jq_viewProfile").live('click',function () {
+	(".jq_viewProfile").click(function () {
 		
 		if(checkLogged()){
 				loadProfile();

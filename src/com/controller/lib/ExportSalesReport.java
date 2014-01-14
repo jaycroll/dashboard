@@ -1,15 +1,10 @@
 package com.controller.lib;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,10 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletOutputStream;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-
 import com.misc.lib.CustomHelper;
 import com.model.lib.ProjectionModel;
 
@@ -29,7 +20,6 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 @WebServlet(description = "Projectioon servlet", urlPatterns = { "/ExportSales" })
 public class ExportSalesReport extends HttpServlet {
@@ -194,6 +184,7 @@ public class ExportSalesReport extends HttpServlet {
 		/**
 		 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 		 */
+		@Override
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			// TODO Auto-generated method stub
 			doProcess(request,response);
@@ -210,6 +201,7 @@ public class ExportSalesReport extends HttpServlet {
 		/**
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */
+		@Override
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			doProcess(request,response);
 		}

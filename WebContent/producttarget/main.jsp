@@ -186,7 +186,7 @@ $(document).ready(function($){
 	
 	
 	
-$(".jq_AddTarget").live('click',function () {
+$(".jq_AddTarget").click(function () {
 		
 		if(checkLogged()){
 			
@@ -208,7 +208,7 @@ $(".jq_AddTarget").live('click',function () {
 		}
 });
 	
-$(".jq_ConfirmAddTarget").live('click',function () {
+$(".jq_ConfirmAddTarget").click(function () {
 	if(checkLogged()){
 		
 		if(checkPermission(4,1)){
@@ -245,7 +245,7 @@ $(".jq_ConfirmAddTarget").live('click',function () {
 
 
 
-$(".jq_EditTarget").live('click',function () {
+$(".jq_EditTarget").click(function () {
 	
 	if(checkLogged()){
 		
@@ -273,7 +273,7 @@ $(".jq_EditTarget").live('click',function () {
 
 
 
-$(".jq_ConfirmEditTarget").live('click',function () {
+$(".jq_ConfirmEditTarget").click(function () {
 	if(checkLogged()){
 		
 		
@@ -311,7 +311,7 @@ $(".jq_ConfirmEditTarget").live('click',function () {
 
 
 
-$(".jq_DeparmentSelect").live("change",function(event) {
+$(".jq_DeparmentSelect").change(function(event) {
 	
 	if(checkLogged()){
 		
@@ -333,7 +333,7 @@ $(".jq_DeparmentSelect").live("change",function(event) {
 });
 
 
-$(".jqTargetInput").live("change",function(event) {
+$(".jqTargetInput").change(function(event) {
 	
 	var mainModule=false;
 	if(checkPermission(4,7)){
@@ -348,7 +348,7 @@ $(".jqTargetInput").live("change",function(event) {
 });
 
 
-$(".jqTargetInput").live("keyup",function(event) {
+$(".jqTargetInput").keyup(function(event) {
 	
 	var mainModule=false;
 	if(checkPermission(4,7)){
@@ -365,7 +365,7 @@ $(".jqTargetInput").live("keyup",function(event) {
 
 
 
-$(".jq_DeleteTarget").live('click',function () {
+$(".jq_DeleteTarget").click(function () {
 	
 	if(checkLogged()){
 		
@@ -391,7 +391,7 @@ $(".jq_DeleteTarget").live('click',function () {
 
 
 
-$(".jq_ConfirmDeleteTarget").live('click',function () {
+$(".jq_ConfirmDeleteTarget").click(function () {
 	if(checkLogged()){
 		
 		
