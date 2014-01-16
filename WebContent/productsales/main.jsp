@@ -64,8 +64,22 @@
 					}
 				]
 			};
-
-		var myNewChart = new Chart(ctx).Bar(data);
+		var lmt = Math.max.apply(Math, ty); 
+		var lms = Math.max.apply(Math,ay);
+		var largest = 0;
+		if(lmt<lms){
+			 largest = lms;
+		}
+		else{
+			largest = lmt;
+		}
+		var options={
+				scaleOverride:true,				
+				scaleSteps: 10,
+				scaleStepWidth: Math.ceil(largest/10),
+				scaleStartValue: 0
+		};
+		var myNewChart = new Chart(ctx).Bar(data,options);
 	}			
 
 
@@ -90,8 +104,10 @@
 					actual.push("<%=productArray[i][2]%>");
 					actual.push("<%=productArray[i][1]%>");
 					actual.push("<%=productArray[i][1]%>");
-					
-
+					target.push("<%=productArray[i][5]%>");
+					target.push("<%=productArray[i][4]%>");
+					target.push("<%=productArray[i][4]%>");
+					<%//System.out.println(productArray[i][5]);%>
 					createYTDGraph(<%=productArray[i][0]%>,actual,target);
 				</script>
 			<%

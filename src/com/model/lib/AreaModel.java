@@ -30,6 +30,7 @@ public class AreaModel{
                  Class.forName("com.mysql.jdbc.Driver");
                  this.connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
          }
+         
          public ResultSet loadTerritory(){
              
              String query="";

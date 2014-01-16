@@ -80,4 +80,44 @@
 	<input type='hidden' name='action' value='processAddSales' >
 	</form>
 </div>
-         
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmAddSales").click(function () {
+		if(checkLogged()){
+			
+			var mainModule=false;
+			if(checkPermission(5,1)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+			$.post("<%=sitePathInit%>ASales",$("#formAddSales").serialize(),
+					   function(data){
+					
+							$(".jq_AddSalesStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_AddSalesStatus").removeClass("red");
+								$(".jq_AddSalesStatus").addClass("lnkGrn");
+								loadSales();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_AddSalesStatus").removeClass("lnkGrn");	
+								$(".jq_AddSalesStatus").addClass("red");
+							}
+			},"json");
+			
+			}
+			setTimeout(function(){
+				window.location.reload();
+			},1000);
+		}else{
+			window.location='<%=sitePathInit%>';
+		}
+		
+	});
+});
+
+</script>      

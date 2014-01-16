@@ -200,41 +200,7 @@ $(".jq_AddChannel").click(function() {
 		}
 });
 	
-	
-$(".jq_ConfirmAddChannel").click(function() {
-	if(checkLogged()){
-		
-		if(checkPermission(6,1)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-		
-		$.post("<%=sitePathInit%>AChannel",$("#formAddChannel").serialize(),
-				   function(data){
-				
-						$(".jq_AddChannelStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_AddChannelStatus").removeClass("red");
-							$(".jq_AddChannelStatus").addClass("lnkGrn");
-							loadChannel();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_AddChannelStatus").removeClass("lnkGrn");	
-							$(".jq_AddChannelStatus").addClass("red");
-						}
-		},"json");
-		
-		}	
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
-	
-});
+
 
 
 
@@ -254,7 +220,7 @@ $(".jq_EditChannel").click(function () {
 		$.post("<%=sitePathInit%>AChannel",{action:'initEditChannel',channel_id:$(this).attr("alt")},
 				   function(data){
 							$('.basic-container').html(data);
-							initModal();
+							initModal();"WebContent/channel/result_ChannelList.jsp"
 		});
 		}
 	}else{
@@ -264,39 +230,7 @@ $(".jq_EditChannel").click(function () {
 
 
 
-$(".jq_ConfirmEditChannel").click(function () {
-	if(checkLogged()){
-		var mainModule=false;
-		if(checkPermission(6,2)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-		$.post("<%=sitePathInit%>AChannel",$("#formEditChannel").serialize(),
-				   function(data){
-				
-							$(".jq_EditChannelStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_EditChannelStatus").removeClass("red");
-							$(".jq_EditChannelStatus").addClass("lnkGrn");
-							loadChannel();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_EditChannelStatus").removeClass("lnkGrn");	
-							$(".jq_EditChannelStatus").addClass("red");
-						}
-		},"json");
-		
-		}
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
 
-});
 
 
 
@@ -359,41 +293,7 @@ $(".jq_DeleteChannel").click(function () {
 
 
 
-$(".jq_ConfirmDeleteChannel").click(function () {
-	if(checkLogged()){
-		
-		var mainModule=false;
-		if(checkPermission(6,5)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-		
-		$.post("<%=sitePathInit%>AChannel",{action:'processDeleteChannel',channel_id:$(this).attr("alt")},
-				   function(data){
-			
-						$(".jq_DeleteChannelStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_DeleteChannelStatus").removeClass("red");	
-							loadChannel();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_DeleteChannelStatus").addClass("red");	
-						}
-						
-						
-		},"json");
-		
-		}
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
 
-});
 	
 });
 

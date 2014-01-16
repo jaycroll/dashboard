@@ -206,39 +206,7 @@ $(".jq_AddSales").click(function () {
 });
 	
 	
-$(".jq_ConfirmAddSales").click(function () {
-	if(checkLogged()){
-		
-		var mainModule=false;
-		if(checkPermission(5,1)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-		$.post("<%=sitePathInit%>ASales",$("#formAddSales").serialize(),
-				   function(data){
-				
-						$(".jq_AddSalesStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_AddSalesStatus").removeClass("red");
-							$(".jq_AddSalesStatus").addClass("lnkGrn");
-							loadSales();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_AddSalesStatus").removeClass("lnkGrn");	
-							$(".jq_AddSalesStatus").addClass("red");
-						}
-		},"json");
-		
-		}
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
-	
-});
+
 
 
 $(".jq_EditSales").click(function () {
@@ -266,42 +234,7 @@ $(".jq_EditSales").click(function () {
 	}
 });	
 
-$(".jq_ConfirmEditSales").click(function () {
-	if(checkLogged()){
-		
-		
-		var mainModule=false;
-		if(checkPermission(5,3)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-			
-		$.post("<%=sitePathInit%>ASales",$("#formEditSales").serialize(),
-				   function(data){
-				
-							$(".jq_EditSalesStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_EditSalesStatus").removeClass("red");
-							$(".jq_EditSalesStatus").addClass("lnkGrn");
-							loadSales();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_EditSalesStatus").removeClass("lnkGrn");	
-							$(".jq_EditSalesStatus").addClass("red");
-						}
-		},"json");
-		
-		}
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
 
-});
 
 
 
@@ -366,42 +299,6 @@ $(".jq_DeleteSales").click(function () {
 	}
 });	
 
-
-$(".jq_ConfirmDeleteSales").click(function () {
-	if(checkLogged()){
-		
-		var mainModule=false;
-		if(checkPermission(5,5)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-			
-		$.post("<%=sitePathInit%>ASales",{action:'processDeleteSales',salesinfo:$(this).attr("alt")},
-				   function(data){
-			
-						$(".jq_DeleteSalesStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_DeleteSalesStatus").removeClass("red");	
-							loadSales();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_DeleteSalesStatus").addClass("red");	
-						}
-						
-						
-		},"json");
-		
-		}
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
-
-});
 	
 });
 

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -65,12 +66,15 @@ public class AProductTarget extends HttpServlet {
 		HttpSession sess=request.getSession();
 		
 		if(action.equals("initAddTarget")){
-			
+		
 			ResultSet listDepartment=tar.loadDepartment();
 			request.setAttribute("listDepartment",listDepartment);
 			
 			ResultSet listTargetGroup=tar.loadTargetGroup();
 			request.setAttribute("listTargetGroup",listTargetGroup);
+			
+			ResultSet listProducts = tar.loadProducts(iVariable);
+			request.setAttribute("listProducts",listProducts);
 			
 			view = request.getRequestDispatcher("producttarget/initAddTarget.jsp");
 		 	response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
@@ -82,8 +86,7 @@ public class AProductTarget extends HttpServlet {
 			String target_date	= request.getParameter("target_date");
 			String target_amount	= request.getParameter("target_amount");
 			String target_group_id	= request.getParameter("target_group_id");
-			String department_id	= request.getParameter("department_id");
-			String user_id	= request.getParameter("user_id");
+			String channel_id	= request.getParameter("channel_id");
 	
 			int errorCounter=0;
 			
@@ -114,12 +117,12 @@ public class AProductTarget extends HttpServlet {
 					
 					det.put("target_amount",target_amount);
 					det.put("target_group_id",target_group_id);
-					det.put("department_id",department_id);
-					det.put("user_id",user_id);
+					det.put("channel_id",channel_id);
+					
 
 					//Process Insert
 					
-					if(tar.InsertTarget(det)){
+					if(tar.InsertProductTarget(det)){
 						
 						//Also Add the default Privilege
 						////////////////////////////////////////
@@ -226,52 +229,7 @@ public class AProductTarget extends HttpServlet {
 			String html="";
 			String strSelected="";
 			html+="<option value='0'>All</option>";
-//			 try {
-//					if (fetDynamicDepartment.next()) {  
-//				
-//						do{
-//								
-//							Map det2=new HashMap();
-//							det2.put("department_id",fetDynamicDepartment.getString("department_id"));
-//							ResultSet rs2=tar.loadDepartmentUser(det2);
-//							
-//							 try {
-//								if (rs2.next()) {  
-//							
-//									do{
-//										
-//										
-//										if(fetDynamicDepartment.getString("userid")==null){
-//											   strSelected="";
-//										}else{
-//											if(rs2.getString("userid").equals(fetDynamicDepartment.getString("userid").toString())){
-//												strSelected="selected";
-//											}else{
-//												strSelected="";
-//											}
-//										}	
-//										
-//										  html+="<option value='"+rs2.getString("userid")+"' "+strSelected+">"+rs2.getString("userfirstname")+" "+rs2.getString("userlastname")+"</option>";
-//									} while (rs2.next());
-//									
-//									}
-//								
-//							} catch (SQLException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}	
-//							 	
-//							
-//							
-//							
-//						} while (fetDynamicDepartment.next());
-//						
-//						}
-//					
-//				} catch (SQLException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+//			
 			 request.setAttribute("optionHtml",html);
 			
 			view = request.getRequestDispatcher("producttarget/initEditTarget.jsp");
@@ -285,8 +243,7 @@ public class AProductTarget extends HttpServlet {
     	    String target_date	= request.getParameter("target_date");
 			String target_amount	= request.getParameter("target_amount");
 			String target_group_id	= request.getParameter("target_group_id");
-			String department_id	= request.getParameter("department_id");
-			String user_id	= request.getParameter("user_id");
+			String channel_id	= request.getParameter("channel_id");
 			String target_id	= request.getParameter("target_id");
 	
 			int errorCounter=0;
@@ -318,13 +275,12 @@ public class AProductTarget extends HttpServlet {
 					
 					det.put("target_amount",target_amount);
 					det.put("target_group_id",target_group_id);
-					det.put("department_id",department_id);
-					det.put("user_id",user_id);
+					det.put("channel_id",channel_id);
 					det.put("target_id",target_id);
 
 					//Process Insert
 					
-					if(tar.UpdateTarget(det)){
+					if(tar.UpdateProductTarget(det)){
 						
 						//Also Add the default Privilege
 						////////////////////////////////////////
@@ -356,19 +312,26 @@ public class AProductTarget extends HttpServlet {
 			
 			Map det=new HashMap();
 			det.put("target_id",target_id);
+			System.out.println(target_id);
 			ResultSet detTarget=tar.loadProductTarget(det);
-			request.setAttribute("detTarget",detTarget);
-		 	
+			request.setAttribute("detProductTarget",detTarget);
+
 			view = request.getRequestDispatcher("producttarget/initDeleteTarget.jsp");
-		 	
+
 		 	response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 			response.setHeader("Pragma", "no-cache");
-			view.forward(request, response);
+			try{
+				view.forward(request, response);
+			}
+			catch(NullPointerException e){
+				System.out.println("ERROR:");
+				e.printStackTrace();
+			}
 			
 	   }else if(action.equals("processDeleteTarget")){
 			
 			String target_id	= request.getParameter("target_id");
-			if(tar.DeleteTarget(target_id)){
+			if(tar.DeleteProductTarget(target_id)){
 				iVariable.put("process",true);
 				iVariable.put("status","Target has been deleted");
 			}else{

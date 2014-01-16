@@ -25,11 +25,12 @@
 				]
 				
 			};
+		var largest = Math.max.apply(Math, ty); 
 		var options={
 				scaleOverride:true,				
 				scaleSteps: 10,
-				scaleStepWidth: 71*1234567,
-				scaleStartValue: 100000
+				scaleStepWidth: Math.ceil(largest/10),
+				scaleStartValue: 0
 		};
 		var myNewChart = new Chart(ctx).Bar(data,options);
 	}			

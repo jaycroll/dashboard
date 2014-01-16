@@ -70,4 +70,45 @@
 		
 	    }	
 %>	
-         
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmEditSales").click(function () {
+		if(checkLogged()){
+			
+			
+			var mainModule=false;
+			if(checkPermission(5,3)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+				
+			$.post("<%=sitePathInit%>ASales",$("#formEditSales").serialize(),
+					   function(data){
+					
+								$(".jq_EditSalesStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_EditSalesStatus").removeClass("red");
+								$(".jq_EditSalesStatus").addClass("lnkGrn");
+								loadSales();
+								setTimeout("$.modal.close()",1000);
+							}else{
+								$(".jq_EditSalesStatus").removeClass("lnkGrn");	
+								$(".jq_EditSalesStatus").addClass("red");
+							}
+			},"json");
+			
+			}
+			setTimeout(function(){
+				window.location.reload();
+			},1000);
+		}else{
+			window.location='<%=sitePathInit%>';
+		}
+
+	});
+});
+</script>     

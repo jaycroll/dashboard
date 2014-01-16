@@ -27,14 +27,18 @@
       <td style="text-align: center"><%=rs.getString("target_group_name")%></td>
       <td style="text-align: center"><%=rs.getString("category")%></td>
       <td style="text-align: center"><%=rs.getString("target_amount")%></td>
-      <td style="text-align: center">
+      
       	<%
       			if(rs.getString("channel_id")==null){
-      					out.println("");
+      				%>
+      				<td style="text-align: center" alt="<%=rs.getString("channel_name")%>"><%=""%></td>
+      				<%
       			}else{
-      					out.println(rs.getString("channel_name"));
+      				%>
+      					<td style="text-align: center"   id="channel_name" alt="<%=rs.getString("channel_name")%>"><%=rs.getString("channel_name")%></td>
+      					<%
       			}
-      	%></td>
+      	%>
       <td class="lucida_10_red <% if(editTarget){ %>jq_EditTarget hnd<% } %>"  alt="<%=rs.getString("target_id")%>" style="text-align: center">
       <% if(editTarget){ %>
       <img  class='hnd'  src="<%=sitePathInitMin%>images/pencil-edit.png">
@@ -47,3 +51,31 @@
 		
 	    }	
 %>	
+<script>
+$(document).ready(function(){
+	$(".jq_DeleteTarget").click(function() {
+		
+		if(checkLogged()){
+			
+			
+			var mainModule=false;
+			if(checkPermission(4,5)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+				$.post("<%=sitePathInitMin%>AProductTarget",{action:'initDeleteTarget',target_id:$(this).attr("alt")},
+						   function(data){
+									$('.basic-container').html(data);
+									initModal();
+				});
+			}	
+		}else{
+			window.location='<%=sitePathInitMin%>';	
+		}
+	});	
+
+});
+</script>

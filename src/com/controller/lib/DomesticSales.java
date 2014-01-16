@@ -54,7 +54,11 @@ public class DomesticSales extends HttpServlet{
 					Map ProjectionMap = new HashMap();
 					Map requestMap = new HashMap();
 					
-					
+// Who ever is going to be the next developer of this system	
+// I'd just want to point out a few things 
+// Notice the String Arrays? I hard coded them and yeah, i was lazy back then to fix that. soooo
+// sorry for the trouble but could you fix that too? :D thanks, probably im 
+// already busy with other projects so again sorry for the small details that i left out
 					useDispatcher = true;
 					view = request.getRequestDispatcher("productsales/main.jsp");	
 					
@@ -71,12 +75,15 @@ public class DomesticSales extends HttpServlet{
 							do{
 								ProjectionMap.put("channelid",channels.getString("channel_id"));
 								productArray[i[0]][0] = channels.getString("channel_id");
-								//System.out.println(productArray[i][0][0]);
+								
 								ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
 								ResultSet monthSales = salesModel.ldMonthRevenue2(ProjectionMap,false);
+								ResultSet yearTarget = salesModel.ldProductYearlyTarget(ProjectionMap, false);
+								ResultSet monthTarget = salesModel.ldProductMonthTarget(ProjectionMap, false);
 								try{
 									if(yearSales.next()){
 										productArray[i[0]][1] = yearSales.getString("actual_revenue");
+										
 										///System.out.println(productArray[i[0]][1]);
 									}
 								}catch(SQLException e){
@@ -85,6 +92,24 @@ public class DomesticSales extends HttpServlet{
 								try{
 									if(monthSales.next()){
 										productArray[i[0]][2] = monthSales.getString("actual_revenue");
+										//System.out.println(productArray[i[0]][2]);
+									}
+								}catch(SQLException e){
+									e.printStackTrace();
+								}
+								try{
+									if(yearTarget.next()){
+										productArray[i[0]][4] = yearTarget.getString("actual_revenue");
+										//System.out.println(productArray[i[0]][0] +" - "+ productArray[i[0]][5]);
+										//System.out.println();
+										
+									}
+								}catch(SQLException e){
+									e.printStackTrace();
+								}
+								try{
+									if(monthTarget.next()){
+										productArray[i[0]][5] = monthTarget.getString("actual_revenue");
 										//System.out.println(productArray[i[0]][2]);
 									}
 								}catch(SQLException e){

@@ -39,7 +39,21 @@
 					}
 				]
 			};
-
+		var lmt = Math.max.apply(Math, ty); 
+		var lms = Math.max.apply(Math,ay);
+		var largest = 0;
+		if(lmt<lms){
+			 largest = lms;
+		}
+		else{
+			largest = lmt;
+		}
+		var options={
+				scaleOverride:true,				
+				scaleSteps: 10,
+				scaleStepWidth: Math.ceil(lmt/10),
+				scaleStartValue: 0
+		};
 		var myNewChart = new Chart(ctx).Bar(data);
 	}			
 
@@ -72,7 +86,21 @@
 					}
 				]
 			};
-
+		var lmt = Math.max.apply(Math, tm); 
+		var lms = Math.max.apply(Math,am);
+		var largest = 0;
+		if(lmt<lms){
+			 largest = lms;
+		}
+		else{
+			largest = lmt;
+		}
+		var options={
+				scaleOverride:true,				
+				scaleSteps: 10,
+				scaleStepWidth: Math.ceil(lmt/10),
+				scaleStartValue: 0
+		};
 		var myNewChart = new Chart(ctx).Bar(data);
 	}			
 						

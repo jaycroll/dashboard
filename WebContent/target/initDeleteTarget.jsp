@@ -6,7 +6,7 @@
 	
 		ResultSet rs = (ResultSet) request.getAttribute("detTarget");
 		if (rs.next()) {  
-		
+		System.out.println(rs.getString("target_date"));
 	  do{
 %>  
   <div class='modalTitle' >Delete Target</div>

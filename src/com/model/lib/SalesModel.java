@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-
 import java.security.*;
 import java.math.*;
 
@@ -672,7 +671,7 @@ public class SalesModel{
 				 }	  
 				return rs;
 			}
-		 public ResultSet ldMonthRevenue2(Map det,Boolean specDate){
+		 public ResultSet ldMonthRevenue3(Map det,Boolean specDate){
 				
 			 	/////Notes here
 			 
@@ -991,6 +990,112 @@ public class SalesModel{
 				 }	  
 				return rs;
 			}
-		
+
+
+			public ResultSet ldProductYearlyTarget(Map det, boolean specifiedDate) {
+				String query = "";
+				
+				ResultSet rs = null;
+				
+				try{
+					this.fetchProperties();
+					Statement st = this.connection.createStatement();
+					
+					query = "SELECT Ifnull(SUM(target_amount),0) as actual_revenue,"
+							+ " channel_id,"
+							+ " target_group_id"
+							+ " FROM product_targets"
+							+ " WHERE YEAR(target_date) = YEAR(NOW())"
+							+ " AND target_group_id = 4";
+							
+							
+					if(det.get("channelid")!=null && det.get("channelid")!=""){
+						query+=" AND channel_id='"+det.get("channelid")+"'";
+					}
+					
+				
+					
+					rs = st.executeQuery(query);
+				}catch (SQLException e) {
+					  System.err.println("SQLException: "
+				    	        +e.getMessage());
+				      System.err.println("SQL Query: "+query);
+				 } catch (Exception e){
+				 			System.out.println("Error in fetching"+e);
+				 }
+				
+				return rs;
+			}
+
+
+			public ResultSet ldProductMonthTarget(Map det, boolean specifiedDate) {
+				String query = "";
+				
+				ResultSet rs = null;
+				
+				try{
+					this.fetchProperties();
+					Statement st = this.connection.createStatement();
+					query = "SELECT Ifnull(SUM(target_amount),0) as actual_revenue,"
+							+ " channel_id,"
+							+ " target_group_id"
+							+ " FROM product_targets"
+							+ " WHERE MONTH(target_date) = MONTH(NOW())"
+							+ " AND DAY(target_date) < DAY(NOW())"
+							+ " AND target_group_id != 4";		
+					
+					if(det.get("channelid")!=null && det.get("channelid")!=""){
+						query+=" AND channel_id='"+det.get("channelid")+"'";
+					}
+				
+					
+					rs = st.executeQuery(query);
+				}catch (SQLException e) {
+					  System.err.println("SQLException: "
+				    	        +e.getMessage());
+				      System.err.println("SQL Query: "+query);
+				 } catch (Exception e){
+				 			System.out.println("Error in fetching"+e);
+				 }
+				
+				return rs;
+			}
+			public ResultSet ldProductMonthlyTarget(Map det, boolean specifiedDate) {
+				String query = "";
+				
+				ResultSet rs = null;
+				
+				try{
+					this.fetchProperties();
+					Statement st = this.connection.createStatement();
+					query = "SELECT Ifnull(SUM(target_amount),0) as actual_revenue,"
+							+ " channel_id,"
+							+ " target_group_id,"
+							+ " MONTH(target_date) as month"
+							+ " FROM product_targets"
+							+ " where target_group_id!=4";		
+					
+					if(det.get("channelid")!=null && det.get("channelid")!=""){
+						query+=" AND channel_id='"+det.get("channelid")+"'";
+					}
+					if(det.get("year")!=null && det.get("year")!=""){
+						query+=" AND YEAR(target_date)='"+det.get("year")+"'";
+					}
+					else{
+						query+=" AND YEAR(target_date)=YEAR(NOW())";
+					}
+					query+= " GROUP BY MONTH(target_date)";
+					//System.out.println(query);
+					rs = st.executeQuery(query);
+				}catch (SQLException e) {
+					  System.err.println("SQLException: "
+				    	        +e.getMessage());
+				      System.err.println("SQL Query: "+query);
+				 } catch (Exception e){
+				 			System.out.println("Error in fetching"+e);
+				 }
+				
+				return rs;
+			}
 
 }

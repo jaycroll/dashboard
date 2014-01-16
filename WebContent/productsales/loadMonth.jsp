@@ -18,7 +18,6 @@
 		var ctx = $("#"+area).get(0).getContext("2d");
 		var myNewChart = new Chart(ctx); 
 		var areas = new Array();
-
 		var data = {
 				labels : ["J","F","M","A","M","J","J","A","S","O","N","D"],
 				datasets : [
@@ -34,7 +33,28 @@
 					}
 				]
 			};
-
+		var lmt = Math.max.apply(Math, mT); 
+		var lms = Math.max.apply(Math,mS);
+		var largest = 0;
+		if(lmt<lms){
+			 largest = lms;
+			$("#test").append(lms);
+		}	
+		else if(lmt>lms){
+			largest = lmt;
+			
+			$("#test").append(lmt);
+		}
+		else{
+			$("#test").append("100000");
+		}
+		var options={
+				scaleOverride:true,				
+				scaleSteps: 10,
+				scaleStepWidth: Math.ceil(largest/10),
+				scaleStartValue: 0,
+				animation : false
+		};
 		var myNewChart = new Chart(ctx).Bar(data);
 	}			
 	
@@ -63,6 +83,16 @@ for(int i=0; i<channels[0];i++){
 	%>
 					<script>
 						monthlySales[<%=j%>-1] = <%=productArray2[i][1][j]%>;
+					</script>
+				<%
+			}
+
+		}
+		for(int j = 0; j<productArray2[i][2].length;j++){
+			if(productArray2[i][2][j]!=null){
+	%>
+					<script>
+						monthlyTarget[<%=j%>-1] = <%=productArray2[i][2][j]%>;
 					</script>
 				<%
 			}

@@ -7,6 +7,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 
+import javax.activation.DataSource;
+
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
 public class TargetModel{
 	
 	//For Database Connection
@@ -26,6 +30,7 @@ public class TargetModel{
 		 this.connectionURL=p.getProperty("connectionURL");
 		 this.dbUser=p.getProperty("dbUser");
 		 this.dbPassword=p.getProperty("dbPassword");
+		 
 	 }
 	 
 	 
@@ -321,6 +326,55 @@ public class TargetModel{
 			return rs;
 		}
 	  
+	  public ResultSet loadProducts(Map det){
+		  String query="SELECT channel.channel_id,"
+				 + " channel.channel_name,"
+				 + " channel.channel_group_id,"
+				 + " channel_automated,"
+				 + " app_id"
+				 + " FROM channel"
+				 + " WHERE 1=1";
+		  ResultSet rs =null;
+		  
+		  try{
+			  this.fetchProperties();
+			  Connection connection=null;
+			  Class.forName("com.mysql.jdbc.Driver");
+			  connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+			  
+			  Statement st = connection.createStatement();
+			  if(det.get("target_id")!=null && det.get("target_id")!=""){
+				  query += " AND target_id='"+det.get("target_id")+"'";
+			  }
+			  if(det.get("target_date")!=null && det.get("target_date")!=""){
+				  query += " AND target_date='"+det.get("target_date")+"'";
+			  }
+			  if(det.get("target_amount")!=null && det.get("target_amount")!=""){
+				  query += " AND target_date='"+det.get("target_amount")+"'";
+			  }
+			  if(det.get("target_group_id")!=null && det.get("target_group_id")!=""){
+				  query += " AND target_group_id='"+det.get("target_group_id")+"'";
+			  }
+			  if(det.get("channel_id")!=null && det.get("channel_id")!=""){
+				  query += " AND channel_id='"+det.get("channel_id")+"'";
+			  }
+			  if(det.get("target_datecreated")!=null && det.get("target_datecreated")!=""){
+				  query += " AND target_datecreated='"+det.get("target_datecreated")+"'";
+			  }
+			  rs = st.executeQuery(query);
+		  }	
+		  catch (SQLException e) {
+			  System.err.println("SQLException: "
+		    	        +e.getMessage());
+		      System.err.println("SQL Query: "+query);
+		 } catch (Exception e){
+		 			System.out.println("Error in fetching"+e);
+		 }	 
+		  
+		 return rs;
+		  
+	  }
+	  
 	  public ResultSet loadChannel(Map det){
 			
 			String query="";
@@ -440,6 +494,116 @@ public class TargetModel{
 			  st.executeUpdate(query);
 			  process=true;
 			  
+			  
+		 } catch (SQLException e) {
+			  System.err.println("SQLException: "
+		    	        +e.getMessage());
+		      System.err.println("SQL Query: "+query);
+		 } catch (Exception e){
+		 			System.out.println("Error in fetching"+e);
+		 }	
+		return process;
+		}
+
+
+		public boolean InsertProductTarget(Map det) {
+			
+			String query="";
+			Boolean process=false;
+		try{
+			 this.fetchProperties();
+			 Connection connection=null;
+			 Class.forName("com.mysql.jdbc.Driver");
+			 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+			 CustomHelper ch=new CustomHelper();
+			 
+			  Statement st = connection.createStatement();
+			   query="INSERT INTO product_targets("+
+							"target_date,"+
+							"target_amount," +
+							"target_group_id," +
+							"channel_id," +
+							"target_datecreated"+
+							")" +
+							"VALUES(" +
+							"'"+det.get("target_date")+"',"+
+							"'"+det.get("target_amount")+"'," +
+							"'"+det.get("target_group_id")+"'," +
+							"'"+det.get("channel_id")+"'," +
+							"'"+ch.loadDateNow()+"'" +
+							")";
+				
+			  st.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
+			  int iTargetid=0;
+			  ResultSet rs = st.getGeneratedKeys();
+		        if (rs.next()){
+		        	iTargetid=rs.getInt(1);
+		        }
+		        this.targetid=iTargetid;
+		        rs.close();
+		        
+				process=true;  
+			  
+		 } catch (SQLException e) {
+			  System.err.println("SQLException: "
+		    	        +e.getMessage());
+		      System.err.println("SQL Query: "+query);
+		 } catch (Exception e){
+		 			System.out.println("Error in fetching"+e);
+		 }	
+		return process;
+		}
+
+
+		public boolean DeleteProductTarget(String target_id) {
+			String query="";
+			Boolean process=false;
+		try{
+			 this.fetchProperties();
+			 Connection connection=null;
+			 Class.forName("com.mysql.jdbc.Driver");
+			 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+			 CustomHelper ch=new CustomHelper();
+			 
+			  Statement st = connection.createStatement();
+			  query="DELETE FROM product_targets WHERE target_id='"+target_id+"'";
+			  st.executeUpdate(query);
+			  process=true;
+			  
+			  
+		 } catch (SQLException e) {
+			  System.err.println("SQLException: "
+		    	        +e.getMessage());
+		      System.err.println("SQL Query: "+query);
+		 } catch (Exception e){
+		 			System.out.println("Error in fetching"+e);
+		 }	
+		return process;
+		}
+
+
+		public boolean UpdateProductTarget(Map det) {
+			String query="";
+			Boolean process=false;
+		try{
+			 this.fetchProperties();
+			 Connection connection=null;
+			 Class.forName("com.mysql.jdbc.Driver");
+			 connection = DriverManager.getConnection(this.connectionURL,this.dbUser,this.dbPassword);
+			 CustomHelper ch=new CustomHelper();
+			 
+			  Statement st = connection.createStatement();
+			  
+			   query="UPDATE product_targets set " +
+				   	 " target_date='" +det.get("target_date")+"',"+
+				   	 " target_amount='" +det.get("target_amount")+"',"+
+				   	 " target_group_id='" +det.get("target_group_id")+"',"+
+				   	 " channel_id='" +det.get("channel_id")+"'"+
+				   	 " where target_id='" +det.get("target_id")+"'";
+				   
+			  st.executeUpdate(query);
+			  
+			  process=true;  
 			  
 		 } catch (SQLException e) {
 			  System.err.println("SQLException: "

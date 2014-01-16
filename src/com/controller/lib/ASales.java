@@ -117,7 +117,7 @@ public class ASales extends HttpServlet {
 			String amount	= request.getParameter("amount");
 			String revenue_type	= request.getParameter("revenue_type");
 		
-			
+
 			int errorCounter=0;
 			
 			if(ch.checkMemberSession(sess)){

@@ -28,3 +28,45 @@
 		
 	    }	
 %>	
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmDeleteChannel").click(function () {
+		if(checkLogged()){
+			
+			var mainModule=false;
+			if(checkPermission(6,5)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+			
+			$.post("<%=sitePathInitSub%>AChannel",{action:'processDeleteChannel',channel_id:$(this).attr("alt")},
+					   function(data){
+				
+							$(".jq_DeleteChannelStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_DeleteChannelStatus").removeClass("red");	
+								loadChannel();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_DeleteChannelStatus").addClass("red");	
+							}
+							
+							
+			},"json");
+			
+			}
+			setTimeout(function(){
+				window.location.reload();
+			},1000);	
+		}else{
+			window.location='<%=sitePathInitSub%>';
+		}
+
+	});
+	
+});
+</script>

@@ -208,40 +208,7 @@ $(".jq_AddTarget").click(function () {
 		}
 });
 	
-$(".jq_ConfirmAddTarget").click(function () {
-	if(checkLogged()){
-		
-		if(checkPermission(4,1)){
-			mainModule=true;
-		}else{
-			mainModule=false; 
-		}
-		
-		if(mainModule){
-		
-		$.post("<%=sitePathInit%>ATarget",$("#formAddTarget").serialize(),
-				   function(data){
-				
-						$(".jq_AddTargetStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_AddTargetStatus").removeClass("red");
-							$(".jq_AddTargetStatus").addClass("lnkGrn");
-							loadTarget();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_AddTargetStatus").removeClass("lnkGrn");	
-							$(".jq_AddTargetStatus").addClass("red");
-						}
-		},"json");
-	
-		}
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
-	
-});
+
 
 
 
@@ -259,7 +226,7 @@ $(".jq_EditTarget").click(function () {
 		
 		if(mainModule){
 		
-		$.post("<%=sitePathInit%>AProductTarget",{action:'initEditTarget',target_id:$(this).attr("alt")},
+		$.post("<%=sitePathInit%>AProductTarget",{action:'initEditTarget',target_id:$(this).attr("alt"),channel_id:$('#channel_name').attr("alt")},
 				   function(data){
 							$('.basic-container').html(data);
 							initModal();
@@ -273,41 +240,7 @@ $(".jq_EditTarget").click(function () {
 
 
 
-$(".jq_ConfirmEditTarget").click(function () {
-	if(checkLogged()){
-		
-		
-		var mainModule=false;
-		if(checkPermission(4,2)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-		$.post("<%=sitePathInit%>AProductTarget",$("#formEditTarget").serialize(),
-				   function(data){
-				
-							$(".jq_EditTargetStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_EditTargetStatus").removeClass("red");
-							$(".jq_EditTargetStatus").addClass("lnkGrn");
-							loadTarget();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_EditTargetStatus").removeClass("lnkGrn");	
-							$(".jq_EditTargetStatus").addClass("red");
-						}
-		},"json");
-		
-		}
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
 
-});
 
 
 
@@ -365,68 +298,8 @@ $(".jqTargetInput").keyup(function(event) {
 
 
 
-$(".jq_DeleteTarget").click(function() {
-	
-	if(checkLogged()){
-		
-		
-		var mainModule=false;
-		if(checkPermission(4,5)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){
-			$.post("<%=sitePathInit%>AProductTarget",{action:'initDeleteTarget',target_id:$(this).attr("alt")},
-					   function(data){
-								$('.basic-container').html(data);
-								initModal();
-			});
-		}	
-	}else{
-		window.location='<%=sitePathInit%>';	
-	}
-});	
 
 
-
-$(".jq_ConfirmDeleteTarget").click(function() {
-	if(checkLogged()){
-		
-		
-		var mainModule=false;
-		if(checkPermission(4,5)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-		if(mainModule){	
-		$.post("<%=sitePathInit%>AProductTarget",{action:'processDeleteTarget',target_id:$(this).attr("alt")},
-				   function(data){
-			
-						$(".jq_DeleteTargetStatus").html(data.status);	
-						
-						if(data.process){
-							$(".jq_DeleteTargetStatus").removeClass("red");	
-							loadTarget();
-							setTimeout("$.modal.close()",2000);
-						}else{
-							$(".jq_DeleteTargetStatus").addClass("red");	
-						}
-						
-						
-		},"json");
-		
-		}
-		
-	}else{
-		window.location='<%=sitePathInit%>';
-	}
-
-});
-	
 });
 
 

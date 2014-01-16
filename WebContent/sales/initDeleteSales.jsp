@@ -29,3 +29,45 @@
 		
 	    }	
 %>	
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmDeleteSales").click(function () {
+		if(checkLogged()){
+			
+			var mainModule=false;
+			if(checkPermission(5,5)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+				
+			$.post("<%=sitePathInitSub%>ASales",{action:'processDeleteSales',salesinfo:$(this).attr("alt")},
+					   function(data){
+				
+							$(".jq_DeleteSalesStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_DeleteSalesStatus").removeClass("red");	
+								loadSales();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_DeleteSalesStatus").addClass("red");	
+							}
+							
+							
+			},"json");
+			
+			}
+			setTimeout(function(){
+				window.location.reload();
+			},1000);	
+		}else{
+			window.location='<%=sitePathInitSub%>';
+		}
+
+	});
+	
+});
+</script>

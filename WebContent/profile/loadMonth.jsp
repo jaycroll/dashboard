@@ -56,11 +56,12 @@ function createMTDGraph(area,am,tm){
 			]
 			
 		};
+	var lmt = Math.max.apply(Math, tm);
 	var options={
 			scaleOverride:true,				
 			scaleSteps: 10,
-			scaleStepWidth: 71*123,
-			scaleStartValue: 100000
+			scaleStepWidth: Math.ceil(lmt/10),
+			scaleStartValue: 0
 	};
 	var thisNewChart = new Chart(ctx).Bar(data,options);
 }			

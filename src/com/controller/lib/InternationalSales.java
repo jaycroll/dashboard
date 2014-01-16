@@ -74,6 +74,8 @@ public class InternationalSales extends HttpServlet{
 								//System.out.println(productArray[i][0][0]);
 								ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
 								ResultSet monthSales = salesModel.ldMonthRevenue2(ProjectionMap,false);
+								ResultSet yearTarget = salesModel.ldProductYearlyTarget(ProjectionMap, false);
+								ResultSet monthTarget = salesModel.ldProductMonthTarget(ProjectionMap, false);
 								try{
 									if(yearSales.next()){
 										productArray[i[0]][1] = yearSales.getString("actual_revenue");
@@ -85,6 +87,24 @@ public class InternationalSales extends HttpServlet{
 								try{
 									if(monthSales.next()){
 										productArray[i[0]][2] = monthSales.getString("actual_revenue");
+										//System.out.println(productArray[i[0]][2]);
+									}
+								}catch(SQLException e){
+									e.printStackTrace();
+								}
+								try{
+									if(yearTarget.next()){
+										productArray[i[0]][4] = yearTarget.getString("actual_revenue");
+										//System.out.println(productArray[i[0]][0] +" - "+ productArray[i[0]][5]);
+										//System.out.println();
+										
+									}
+								}catch(SQLException e){
+									e.printStackTrace();
+								}
+								try{
+									if(monthTarget.next()){
+										productArray[i[0]][5] = monthTarget.getString("actual_revenue");
 										//System.out.println(productArray[i[0]][2]);
 									}
 								}catch(SQLException e){

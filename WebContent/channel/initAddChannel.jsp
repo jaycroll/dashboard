@@ -83,4 +83,44 @@
 	<input type='hidden' name='action' value='processAddChannel' >
 	</form>
 </div>
-         
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmAddChannel").click(function() {
+		if(checkLogged()){
+			
+			if(checkPermission(6,1)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+			
+			$.post("<%=sitePathInit%>AChannel",$("#formAddChannel").serialize(),
+					   function(data){
+					
+							$(".jq_AddChannelStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_AddChannelStatus").removeClass("red");
+								$(".jq_AddChannelStatus").addClass("lnkGrn");
+								loadChannel();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_AddChannelStatus").removeClass("lnkGrn");	
+								$(".jq_AddChannelStatus").addClass("red");
+							}
+			},"json");
+			
+			}	
+			setTimeout(function(){
+				window.location.reload();
+			},1000);
+		}else{
+			window.location='<%=sitePathInit%>';
+		}
+		
+	});
+	
+});
+</script>         

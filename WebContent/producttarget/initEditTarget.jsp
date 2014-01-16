@@ -25,7 +25,13 @@
 	 <table class='txtCenter' width="280" cellspacing="0" cellpadding="5" border="0" align="center">
       <tbody>
       
-
+	<tr>
+        <td width="250" class="text12_tungsten" align='left'>Channel</td>
+        <td width="200" align="left" class="text10_red">
+        		<%=rs.getString("channel_name") %>
+        		<input type="hidden" name="channel_id" value="<%=rs.getString("channel_id") %>"/>
+        </td>
+      </tr>
      <tr>
         <td width="250" class="text12_tungsten" align='left'>Target Amount:</td>
         <td width="200" align="left" class="text10_red">
@@ -59,14 +65,7 @@
       
       
       
-       <tr>
-        <td width="250" class="text12_tungsten" align='left'>User</td>
-        <td width="200" align="left" class="text10_red">
-        		<select name='user_id' class='jq_UserSelect text_12_tungsten''>
-				       <%=request.getAttribute("optionHtml")%>
-        		</select>
-        </td>
-      </tr>
+       
         
        <tr>
         <td align="center" class="text12_tungsten" colspan="3"><img  class='jq_ConfirmEditTarget hnd'  src="<%=sitePathInit%>images/edit.png"></td>
@@ -84,4 +83,44 @@
 		
 	    }	
 %>	
-         
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmEditTarget").click(function () {
+		if(checkLogged()){
+			
+			
+			var mainModule=false;
+			if(checkPermission(4,2)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+			$.post("<%=sitePathInit%>AProductTarget",$("#formEditTarget").serialize(),
+					   function(data){
+					
+								$(".jq_EditTargetStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_EditTargetStatus").removeClass("red");
+								$(".jq_EditTargetStatus").addClass("lnkGrn");
+								loadTarget();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_EditTargetStatus").removeClass("lnkGrn");	
+								$(".jq_EditTargetStatus").addClass("red");
+							}
+			},"json");
+			
+			}
+			setTimeout(function(){
+				window.location.reload();
+			},1000);
+		}else{
+			window.location='<%=sitePathInit%>';
+		}
+
+	});
+});
+</script>   

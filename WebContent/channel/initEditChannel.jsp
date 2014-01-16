@@ -95,4 +95,43 @@
 		
 	    }	
 %>	
-         
+<script>
+$(document).ready(function(){
+	$(".jq_ConfirmEditChannel").click(function () {
+		if(checkLogged()){
+			var mainModule=false;
+			if(checkPermission(6,2)){
+				mainModule=true;
+			}else{
+				mainModule=false;
+			}
+			
+			if(mainModule){
+			$.post("<%=sitePathInit%>AChannel",$("#formEditChannel").serialize(),
+					   function(data){
+					
+								$(".jq_EditChannelStatus").html(data.status);	
+							
+							if(data.process){
+								$(".jq_EditChannelStatus").removeClass("red");
+								$(".jq_EditChannelStatus").addClass("lnkGrn");
+								loadChannel();
+								setTimeout("$.modal.close()",2000);
+							}else{
+								$(".jq_EditChannelStatus").removeClass("lnkGrn");	
+								$(".jq_EditChannelStatus").addClass("red");
+							}
+			},"json");
+			
+			}
+			setTimeout(function(){
+				window.location.reload();
+				
+			},1000);
+		}else{
+			window.location='<%=sitePathInit%>';
+		}
+
+	});
+});
+</script>     
