@@ -2,22 +2,19 @@
 
 
 		.header_img{
-			background: url("../images/mobile/ppe-black.png");
+			background: url("../images/ppe-black-m.png");
 			width: 1px;
 			height: 1px;
-			padding:50px 425px;
 		
 		}
 		
 #title{
-	font-size:48px;
+	font-size:21px;
 	font-family: 'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;	
 	width:auto;
 	height: 53px;
-	margin-top:20px;
-	margin-left:25%;
-	margin-right:25%;
-	margin-bottom:10%;
+	margin-top:5px;
+	margin-bottom:5px;
 	text-align:center;
 	
 	color:#000;
@@ -49,12 +46,12 @@
 
 #header {
 	width:101.7%;
-	height: 30px;
 	margin-top: -1%;
 	margin-left: -9px;
-	margin-bottom:20px;
-	box-shadow: 0px 5px 20px -3px #c0c0c0;
-	padding-bottom:100px;
+	box-shadow: 0px 5px 5px -3px #c0c0c0;
+	padding-top: 1%;
+	padding-bottom: 2%;
+	margin-bottom: 3%;
 	padding-left:0px;
 	padding-right:0px;
 }
