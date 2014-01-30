@@ -6,69 +6,77 @@
 	HttpSession sMain=request.getSession();
 	RolePermission rpMain=new RolePermission();
 	rpMain.gAppProperties(request.getRealPath("/"));
-	
+	String disabled="";
+	String display_1="";
+	String display_2="";
+	String display_11="";
+	String display_21="";
+	if(loggedState){
+		
+		 if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),7,6)){
+			 disabled="";
+		     display_11="";
+			 display_21="display:none";
+			 disabled="";
+			
+		 }
+		 else{
+			 disabled="ui-disabled";
+			 display_11="display:none";
+			 display_21="";
+		 }
+	}else{
+		
+		display_1="";
+		display_2="display:none";
+	}
 %> 
 
+<div id="projection" >
 
-<div id="header" align="center"><img src="<%=sitePathInit%>images/ppe-blk.png"/></div>
-<div id="title">
-
-<a href="<%=sitePathInit%>" class="lucida_21_black"><img src="<%=sitePathInit%>images/target-small.png" align="absmiddle"/>Dashboard</a>
-
-</div>
-
-<% if(loggedState){%>
-<div id="menu">
-<div id="menu-right" class="lucida_12_tungsten_b"> Hello, <%=sess.getAttribute("username")%> (<%=sess.getAttribute("rolename")%>). <a href="<%=sitePathInit%>User/logout"><span class="lucida_12_red_b">Logout</span></a></div>
-<div id="menu-left">
-	<ul class="sub">
-	<li id="menu1"><a href="<%=sitePathInit%>Projection" title="menu1" class="active"><span class="displace"></span></a></li>
-	<li id="menu2"><a href="<%=sitePathInit%>Team" title="menu2"><span class="displace"></span></a></li>
-    <li id="menu3"><a href="<%=sitePathInit%>Area"  title="menu3"><span class="displace"></span></a></li>
-    </ul>
-</div>
-</div>
-
-
-
-<div id="submenu-right">
-	<ul class="tab jqSection">
-		<li><a href="javascript:void(0);" class="ibtntabs active" alt='loadDefault'>Snapshot</a></li>
-		<li><a href="javascript:void(0);" class="ibtntabs" alt='loadMonth'>Monthly</a></li>
-		<li><a href="javascript:void(0);" class="ibtntabs">Query</a></li>
-		
+	<div data-role="panel" id="mypanel" data-display="overlay" data-position="right">
+	    <ul data-role="listview" data-theme="a" data-divider-theme="a" data-count-theme="a">
+	    <li data-role="list-divider" style="font-weight:normal;font-size:20px;">Target Menu</li>
+	    <li><a href="<%=sitePathInit%>Projection" class="<%=disabled%>" data-icon="false" style="font-weight:normal;">Company Projection</a></li>
+	    <li><a href="<%=sitePathInit%>Team" class="<%=disabled%>" style="font-weight:normal;">Team Projection</a></li>
+	    <li><a href="<%=sitePathInit%>Area" class="<%=disabled%>" style="font-weight:normal;">Area Projection</a></li>
+	    <li><a href="<%=sitePathInit%>" class="<%=disabled%>" style="font-weight:normal;">Home Page</a></li>
 	</ul>
-</div>
-
-
-<br><br>
-
-
-<form id='formTarget'>
-<div id="content" class="hoverhand">
-
-<% if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),7,6)){	%>  
-
-<% }else{ %>
+	</div>
+	<div data-role="header" align="center" style="border:0px;margin-bottom:2%;">
+			<img src="<%=sitePathInit%>images/ppe-black.svg"  style="width:325px; "/>		
+	</div>
+	<div data-role="header" style="border:0px">
+	  		<div id="title2">Dashboard</div>
+	  		<a href="" class="jq_btnLogout ui-btn ui-btn-a ui-corner-all  ui-btn-block " style="<%=display_1%>; font-size:14px"><span class="">Logout</span></a>
+	  		<a href="#mypanel" class="ui-btn ui-btn-a ui-corner-all  ui-btn-block " style="<%=display_1%>; font-size:14px"><span class="" >Menu</span></a>
+	</div>
+	<div data-role="content" style="<%=display_11%>">
+		<div class="ui-grid-b jqSection" style="margin-top:-2%">
+		    <div class="ui-block-a"><a href="javascript:void(0);" class="ibtntabs active ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini" alt='loadDefault'>Snapshot</a></div>
+		    <div class="ui-block-b"><a href="javascript:void(0);" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini" alt='loadMonth'>Monthly</a></div>
+		    <div class="ui-block-c"><a href="javascript:void(0);" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini">Query</a></div>
+		</div>
+		<div class="ui-grid-solo" id="content">
 		
-		<div style='clear:both'>&nbsp;</div>
-		<div  class='divCenter txtCenter'>
-			  <div class='access_denied'>Access Denied</div>
-			  <div class='clr'>&nbsp;</div>
-			  <div class='clr'><a  style='color:#3E7836;' href="<%=sitePathInit%>">Back to Main</a></div>
-              <div class='clr'>&nbsp;</div>
-	    </div>
-<% } %>
-<%--include file="../target/loadDefault.jsp" --%>
-		
-</div>
-<input type='hidden' name='action' class='jqAction' value='loadDefault'> 
-</form>
-
+		</div>
+	</div>
+	<div data-role="content" style="<%=display_21%>">
+		<div class="ui-grid-solo content" style="text-align:center">
+				  <div class=''>Access Denied</div>
+				  <br>
+				  <div class=''><a  style='color:#3E7836;' href="<%=sitePathInit%>">Back to Main</a></div>
+		</div>
+	</div>
+	<form id="formTarget">
+		<input type='hidden' name='action' class='jqAction' value='loadDefault'> 
+	</form>
+<script type='text/javascript' src='<%=sitePathInit%>include/login.jsp'></script>
+<script type='text/javascript' src='<%=sitePathInit%>include/custom.jsp'></script>
 <script type='text/javascript'>
 
 $(document).ready(function($){
-	
+
 	<% if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),7,6)){	%> 	
 			loadTarget();
 	<% } %>		
@@ -98,6 +106,7 @@ $(document).ready(function($){
 				window.location='<%=sitePathInit%>';
 		}	
 	});
+	
 	
 	
 /*
@@ -130,7 +139,6 @@ function loadTarget(){
 			   function(data){
 		$("#content").empty();
 		$("#content").html(data);	
-		$('table.bar').visualize({type: 'bar', barDirection: 'vertical'});
 		$('#content').click(function() {
 				var d = new Date();
 				d.setDate(d.getDate() - 1);
@@ -151,5 +159,3 @@ function loadTarget(){
 }
 
 </script>
-
-<% }%>

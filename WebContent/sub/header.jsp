@@ -18,25 +18,30 @@
 	
 	Boolean graphContent = (Boolean) request.getAttribute("graphContent");
 
+
 %>    
 
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+
 <html>
 <head>
-<link rel="icon" type="image/png" href="images/favicon.ico" />
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="content-type"  charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="images/favicon.ico" />
+<link rel="stylesheet" href="<%=sitePathInit%>css/jquery.mobile.structure-1.4.0.css" /> 
+<link rel="stylesheet" href="<%=sitePathInit%>css/jquery.mobile-1.4.0.css"/>
+
 <link rel="stylesheet" type="text/css"  href="<%=sitePathInit%>css/style2.css">
 <link rel="stylesheet" type="text/css" href="<%=sitePathInit%>css/font.css">
-<link type='text/css' href='<%=sitePathInit%>css/jquery.mobile-1.4.0.css' rel='stylesheet' media='screen' />
-
-
+<link rel="stylesheet" type="text/css" href="<%=sitePathInit%>css/nv.d3.css">
 <!-- Contact Form CSS files -->
 <!-- Load jQuery, SimpleModal and Basic JS files -->
 <script type='text/javascript' src='<%=sitePathInit%>js/jquery.js'></script>
 <script type='text/javascript' src='<%=sitePathInit%>js/jquery.mobile-1.4.0.js'></script>
-<script type='text/javascript' src='<%=sitePathInit%>js/Chart.js'></script>
-
+<script type='text/javascript' src='<%=sitePathInit%>js/d3.js' charset="utf-8"></script>
+<script type='text/javascript' src='<%=sitePathInit%>js/nv.d3.js'></script>
+<script type='text/javascript' src='<%=sitePathInit%>js/stream_layers.js'></script>
+<script type='text/javascript' src='<%=sitePathInit%>js/dimple.v1.1.4.min.js'></script>
 <title>Dashboard</title>
 </head>
 

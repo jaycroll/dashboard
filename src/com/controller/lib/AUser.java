@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -71,7 +72,7 @@ public class AUser extends HttpServlet {
 		RolePermission rp=new RolePermission();
 		rp.settingUrl=getServletContext().getRealPath("/");
 		
-		
+		//System.out.println(action);
 		
 		HttpSession sess=request.getSession();
 		        
@@ -90,11 +91,12 @@ public class AUser extends HttpServlet {
 					 sess.setAttribute("roleid",loginState.get("roleid"));
 					 sess.setAttribute("logged",true);
 				}
-		
 				//application/json
 				response.setContentType("text/html");
 				PrintWriter pWrite = response.getWriter();
 				pWrite.println(JSONValue.toJSONString(loginState));
+			 	
+				
 				
 		}else if(action.equals("chkLogged")){
 			

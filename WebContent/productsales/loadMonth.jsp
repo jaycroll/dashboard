@@ -5,102 +5,97 @@
 <%  
 		String sitePathInitMin =request.getContextPath()+"/";
 		CustomHelper ch=new CustomHelper();
-		int[] channels = (int[]) request.getAttribute("channels"); 
-		String[][][] productArray2 = (String[][][]) request.getAttribute("productArray2");
-		
+		Map channelVars = (Map) request.getAttribute("reqVar");
+		String ytd = (String) channelVars.get("YTD");
+		String mtd = (String) channelVars.get("MTD");
+		String targetYtd = (String) channelVars.get("targetYTD");
+		String targetMtd = (String) channelVars.get("targetMTD");
+		String[] monthlySales = (String[]) channelVars.get("monthlySales");
+		String[] monthlyTarget = (String[]) channelVars.get("monthlyTarget");
 %>				
+  <div class="ui-grid-b jqSection" style="margin-top:-2%">	
+	<div class="ui-block-b"><a href="#year" id="OpenYear" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini" style="margin-top:6%">Yearly</a></div>	
+	<div class="ui-block-c"><a href="#month" id="OpenMonth" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini" style="margin-top:6%">Monthly</a></div>	
+  </div>
 
-<script>
-
-
-	function createMonthlyGraph(area,mS,mT){
-		var area = area;
-		var ctx = $("#"+area).get(0).getContext("2d");
-		var myNewChart = new Chart(ctx); 
-		var areas = new Array();
-		var data = {
-				labels : ["J","F","M","A","M","J","J","A","S","O","N","D"],
-				datasets : [
-					{
-						fillColor : "rgba(220,220,220,0.5)",
-						strokeColor : "rgba(220,220,220,1)",
-						data : mS
-					},
-					{
-						fillColor : "rgba(151,187,205,0.5)",
-						strokeColor : "rgba(151,187,205,1)",
-						data: mT
-					}
-				]
-			};
-		var lmt = Math.max.apply(Math, mT); 
-		var lms = Math.max.apply(Math,mS);
-		var largest = 0;
-		if(lmt<lms){
-			 largest = lms;
-			$("#test").append(lms);
-		}	
-		else if(lmt>lms){
-			largest = lmt;
-			
-			$("#test").append(lmt);
-		}
-		else{
-			$("#test").append("100000");
-		}
-		var options={
-				scaleOverride:true,				
-				scaleSteps: 10,
-				scaleStepWidth: Math.ceil(largest/10),
-				scaleStartValue: 0,
-				animation : false
-		};
-		var myNewChart = new Chart(ctx).Bar(data);
-	}			
-	
-
-</script>
-<div id="test"></div>
-<div id="test2"></div>
-<%
-for(int i=0; i<channels[0];i++){
-	if(productArray2[i][0][0] != null){
-	%>
-		<script>
-		var monthlySales = new Array();
-		var monthlyTarget = new Array();
-		for(var x = 1;x<<%=channels[0]%>;x++ ){
-			
-		}
-		</script>
-		<br><br>
-		<div style="border: 1px solid #000000;width:700px;"><div><%=productArray2[i][3][0] %></div><canvas id="<%=productArray2[i][0][0] %>" width="600" height="300" ></canvas></div>
-		<br><br>
+	<div id="year" style="display:none">
+		    <script type="text/javascript">
+		  	var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;	
+		  	var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;	
+		    var svg = dimple.newSvg("#year", width*.8,height);
+		    var data = [
+		                {'Projection': 'MTD', 'Amount': <%=mtd%>,'Type':'Actual'},
+		                {'Projection': 'MTD', 'Amount': <%=targetMtd%>,'Type':'Target'},
+		                {'Projection': 'YTD', 'Amount': <%=ytd%>,'Type':'Actual'},
+		                {'Projection': 'YTD', 'Amount': <%=targetYtd%>,'Type':'Target'},
+		                {'Projection': 'Total', 'Amount': <%=ytd%>,'Type':'Actual'},
+		                {'Projection': 'Total', 'Amount': <%=targetYtd%>,'Type':'Target'},
 		
-	<%
-		for(int j = 0; j<productArray2[i][1].length;j++){
-			if(productArray2[i][1][j]!=null){
-	%>
-					<script>
-						monthlySales[<%=j%>-1] = <%=productArray2[i][1][j]%>;
-					</script>
-				<%
-			}
+		          
+		
+		            ];
+		    var myChart = new dimple.chart(svg, data);
+		    myChart.setBounds(34.5, 20, width*.8, height-(height*.5));
+		    var xAxis = myChart.addCategoryAxis("x", ["Projection","Type"]);
+		    var yAxis = myChart.addMeasureAxis("y","Amount");
+		    xAxis.addOrderRule(["MTD","YTD","Total"]);
+		    
+		    
+		    myChart.addSeries("Type", dimple.plot.bar);
+		
+		    myChart.addLegend(65, 10, width*.8-(width*0.08), 20, "right");
+		    myChart.draw();
+		    if (yAxis.titleShape !== null && yAxis.titleShape !== undefined) {
+		    	yAxis.titleShape.remove();
+		    	}
+		    xAxis.titleShape.remove();
+		  </script>
+	</div>
+	<div id="month" style="display:none">
+			<script type="text/javascript">
+		  	var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;	
+		  	var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;	
+		    var svg = dimple.newSvg("#month", width*.8,height);
+		    var TargetM = new Array();
+		    var ActualM = new Array();
 
-		}
-		for(int j = 0; j<productArray2[i][2].length;j++){
-			if(productArray2[i][2][j]!=null){
-	%>
-					<script>
-						monthlyTarget[<%=j%>-1] = <%=productArray2[i][2][j]%>;
-					</script>
-				<%
-			}
-
-		}
-	%>
-		<script>createMonthlyGraph(<%=productArray2[i][0][0] %>,monthlySales,monthlyTarget);</script>
-	<%
-	}
-}
-%>
+		    var data = [
+		
+						<% for(int a=1;a<13;a++){ %>		
+						{'Month':'<%=strMonths[a]%>','Type':'Target','Amount':<%=monthlyTarget[a]%>},
+						{'Month':'<%=strMonths[a]%>','Type':'Actual','Amount':<%=monthlySales[a]%>},				
+						<% } %>	
+						{'Month':'<%=strMonths[12]%>','Type':'Target','Amount':<%=monthlyTarget[12]%>},
+						{'Month':'<%=strMonths[12]%>','Type':'Actual','Amount':<%=monthlySales[12]%>}			
+		            ];
+		    var myChart = new dimple.chart(svg, data);
+		    myChart.setBounds(34.5, 20, width*.8, height-(height*.5));
+		    var xAxis = myChart.addCategoryAxis("x", ["Month","Type"]);
+		    var yAxis = myChart.addMeasureAxis("y","Amount");
+		    xAxis.addOrderRule(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
+		    xAxis.addOrderRule("Type");
+		    
+		    myChart.addSeries("Type", dimple.plot.bar);
+		
+		    myChart.addLegend(65, 10, width*.8-(width*0.08), 20, "right");
+		    myChart.draw();
+		    if (yAxis.titleShape !== null && yAxis.titleShape !== undefined) {
+		    	yAxis.titleShape.remove();
+		    	}
+		    xAxis.titleShape.remove();
+		  </script>
+	</div>
+	
+	<script>
+		$(document).ready(function(){
+			$("#year").show();
+			$("#OpenYear").click(function(){
+				$("#year").show();
+				$("#month").hide();
+			});
+			$("#OpenMonth").click(function(){
+				$("#month").show();
+				$("#year").hide();
+			});
+		});
+	</script>

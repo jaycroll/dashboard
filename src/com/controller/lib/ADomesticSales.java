@@ -37,6 +37,7 @@ public class ADomesticSales extends HttpServlet{
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 			
 			String action = request.getParameter("action");
+			String channel_id = request.getParameter("channel_id");
 			HttpSession session = request.getSession();
 			CustomHelper ch = new CustomHelper();
 			Map thisVar = new HashMap();
@@ -48,74 +49,88 @@ public class ADomesticSales extends HttpServlet{
 			salesModel.projectFile = getServletContext().getRealPath("");
 			RequestDispatcher view = null;
 			Boolean useDispatcher = false;
+			String YTD = "";
+			String MTD = "";
+			String TargetYTD = "";
+			String TargetMTD = "";
+			int iterator = 1;
+			float[] monthlySales = new float[13];
+			float[] monthlyTarget = new float[13];
+			Map reqVar = new HashMap();
 			//System.out.println("it gets here");
+			// Note: notice the parameters for getString on ResultSets getChannelTargetYTD, getChannelTargetMTD, and
+			// getChannelMonthlyTarget are all "actual_revenue"?
+			//I kind of forgot to rename those. Please rename that parameter in the SalesModel.java to target_amount
 			if(ch.checkMemberSession(session)){
-				
-				if(action.equals("loadMonth")){
-					Map ProjectionMap = new HashMap();
-					Map requestMap = new HashMap();
-
-					useDispatcher = true;
-					view = request.getRequestDispatcher("productsales/loadMonth.jsp");	
-					//request.setAttribute("asd","asd");
+		
+				if(action.equals("loadSales")){
 					
-					ProjectionMap.put("location","Domestic");
-					String[][][] productArray = new String[100][100][100];
-					
-					ResultSet channels = chModel.loadChannelByLocation(ProjectionMap);
-					int[]  i = new int[1];
-					
+					thisVar.put("channel_id", channel_id);
+					ResultSet getChannelYTD = salesModel.ldYearRevenue2(thisVar);
 					try{
-						if(channels.next()){
-							do{
-								
-								ProjectionMap.put("channelid",channels.getString("channel_id"));
-								productArray[i[0]][0][0] = channels.getString("channel_id");
-								//System.out.println(productArray[i[0]][0][0]);
-								//ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
-								ResultSet monthSales = salesModel.ldProductMonthlyRevenue(ProjectionMap,false);
-								ResultSet monthTarget = salesModel.ldProductMonthlyTarget(ProjectionMap, false);
-										try{
-											if(monthSales.next()){
-												do{
-													productArray[i[0]][1][Integer.parseInt(monthSales.getString("month"))] = monthSales.getString("actual_revenue");
-													//System.out.println(Integer.parseInt(monthSales.getString("month"))+"-"+productArray[i[0]][1][Integer.parseInt(monthSales.getString("month"))]);
-												}while(monthSales.next());
-												
-											}
-										}catch(SQLException e){
-											e.printStackTrace();
-										}
-										int a =  1;
-										try{
-											
-											if(monthTarget.next()){
-												
-												do{
-													productArray[i[0]][2][Integer.parseInt(monthTarget.getString("month"))] = monthTarget.getString("actual_revenue");
-													//System.out.println(Integer.parseInt(monthTarget.getString("month"))+"-"+monthTarget.getString("actual_revenue"));
-													//System.out.println(a++);
-													
-												}while(monthTarget.next());
-												
-											}
-										}catch(SQLException e){
-											e.printStackTrace();
-										}
-										productArray[i[0]][3][0] = channels.getString("channel_name");
-										i[0]++;
-								
-							}while(channels.next());
+						getChannelYTD.beforeFirst();
+						if(getChannelYTD.next()){
+							do{YTD = getChannelYTD.getString("actual_revenue");}while(getChannelYTD.next());
 							
 						}
+						reqVar.put("YTD",YTD);
+					}catch(SQLException e){
+						e.printStackTrace();
+					}
+					ResultSet getChannelMTD = salesModel.ldMonthRevenue2(thisVar,false);
+					try{
+						getChannelMTD.beforeFirst();
+						if(getChannelMTD.next()){
+							do{MTD=getChannelMTD.getString("actual_revenue");}while(getChannelMTD.next());
+						}
+						reqVar.put("MTD",MTD);
+					}catch(SQLException e){
+						e.printStackTrace();
+					}
+					ResultSet getChannelTargetYTD = salesModel.ldProductYearlyTarget(thisVar,false);
+					try{
+						getChannelTargetYTD.beforeFirst();
+						if(getChannelTargetYTD.next()){
+							do{TargetYTD = getChannelTargetYTD.getString("actual_revenue");}while(getChannelTargetYTD.next());
+						}
+						reqVar.put("TargetYTD",TargetYTD);
 					}catch(SQLException e){
 						e.printStackTrace();
 					}
 					
-					request.setAttribute("productArray2",productArray);
-					request.setAttribute("channels", i);
-					//System.out.println(i[0]);
-					
+					ResultSet getChannelTargetMTD = salesModel.ldProductMonthTarget(thisVar,false);
+					try{
+						getChannelTargetMTD.beforeFirst();
+						if(getChannelTargetMTD.next()){
+							do{TargetMTD = getChannelTargetMTD.getString("actual_revenue");}while(getChannelTargetMTD.next());					
+						}
+						reqVar.put("TargetMTD",TargetYTD);
+					}catch(SQLException e){
+						e.printStackTrace();
+					}
+					ResultSet getChannelMonthlySales = salesModel.ldProductMonthlyRevenue(thisVar, false);
+					try{
+						getChannelMonthlySales.beforeFirst();
+						if(getChannelMonthlySales.next()){
+							monthlySales[Integer.parseInt(getChannelMonthlySales.getString("month"))] = Float.parseFloat(getChannelMonthlySales.getString("actual_revenue"));
+						}
+						reqVar.put("monthlySales",monthlySales);
+					}catch(SQLException e){
+						e.printStackTrace();
+					}
+					ResultSet getChannelMonthlyTarget = salesModel.ldProductMonthlyTarget(thisVar,false);
+					try{
+						getChannelMonthlyTarget.beforeFirst();
+						if(getChannelMonthlyTarget.next()){
+							monthlyTarget[Integer.parseInt(getChannelMonthlyTarget.getString("month"))]=Float.parseFloat(getChannelMonthlyTarget.getString("actual_revenue"));
+						}
+						reqVar.put("monthlyTarget",monthlyTarget);
+					}catch(SQLException e){
+						e.printStackTrace();
+					}
+					request.setAttribute("reqVar",reqVar);
+					useDispatcher = true;
+					view = request.getRequestDispatcher("productsales/loadMonth.jsp");
 				}
 				if(useDispatcher=true){
 					response.setHeader("Cache-control","private, no-store, no-cahce,must-revalidate");

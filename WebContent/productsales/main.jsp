@@ -3,163 +3,111 @@
 <%@ page import="com.misc.lib.RolePermission" %> 
 <%@ page import="com.model.lib.*" %>
 <%@ page import="java.sql.*" %>
-<% 
-	HttpSession sMain=request.getSession();
-	RolePermission rpMain=new RolePermission();
+<%
+	HttpSession sMain = request.getSession();
+	RolePermission rpMain = new RolePermission();
 	rpMain.gAppProperties(request.getRealPath("/"));
-	String[][] productArray = (String[][]) request.getAttribute("productArray");
-	int[] arrayLength = (int[]) request.getAttribute("channels");
-	String[] loc = (String[]) request.getAttribute("loc");
-	String[] classCss = (String[]) request.getAttribute("classCSS");
-%>
-<div id="header" align="center"><img src="<%=sitePathInit%>images/ppe-blk.png"/></div>
-<div id="title">
-	<a href="<%=sitePathInit %>" class="lucida_21_black"><img src="<%=sitePathInit%>images/productsales_small.png" align="absmiddle"/>Dashboard</a>
-	
-</div>
-<% if(loggedState){%>
-<div id="menu">
-<div id="menu-right" class="lucida_12_tungsten_b"> Hello, <%=sess.getAttribute("username")%> (<%=sess.getAttribute("rolename")%>). <a href="<%=sitePathInit%>User/logout"><span class="lucida_12_red_b">Logout</span></a></div>
-<div id="menu-left">
-	<ul class="map">
-	<li id="domestic"><a href="<%=sitePathInit%>DomesticProducts" title="menu1" class="<%=classCss[0]%>"><span class="displace"></span></a></li>
-	<li id="international"><a href="<%=sitePathInit%>InternationalProducts" title="menu2" class="<%=classCss[1]%>"><span class="displace"></span></a></li>
-
-    </ul>
-</div>
-</div>
-
-
-
-<div id="submenu-right">
-	<ul class="tab jqSection">
-		<li><a href="<%=sitePathInit+"/"+loc[0]%>" class="ibtntabs active" alt='loadDefault'>Snapshot</a></li>
-		<li><a href="javascript:void(0);" class="ibtntabs" alt='loadMonth'>Monthly</a></li>
+	String[][] channelList = (String[][]) request.getAttribute("channelList");
+	String disabled="";
+	String display_1="";
+	String display_2="";
+	String display_11="";
+	String display_21="";
+	if(loggedState){
 		
-	</ul>
-</div>
-
-
-<br><br>
-<script>
-
-
-	function createYTDGraph(area,ay,ty){
-		var area = area;
-		var ctx = $("#"+area).get(0).getContext("2d");
-		var myNewChart = new Chart(ctx);
-		var areas = new Array();
-		var data = {
-				labels : ["MTD","YTD","Total"],
-				datasets : [
-					{
-						fillColor : "rgba(220,220,220,0.5)",
-						strokeColor : "rgba(220,220,220,1)",
-						data : ay
-					},
-					{
-						fillColor : "rgba(151,187,205,0.5)",
-						strokeColor : "rgba(151,187,205,1)",
-						data : ty
-					}
-				]
-			};
-		var lmt = Math.max.apply(Math, ty); 
-		var lms = Math.max.apply(Math,ay);
-		var largest = 0;
-		if(lmt<lms){
-			 largest = lms;
-		}
-		else{
-			largest = lmt;
-		}
-		var options={
-				scaleOverride:true,				
-				scaleSteps: 10,
-				scaleStepWidth: Math.ceil(largest/10),
-				scaleStartValue: 0
-		};
-		var myNewChart = new Chart(ctx).Bar(data,options);
-	}			
-
-
-	
-</script>
-
-<form id='formTarget'>
-<div id="content">
-
-<% if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),7,6)){	%>  
-		<% 
-			for(int i = 0;i<arrayLength[0];i++){
-			%>
-				<div><%=productArray[i][3]%></div>
-				<div style="border: 1px solid #000000;width:700px;">
-					<canvas id="<%=productArray[i][0]%>" width="600" height="300" ></canvas>
-				</div>
-				<script>
-					var actual = new Array();
-					var target = new Array();
-					
-					actual.push("<%=productArray[i][2]%>");
-					actual.push("<%=productArray[i][1]%>");
-					actual.push("<%=productArray[i][1]%>");
-					target.push("<%=productArray[i][5]%>");
-					target.push("<%=productArray[i][4]%>");
-					target.push("<%=productArray[i][4]%>");
-					<%//System.out.println(productArray[i][5]);%>
-					createYTDGraph(<%=productArray[i][0]%>,actual,target);
-				</script>
-			<%
-			}
-		%>
-<% }else{ %>
-		
-		<div style='clear:both'>&nbsp;</div>
-		<div  class='divCenter txtCenter'>
-			  <div class='access_denied'>Access Denied</div>
-			  <div class='clr'>&nbsp;</div>
-			  <div class='clr'><a  style='color:#3E7836;' href="<%=sitePathInit%>">Back to Main</a></div>
-              <div class='clr'>&nbsp;</div>
-	    </div>
-<% } %>
-<%--include file="../target/loadDefault.jsp" --%>
-		
-</div>
-<input type='hidden' name='action' class='jqAction' value='loadDefault'> 
-</form>
-<script>
-$(".jqSection .ibtntabs").click(function () {
-	
-	if(checkLogged()){
+		 if(rpMain.verifyModule(Integer.parseInt(sMain.getAttribute("roleid").toString()),8,6)){
+			 disabled="";
+		     display_11="";
+			 display_21="display:none";
+			 disabled="";
 			
-		$(".jqSection").find(".ibtntabs").removeClass("active");	
-		$(this).addClass("active");
+		 }
+		 else{
+			 disabled="ui-disabled";
+			 display_11="display:none";
+			 display_21="";
+		 }
+	}else{
 		
-		$(".jqAction").val($(this).attr("alt"));
-		
-		if(checkPermission(7,6)){
-			mainModule=true;
-		}else{
-			mainModule=false;
-		}
-		
-  		if(mainModule){		
-  			
-  		}
-  		
-  		$("#content").empty();
-			$.post("<%=sitePathInit%><%=classCss[2]%>",{action:$(this).attr("alt")},
-					function(data){
-							$("#content").append(data);
-		});
-  	}else{
-			window.location='<%=sitePathInit%>';
-	}	
+		display_1="";
+		display_2="display:none";
+	}
+%>
+
+<div id ="productSales">
+
+	<div data-role="panel" id="mypanel" data-display="overlay" data-position="right">
+	    <ul data-role="listview" data-theme="a" data-divider-theme="a" data-count-theme="a">
+	    <li data-role="list-divider" style="font-weight:normal;font-size:20px;">Product Sales Menu</li>
+	    <li><a href="<%=sitePathInit%>DomesticProducts" class="<%=disabled%>" style="font-weight:normal;">Domestic Sales Projection</a></li>
+	    <li><a href="<%=sitePathInit%>InternationalProduts" class="<%=disabled%>" style="font-weight:normal;">International Sales Projection</a></li>
+	    <li><a href="<%=sitePathInit%>" style="font-weight:normal;">Home Page</a></li>
+	</ul>
+	</div>
+	<div data-role="header" align="center" style="border:0px;margin-bottom:2%;">
+			<img src="<%=sitePathInit%>images/ppe-black.svg"  style="width:325px; "/>		
+	</div>
+	<div data-role="header" style="border:0px">
+	  		<div id="title2">Dashboard</div>
+	  		<a href="" class="jq_btnLogout ui-btn ui-btn-a ui-corner-all  ui-btn-block " style="<%=display_1%>; font-size:14px"><span class="">Logout</span></a>
+	  		<a href="#mypanel" class="ui-btn ui-btn-a ui-corner-all  ui-btn-block " style="<%=display_1%>; font-size:14px"><span class="" >Menu</span></a>
+	</div>
+	<div data-role="content" style="<%=display_11%>">
+		<div class="ui-grid-solo">	
+				Select Product:
+			    <form>
+				<fieldset data-role="controlgroup" data-type="horizontal">
+			    	<label for="select2">Product:</label>
+			    	<select name="territory" name="select2" id="product" data-inline="true" data-mini="true">
+			    		<option value="" >--Product--</option>
+							<%
+								for(int i = 0; i<channelList.length;i++){
+									%>
+										<option value="<%=channelList[i][0]%>"><%=channelList[i][1] %></option>
+									<%
+								}
+							%>
+				    </select>
+				</fieldset>
+				</form>
+		</div>
+		<div class="ui-grid-solo" id="content5">	
+		</div>
+	</div>
+	<div data-role="content" style="<%=display_21%>">
+		<div class="ui-grid-solo content" style="text-align:center">
+				  <div class=''>Access Denied</div>
+				  <br>
+				  <div class=''><a  style='color:#3E7836;' href="<%=sitePathInit%>">Back to Main</a></div>
+		</div>
+	</div>
+</div>
+<script type='text/javascript' src='<%=sitePathInit%>include/login.jsp'></script>
+<script type='text/javascript' src='<%=sitePathInit%>include/custom.jsp'></script>
+</div>
+<script>
+$(document).ready(function(){
+
+		$("#content5").html("");	
+
+
+});
+$("#product").change(function(){
+	var str = "";
+    $( "#product option:selected" ).each(function() {
+      str += $( this ).val();
+      $("#content5").empty();
+   	loadProductProjection(str);
+    	});
+	
 });
 
-
+function loadProductProjection(channel_id){
+	var channel_id = channel_id;
+	$.post("<%=sitePathInit%>ADomesticSales",{action:'loadSales',channel_id:channel_id},
+			   function(data){
+	
+		$("#content5").append(data);
+	});
+}
 </script>
-
-
-<% }%>

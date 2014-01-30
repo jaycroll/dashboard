@@ -529,6 +529,31 @@ public class ProjectionModel{
          return rs;
          
      }
+public ResultSet loadAreas(Map det){
+         
+         String query="";
+         ResultSet rs=null;
+         
+         try{
+                  this.fetchProperties();
+                  Statement st = this.connection.createStatement();
+                   query= "SELECT "+this.salesDB +".areas.areaname, "+this.salesDB+".areas.areaid,"+this.salesDB+".territories.territoryid "
+                		 +"FROM "+this.salesDB+".areas, "+this.salesDB+".territories "
+                		 +"WHERE "+this.salesDB+".areas.territoryid = "+this.salesDB+".territories.territoryid ";
+                  
+                   rs = st.executeQuery(query);
+                  //st.close();
+          } catch (SQLException e) {
+                   System.err.println("SQLException: "
+                             +e.getMessage());
+               System.err.println("SQL Query: "+query);
+          } catch (Exception e){
+                                  System.out.println("Error in fetching"+e);
+          }        
+        
+         return rs;
+         
+     }
      public ResultSet loadAgentsFromAreas(Map det){
          
          String query="";

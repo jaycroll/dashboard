@@ -8,20 +8,36 @@
 		
 		}
 		
-#title{
-	font-size:21px;
-	font-family: 'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;	
+#title2{
+	font-size:26px;
+	font-family: Lucida Sans Unicode, Tahoma, Verdana, Arial, sans-serif;	
 	width:auto;
 	height: 53px;
 	margin-top:5px;
 	margin-bottom:5px;
 	text-align:center;
-	
+	font-weight:normal !important; 
 	color:#000;
 	text-decoration:none;
 }
+#title3{
+	font-size:21px;
+	font-family: Lucida Sans Unicode, Tahoma, Verdana, Arial, sans-serif;
+	font-weight: bold;	
+	width:auto;
+	height: 53px;
+	margin-top:2%;
+	margin-bottom:1%;
+
+}
 
 /******CONTAINERS*****/
+#index .ui-header {
+    background: #FFFFFF !important;
+    padding-bottom: 1% !important;
+    font-weight:lighter !important;
+    font-size: 24px;
+}
 
 #login-container{
 	width:100%;
@@ -73,6 +89,18 @@
     -moz-border-radius: 20px; /* Firefox */
     -webkit-border-radius: 20px; /* Safari, Chrome */
 }
+
+.sLoginStatus{
+	font-size: 14px;
+	color:#B70000;
+	font-weight: bold;
+}
+.table-header-blue{
+	background-color:#29ABE2;
+	color:#ffffff;
+	text-shadow: 0 /*{a-bar-shadow-x}*/ -1px /*{a-bar-shadow-y}*/ 0 /*{a-bar-shadow-radius}*/ 	#6060CC /*{a-bar-shadow-color}*/;
+}
+
 /****CONTAINERS END****/
 
 
@@ -89,43 +117,21 @@
 	position: inherit;
 
 }
-.icon1{
-	background: url("../images/mobile/target_large.png");
-	background-size: 222px 259px;
-	width: 1px;
-	height: 1px;
-	padding: 125px 113px;
-	float: left;
-	
+.icon-target{
+	background-image:url('../images/target.svg');
+	background-size:127px 97px;
 
-	
+	background-repeat:no-repeat;
+	padding:127px;
+	width: 10px;
+	height:1px;
 }
-.icon2{
-	background: url("../images/mobile/velocity_large.png");
-	background-size: 222px 259px;
-	width: 1px;
+.icon-velocity:after{
+	background-image:url('../images/velocity.svg');
+	background-size: 127px 97px;
+	padding: 90px 90px;
+	width:1px;
 	height: 1px;
-	padding: 125px 113px;
-	float: left;
-
-}
-.icon3{
-	background: url("../images/mobile/product_sales_large.png");
-	background-size: 222px 259px;
-	width: 1px;
-	height: 1px;
-	padding: 125px 113px;
-	float: left;
-	
-}
-.icon4{
-	background: url("../images/mobile/access_large.png");
-	background-size: 222px 259px;
-	width: 1px;
-	height: 1px;
-	padding: 125px 113px;
-	float: left;
-	
 }
 
 /*****ICONS-END*****/
@@ -135,7 +141,7 @@
 /******FONTS-END****/
 
 /****MODAL ELEMENTS****/
-#mask {
+.mask {
 	display: none;
 	position: absolute; left: 0; top: 0;
 	 

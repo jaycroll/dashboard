@@ -49,7 +49,7 @@ public class User extends HttpServlet {
 		
 		RequestDispatcher view=null;
 		Boolean useDispatcher=false;
-		 
+		//System.out.println(action);
 		if(ch.checkMemberSession(sess)){
 			
 			if(action==null){
@@ -87,7 +87,9 @@ public class User extends HttpServlet {
 				 sess.setAttribute("loggedhash",null);
 				 sess.setAttribute("username",null);
 				 sess.setAttribute("logged",null);
-				 response.sendRedirect("/Dashboard");
+				 sess.setAttribute("logout","logout");
+				 response.setContentType("text/html");
+				 PrintWriter pWrite = response.getWriter();
 			
 			}else if(action.equals("AddAccess")){
 				
@@ -161,7 +163,7 @@ public class User extends HttpServlet {
 				view.forward(request, response); 
 			}
 		}else{
-			response.sendRedirect("/Dashboard");
+			response.sendRedirect("/Dashboard_mobile");
 		}
 		 
 	}
@@ -171,7 +173,45 @@ public class User extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String action	= request.getParameter("action");
+		HttpSession sess=request.getSession();
+		CustomHelper ch=new CustomHelper();
+		
+		UserModel usr=new UserModel();
+		usr.projectFile=getServletContext().getRealPath("");
+		
+		RequestDispatcher view=null;
+		Boolean useDispatcher=false;
+		//System.out.println(action);
+		if(ch.checkMemberSession(sess)){
+			
+			if(action.equals("logout")){
+				
+				 useDispatcher=false;
+				 //Destroy Session
+				 sess.setAttribute("userid",null);
+				 sess.setAttribute("loggedhash",null);
+				 sess.setAttribute("username",null);
+				 sess.setAttribute("logged",null);
+				 sess.invalidate();
+				 System.out.println("itgetshere");
+				 
+				 response.setContentType("text/html");
+				 PrintWriter pWrite = response.getWriter();
+			
+			}
+			
+		
+			if(useDispatcher){	
+				response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
+				response.setHeader("Pragma", "no-cache");
+				view.forward(request, response); 
+			}
+		}else{
+			response.sendRedirect("/Dashboard_mobile");
+		}
+		 
 	}
-
 }
+
+

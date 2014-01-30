@@ -50,83 +50,35 @@ public class DomesticSales extends HttpServlet{
 			classCSS[2] = "ADomesticSales";
 			if(ch.checkMemberSession(session)){
 
-				if(action==null){
+				if(action == null){
 					Map ProjectionMap = new HashMap();
 					Map requestMap = new HashMap();
 					
-// Who ever is going to be the next developer of this system	
-// I'd just want to point out a few things 
-// Notice the String Arrays? I hard coded them and yeah, i was lazy back then to fix that. soooo
-// sorry for the trouble but could you fix that too? :D thanks, probably im 
-// already busy with other projects so again sorry for the small details that i left out
 					useDispatcher = true;
-					view = request.getRequestDispatcher("productsales/main.jsp");	
+					view = request.getRequestDispatcher("productsales/main.jsp");
 					
-					ProjectionMap.put("location","Domestic");
-					String[][] productArray = new String[100][100];
-					String[] loc = new String[1];
-					loc[0] = "DomesticProducts";
-					request.setAttribute("loc", loc);
+					ProjectionMap.put("location", "Domestic");
+
 					ResultSet channels = chModel.loadChannelByLocation(ProjectionMap);
-					
-					int[]  i = new int[1];
 					try{
+						channels.last();
+						int channelCount = channels.getRow();
+						String[][] channelList = new String[channelCount][2];
+						int iterator = 0;
+						channels.beforeFirst();
 						if(channels.next()){
 							do{
-								ProjectionMap.put("channelid",channels.getString("channel_id"));
-								productArray[i[0]][0] = channels.getString("channel_id");
-								
-								ResultSet yearSales = salesModel.ldYearRevenue2(ProjectionMap);
-								ResultSet monthSales = salesModel.ldMonthRevenue2(ProjectionMap,false);
-								ResultSet yearTarget = salesModel.ldProductYearlyTarget(ProjectionMap, false);
-								ResultSet monthTarget = salesModel.ldProductMonthTarget(ProjectionMap, false);
-								try{
-									if(yearSales.next()){
-										productArray[i[0]][1] = yearSales.getString("actual_revenue");
-										
-										///System.out.println(productArray[i[0]][1]);
-									}
-								}catch(SQLException e){
-									
-								}
-								try{
-									if(monthSales.next()){
-										productArray[i[0]][2] = monthSales.getString("actual_revenue");
-										//System.out.println(productArray[i[0]][2]);
-									}
-								}catch(SQLException e){
-									e.printStackTrace();
-								}
-								try{
-									if(yearTarget.next()){
-										productArray[i[0]][4] = yearTarget.getString("actual_revenue");
-										//System.out.println(productArray[i[0]][0] +" - "+ productArray[i[0]][5]);
-										//System.out.println();
-										
-									}
-								}catch(SQLException e){
-									e.printStackTrace();
-								}
-								try{
-									if(monthTarget.next()){
-										productArray[i[0]][5] = monthTarget.getString("actual_revenue");
-										//System.out.println(productArray[i[0]][2]);
-									}
-								}catch(SQLException e){
-									e.printStackTrace();
-								}
-								productArray[i[0]][3] = channels.getString("channel_name");
-								i[0]++;
+								channelList[iterator][0] = channels.getString("channel_id");
+								channelList[iterator][1] = channels.getString("channel_name");
+								iterator++;
 							}while(channels.next());
-							
 						}
+						request.setAttribute("channelList", channelList);
 					}catch(SQLException e){
 						e.printStackTrace();
 					}
+				}
 					request.setAttribute("classCSS",classCSS);
-					request.setAttribute("productArray",productArray);
-					request.setAttribute("channels", i);
-					//System.out.println(i[0]);
 					
 				}
 				if(useDispatcher=true){
@@ -135,7 +87,7 @@ public class DomesticSales extends HttpServlet{
 					view.forward(request, response);
 				}
 			}
-		}
+
 		/**
 		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 		 */

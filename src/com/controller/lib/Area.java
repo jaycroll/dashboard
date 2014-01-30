@@ -73,51 +73,51 @@ public class Area extends HttpServlet {
 				Map areaid = new HashMap();
 				ResultSet agentlist=usr.loadSalesUser(det);
 				ResultSet getTerritory = area.loadTerritory();
+				ResultSet getAreas = proj.loadAreas(det);
 				
-				String[] territories = new String[100];
-				String[] areas = new String[100];//<--sucks cause i made this one static :/ i'll call you pro if you it dynamic :D
-				String[] isSelected = new String[100];
-				int Areaid = 0;
-				int Territoryid = 0;
+				//String[] areas = new String[100];//<--sucks cause i made this one static :/ i'll call you pro if you it dynamic :D
 				try{
-					if(getTerritory.next()){
+					getTerritory.last();
+					int territoryCount = getTerritory.getRow();
+					String[][] territories = new String[territoryCount][2];
+					int a = 0;
+					getTerritory.beforeFirst();
+					if(getTerritory.next()){						
 						do{
-							Territoryid = Integer.parseInt(getTerritory.getString("territoryid"));
-							for(int i = 1; i < territories.length; i++){
-								if(i == Territoryid){
-									territories[i] = getTerritory.getString("territoryname");
-									//System.out.println(territories[i]);
-									areaid.put("territoryid",i);
-									ResultSet getArea = proj.loadAreasFromTerritory(areaid);
-									try{
-										if(getArea.next()){
-											do{
-												Areaid = Integer.parseInt(getArea.getString("areaid"));
-												for(int j = 1; j < areas.length; j++){
-													if(j == Areaid){
-														areas[j] = getArea.getString("areaid");
-														//System.out.println(areas[j]);
-													}
-												}
-											}while(getArea.next());
-										}
-									}catch(SQLException e){
-										e.printStackTrace();
-									}
-								}
-							}
+							territories[a][0] = getTerritory.getString("territoryid");
+							territories[a][1] = getTerritory.getString("territoryname");
+							a++;
 						}while(getTerritory.next());
 					}
-					
+					request.setAttribute("territories",territories);
 				}catch(SQLException e){
 					e.printStackTrace();
 				}
+
+				try {
+					getAreas.last();
+					int totalRowCount = getAreas.getRow();
+					String[][] areas = new String[totalRowCount][3];
+					String sAreas = "";
+					System.out.println(totalRowCount);
+					getAreas.beforeFirst();
+					//System.out.println(totalRowCount);
+					int i = 0;
+					if(getAreas.next()){
+						do{
+						areas[i][0] = getAreas.getString("areaid");
+						areas[i][1] = getAreas.getString("areaname");
+						areas[i][2] = getAreas.getString("territoryid");
+						i++;	
+						}while(getAreas.next());
+					}
+					//System.out.println(sAreas);
+					request.setAttribute("areas",areas);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
-				request.setAttribute("areas",areas);
-				request.setAttribute("isSelected",isSelected);
-				request.setAttribute("territories",territories);
-				request.setAttribute("territoryList", getTerritory);
-				request.setAttribute("agentlist",agentlist);
 				//request.setAttribute("loadTerritory", getTerritory);
 				
 				

@@ -60,7 +60,7 @@ public class AProjection extends HttpServlet {
 		CustomHelper ch=new CustomHelper();
 		proj.projectFile=getServletContext().getRealPath("");
 		HttpSession sess=request.getSession();
-		
+		//System.out.println(action);
 		
 		if(action.equals("loadDefault")){
 		

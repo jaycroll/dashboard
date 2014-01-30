@@ -64,120 +64,146 @@ public class AArea extends HttpServlet {
 		proj.projectFile=getServletContext().getRealPath("");
 		HttpSession sess=request.getSession();
 		String territoryid = request.getParameter("territoryid");
+		String areaid = request.getParameter("areaid");
 		
+		//System.out.println(action);
+
 		
 
-		if(action.equals("loadAreas")){
-		   
+		if(action.equals("loadProjection")){
+	
 		   	Map det=new HashMap();
 			 useDispatcher=true;
 			 det.put("revenue_type", "Sales");
 			 det.put("year",ch.formatDate("yyyy"));
-			 ResultSet detSales=proj.loadProjectionMonthly(det);
-			 
+			 det.put("areaid", areaid);
+			 //ResultSet detSales=proj.loadProjectionMonthly(det);
+			 ResultSet teamLead = proj.loadTeamLeaderFromAreas(det);
+			 ResultSet team = proj.loadAgentsFromAreas(det);
+			 ResultSet targetYtd = proj.loadAreaTargetYTD(det);
+			 ResultSet targetMtd = proj.loadAreaTargetMTD(det);
+			 ResultSet actualYtd = proj.loadAreaSalesYTD(det);
+			 ResultSet actualMtd = proj.loadAreaSalesMTD(det);
+			 ResultSet actualMonthly = proj.loadAreaMonthlySales(det, false);
+			 ResultSet targetMonthly = proj.loadAgentsMonthlyTarget(det, false);
+			 Map areaInfo = new HashMap();
 			 //System.out.println(territoryid);
-			 String[] territories = new String[100];
-			 String[] areas = new String[100];
-			 String[] areaId = new String[100];
-			 String[][][][] testArray = new String[100][10][100][2];
-			 String[][] testArray2 = new String[10][10];
-			 
-			
-			 try{
-					det.put("territoryid",territoryid);
-					ResultSet getAreas = proj.loadAreasFromTerritory(det);
-					int i = 0;
-					int j = 2;
-					int m = 0;
-					if(getAreas.next()){
-						 do{
-							 
-							 	i++;
-							  if(!getAreas.getString("areaname").equals(null)){
-								  testArray[i][0][0][0] = getAreas.getString("areaname");
-								  testArray[i][1][0][0] = getAreas.getString("areaid");
-								  det.put("areaid",getAreas.getString("areaid"));
-								  ResultSet getTeamleader = proj.loadTeamLeaderFromAreas(det);
-								  ResultSet getAgents = proj.loadAgentsFromAreas(det);
-								  ResultSet getTargetMTD = proj.loadAreaTargetMTD(det);
-								  ResultSet getSalesMTD = proj.loadAreaSalesMTD(det);
-								  ResultSet getTargetYTD = proj.loadAreaTargetYTD(det);
-								  ResultSet getSalesYTD = proj.loadAreaSalesYTD(det);
-								  ResultSet getAMT = proj.loadAgentsMonthlyTarget(det, false);
-								  ResultSet getAMS = proj.loadAreaMonthlySales(det, false);
-								  System.out.println("Area: "+testArray[i][0][0][0]);
-								  if(getTeamleader.next()){  
-									 testArray[i][2][1][1] = getTeamleader.getString("userfirstname")+" "+getTeamleader.getString("userlastname");	
-									 testArray[i][2][1][0] = getTeamleader.getString("userid");	
-									 System.out.println("		Team Leader:"+testArray[i][2][1][1]);
-									 
-								  }
-								  
-								  System.out.println("			Agents:");
-								  if(getAgents.next()){
-									  do{
-										  if(!getAgents.getString("userid").equals(null)){
-											  testArray[i][2][j][0] = getAgents.getString("userid");
-											  testArray[i][2][j][1] = getAgents.getString("userfirstname")+" "+getAgents.getString("userlastname");
-											  System.out.println("				"+testArray[i][2][j][1]);
-											  j++;
-										  }
-										 
-									  }while(getAgents.next());
-									  
-								  }
-								  
-								  
-								  if(getTargetMTD.next()){
-									  testArray[i][4][0][0] = getTargetMTD.getString("target_amount");
-									  System.out.println("		Target MTD:"+testArray[i][4][0][0]);
-								  }
-								  if(getSalesMTD.next()){
-									  testArray[i][3][0][0] = getSalesMTD.getString("totalsales");
-									  System.out.println("		 Sales MTD:"+testArray[i][3][0][0]);
-								  }
-								  if(getTargetYTD.next()){
-									  testArray[i][4][0][1] = getTargetYTD.getString("target_amount");
-									  System.out.println("		Target YTD:"+testArray[i][4][0][1]);
-								  }
-								  if(getSalesYTD.next()){
-									  testArray[i][3][0][1] = getSalesYTD.getString("totalsales");
-									  System.out.println("		Sales YTD:"+testArray[i][3][0][1]);
-								  }
-								  System.out.println("			Target Sales:");
-								  if(getAMT.next()){
-									  do{
-										  if(!getAMT.getString("month").equals(null)){
-											  int month = Integer.parseInt(getAMT.getString("month"));
-											  testArray[i][5][month][0] = getAMT.getString("target_amount");
-											  System.out.println("Month:"+month+ "Sales:"+testArray[i][5][month][0]);
-										  }
-									  }while(getAMT.next());
-								  }
-								  System.out.println("			Actual Sales:");
-								  if(getAMS.next()){
-									  do{
-										  if(!getAMS.getString("month").equals(null)){
-											  int month = Integer.parseInt(getAMS.getString("month"));
-											  testArray[i][6][month][0] = getAMS.getString("totalpayment");
-											  System.out.println("Month:"+month+ "Sales:"+testArray[i][6][month][0]);
-										  }
-									  }while(getAMS.next());
-								  }
+			 	try{
+				 	String[] teamLeadinfo = new String[3];
 
-							  }
-						  } while (getAreas.next());
+					if(teamLead.next()){
+						do{
+							teamLeadinfo[0] = teamLead.getString("userid");
+							teamLeadinfo[1] = teamLead.getString("userfirstname");
+							teamLeadinfo[2] = teamLead.getString("userlastname");
+							//System.out.println(teamLeadinfo[1]);
+						}while(teamLead.next());
 					}
-					
+					areaInfo.put("teamLeadInfo", teamLeadinfo);
 				}catch(SQLException e){
 					e.printStackTrace();
 				}
+			 	try{
+			 		team.last();
+			 		int rowCount = team.getRow();
+			 		String[][] teamMemberinfo = new String[rowCount][3];
+			 		team.beforeFirst();
+			 		int iterator = 0;
+			 		if(team.next()){
+			 			do{
+			 				teamMemberinfo[iterator][0] = team.getString("userid");
+			 				teamMemberinfo[iterator][1] = team.getString("userfirstname");
+			 				teamMemberinfo[iterator][2] = team.getString("userlastname");
+			 				
+			 				
+			 				iterator++;
+			 			}
+			 			while(team.next());
+			 			
+			 		}
+			 		areaInfo.put("teamMembers", teamMemberinfo);
+			 		
+			 	}catch(SQLException e){
+			 		e.printStackTrace();
+			 	}
+			 	try{
+			 		targetYtd.beforeFirst();
+			 		String targetYtdContainer ="";
+			 		if(targetYtd.next()){
+			 			targetYtdContainer = targetYtd.getString("target_amount");
+			 		}
+			 		areaInfo.put("targetYtd",targetYtdContainer);
+			 	}
+			 	catch(SQLException e){
+			 		e.printStackTrace();
+			 	}
+			 	try{
+			 		targetMtd.beforeFirst();
+			 		String targetMtdContainer = "";
+			 		if(targetMtd.next()){
+			 			targetMtdContainer = targetMtd.getString("target_amount");
+			 		}
+			 		areaInfo.put("targetMtd",targetMtdContainer);
+			 	}catch(SQLException e){
+			 		e.printStackTrace();
+			 	}
+			 	try{
+			 		actualYtd.beforeFirst();
+			 		String actualYtdContainer="";
+			 		if(actualYtd.next()){
+			 			actualYtdContainer = actualYtd.getString("totalsales");
+			 		}
+			 		areaInfo.put("actualYtd",actualYtdContainer);
+			 	}catch(SQLException e){
+			 		e.printStackTrace();
+			 	}
+			 	try{
+			 		actualMtd.beforeFirst();
+			 		String actualMtdContainer = "";
+			 		if(actualMtd.next()){
+			 			actualMtdContainer = actualMtd.getString("totalsales");
+			 		}
+			 		areaInfo.put("actualMtd", actualMtdContainer);
+			 	}catch(SQLException e){
+			 		
+			 	}
+			 	try{
+			 		actualMonthly.last();
+			 		int iterator_2 = actualMonthly.getRow();
+			 		actualMonthly.beforeFirst();
+			 		float[] monthlySales = new float[13];
+			 		
+
+			 		if(actualMonthly.next()){
+			 			do{
+
+			 				monthlySales[Integer.parseInt(actualMonthly.getString("month"))] = Float.parseFloat(actualMonthly.getString("totalpayment")); 
+			 				System.out.println(Integer.parseInt(actualMonthly.getString("month"))+"-Actual ");
+			 			}while(actualMonthly.next());
+			 		}
+			 		areaInfo.put("monthlySales", monthlySales);
+			 	}catch(SQLException e){
+			 		e.printStackTrace();
+			 	}
+			 	try{
+			 		targetMonthly.last();
+			 		targetMonthly.beforeFirst();
+			 		float[] monthlyTarget = new float[13];
+			 		if(targetMonthly.next()){
+			 			do{
+			 					//if(targetMonthly.getString("target_amount")!=null || targetMonthly.getString("target_amount")!=""){
+			 					monthlyTarget[Integer.parseInt(targetMonthly.getString("month"))] = Float.parseFloat(targetMonthly.getString("target_amount"));
+			 					System.out.println(Integer.parseInt(targetMonthly.getString("month"))+"-Target");
+			 			}while(targetMonthly.next());
+			 		}
+			 		areaInfo.put("monthlyTarget",monthlyTarget);
+			 	}catch(SQLException e){
+			 		e.printStackTrace();
+			 	}
+			 	
 					
 		
-			request.setAttribute("areas",areas);
-			request.setAttribute("areaId", areaId);
-			request.setAttribute("testArray",testArray);
-	
+			request.setAttribute("areaInfo",areaInfo);
 			
 			view = request.getRequestDispatcher("area/loadMonth.jsp");
 			response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
