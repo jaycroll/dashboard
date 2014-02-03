@@ -5,13 +5,15 @@
 <%  
 		String sitePathInitMin =request.getContextPath()+"/";
 		CustomHelper ch=new CustomHelper();
+		String[] strMonths=ch.loadShortMonths();
 		Map channelVars = (Map) request.getAttribute("reqVar");
 		String ytd = (String) channelVars.get("YTD");
 		String mtd = (String) channelVars.get("MTD");
-		String targetYtd = (String) channelVars.get("targetYTD");
-		String targetMtd = (String) channelVars.get("targetMTD");
-		String[] monthlySales = (String[]) channelVars.get("monthlySales");
-		String[] monthlyTarget = (String[]) channelVars.get("monthlyTarget");
+		String targetYtd = (String) channelVars.get("TargetYTD");
+		String targetMtd = (String) channelVars.get("TargetMTD");
+		float[] monthlySales = (float[]) channelVars.get("monthlySales");
+		float[] monthlyTarget = (float[]) channelVars.get("monthlyTarget");
+
 %>				
   <div class="ui-grid-b jqSection" style="margin-top:-2%">	
 	<div class="ui-block-b"><a href="#year" id="OpenYear" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini" style="margin-top:6%">Yearly</a></div>	
@@ -87,7 +89,7 @@
 	</div>
 	
 	<script>
-		$(document).ready(function(){
+
 			$("#year").show();
 			$("#OpenYear").click(function(){
 				$("#year").show();
@@ -97,5 +99,5 @@
 				$("#month").show();
 				$("#year").hide();
 			});
-		});
+
 	</script>

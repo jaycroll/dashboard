@@ -55,7 +55,7 @@ public class DomesticSales extends HttpServlet{
 					Map requestMap = new HashMap();
 					
 					useDispatcher = true;
-					view = request.getRequestDispatcher("productsales/main.jsp");
+					view = request.getRequestDispatcher("domestic/main.jsp");
 					
 					ProjectionMap.put("location", "Domestic");
 

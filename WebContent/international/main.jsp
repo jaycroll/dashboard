@@ -8,6 +8,7 @@
 	RolePermission rpMain = new RolePermission();
 	rpMain.gAppProperties(request.getRealPath("/"));
 	String[][] channelList = (String[][]) request.getAttribute("channelList");
+	String[] loc_def = (String[]) request.getAttribute("classCSS");
 	String disabled="";
 	String display_1="";
 	String display_2="";
@@ -40,7 +41,7 @@
 	    <ul data-role="listview" data-theme="a" data-divider-theme="a" data-count-theme="a">
 	    <li data-role="list-divider" style="font-weight:normal;font-size:20px;">Product Sales Menu</li>
 	    <li><a href="<%=sitePathInit%>DomesticProducts" class="<%=disabled%>" style="font-weight:normal;">Domestic Sales Projection</a></li>
-	    <li><a href="<%=sitePathInit%>InternationalProduts" class="<%=disabled%>" style="font-weight:normal;">International Sales Projection</a></li>
+	    <li><a href="<%=sitePathInit%>InternationalProducts" class="<%=disabled%>" style="font-weight:normal;">International Sales Projection</a></li>
 	    <li><a href="<%=sitePathInit%>" style="font-weight:normal;">Home Page</a></li>
 	</ul>
 	</div>
@@ -58,12 +59,12 @@
 			    <form>
 				<fieldset data-role="controlgroup" data-type="horizontal">
 			    	<label for="select2">Product:</label>
-			    	<select name="territory" name="select2" id="product" data-inline="true" data-mini="true">
+			    	<select name="territory" name="select2" id="product2" data-inline="true" data-mini="true">
 			    		<option value="" >--Product--</option>
 							<%
 								for(int i = 0; i<channelList.length;i++){
 									%>
-										<option value="<%=channelList[i][0]%>"><%=channelList[i][1] %></option>
+										<option value="<%=channelList[i][0]%>"><%=channelList[i][1] %>-<%=channelList[i][0]%></option>
 									<%
 								}
 							%>
@@ -71,7 +72,7 @@
 				</fieldset>
 				</form>
 		</div>
-		<div class="ui-grid-solo" id="content5">	
+		<div class="ui-grid-solo" id="content6">	
 		</div>
 	</div>
 	<div data-role="content" style="<%=display_21%>">
@@ -87,27 +88,25 @@
 </div>
 <script>
 $(document).ready(function(){
-
-		$("#content5").html("");	
-
-
+		
+	
 });
-$("#product").change(function(){
+$("#product2").change(function(){
 	var str = "";
-    $( "#product option:selected" ).each(function() {
+    $( "#product2 option:selected" ).each(function() {
       str += $( this ).val();
-      $("#content5").empty();
-   	loadProductProjection(str);
+      $("#content6").empty();
+   	loadProductProjection2(str);
     	});
 	
 });
 
-function loadProductProjection(channel_id){
+function loadProductProjection2(channel_id){
 	var channel_id = channel_id;
-	$.post("<%=sitePathInit%>ADomesticSales",{action:'loadSales',channel_id:channel_id},
+	$.post("<%=sitePathInit%>AInternationalSales",{action:'loadSales',channel_id:channel_id},
 			   function(data){
 	
-		$("#content5").append(data);
+		$("#content6").append(data);
 	});
 }
 </script>

@@ -719,6 +719,7 @@ public class SalesModel{
 				try{
 					 this.fetchProperties();
 					 Statement st = this.connection.createStatement();
+					
 					 query = ""
 									  + "SELECT Ifnull(Sum(CASE "
 									  + "                    WHEN revenue_type = 'Sales' THEN revenue_report.amount "
@@ -727,14 +728,22 @@ public class SalesModel{
 									  + "                               WHEN revenue_type = 'Refund' THEN revenue_report.amount ELSE 0 "
 									  + "                             end), 0) AS actual_revenue, MONTH(revenue_date) as month "
 									  + "FROM   revenue_report "
-									  + "WHERE  channel_id="+det.get("channelid")+" " 
-									  +" AND YEAR(revenue_date) = YEAR(NOW()) AND DAY(revenue_date) < DAY(NOW()) AND Date_format(revenue_date, '%Y-%m')"
-									  + " GROUP BY MONTH(revenue_date), YEAR(revenue_date)";
-					   			
+									  + "WHERE  1=1 " 
+									  +" AND YEAR(revenue_date) = YEAR(NOW()) AND DAY(revenue_date) < DAY(NOW()) AND Date_format(revenue_date, '%Y-%m')";
+					 			
+									  
+									  
+									  if(det.get("channelid")!=null && det.get("channelid")!=""){
+											query+=" AND channel_id='"+det.get("channelid")+"'";
+										}
+										if(det.get("channel_id")!=null && det.get("channel_id")!=""){
+											query+=" AND channel_id='"+det.get("channelid")+"'";
+										}	
 					   		
 					   				if(det.get("user_id") != null && det.get("user_id") != ""){
 										  query+=" and salesuser_bridge.userid='"+det.get("user_id")+"'";
 									}
+					   				query+= " GROUP BY MONTH(revenue_date), YEAR(revenue_date)";
 					   				
 					  rs = st.executeQuery(query);
 					  
@@ -1012,6 +1021,9 @@ public class SalesModel{
 					if(det.get("channelid")!=null && det.get("channelid")!=""){
 						query+=" AND channel_id='"+det.get("channelid")+"'";
 					}
+					if(det.get("channel_id")!=null && det.get("channel_id")!=""){
+						query+=" AND channel_id='"+det.get("channelid")+"'";
+					}
 					
 				
 					
@@ -1076,6 +1088,9 @@ public class SalesModel{
 							+ " where target_group_id!=4";		
 					
 					if(det.get("channelid")!=null && det.get("channelid")!=""){
+						query+=" AND channel_id='"+det.get("channelid")+"'";
+					}
+					if(det.get("channel_id")!=null && det.get("channel_id")!=""){
 						query+=" AND channel_id='"+det.get("channelid")+"'";
 					}
 					if(det.get("year")!=null && det.get("year")!=""){

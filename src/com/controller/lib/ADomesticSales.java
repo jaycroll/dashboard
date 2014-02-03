@@ -57,6 +57,7 @@ public class ADomesticSales extends HttpServlet{
 			float[] monthlySales = new float[13];
 			float[] monthlyTarget = new float[13];
 			Map reqVar = new HashMap();
+			//System.out.println(channel_id);
 			//System.out.println("it gets here");
 			// Note: notice the parameters for getString on ResultSets getChannelTargetYTD, getChannelTargetMTD, and
 			// getChannelMonthlyTarget are all "actual_revenue"?
@@ -65,7 +66,7 @@ public class ADomesticSales extends HttpServlet{
 		
 				if(action.equals("loadSales")){
 					
-					thisVar.put("channel_id", channel_id);
+					thisVar.put("channelid", channel_id);
 					ResultSet getChannelYTD = salesModel.ldYearRevenue2(thisVar);
 					try{
 						getChannelYTD.beforeFirst();
@@ -104,7 +105,7 @@ public class ADomesticSales extends HttpServlet{
 						if(getChannelTargetMTD.next()){
 							do{TargetMTD = getChannelTargetMTD.getString("actual_revenue");}while(getChannelTargetMTD.next());					
 						}
-						reqVar.put("TargetMTD",TargetYTD);
+						reqVar.put("TargetMTD",TargetMTD);
 					}catch(SQLException e){
 						e.printStackTrace();
 					}
@@ -112,7 +113,9 @@ public class ADomesticSales extends HttpServlet{
 					try{
 						getChannelMonthlySales.beforeFirst();
 						if(getChannelMonthlySales.next()){
-							monthlySales[Integer.parseInt(getChannelMonthlySales.getString("month"))] = Float.parseFloat(getChannelMonthlySales.getString("actual_revenue"));
+							do{
+								monthlySales[Integer.parseInt(getChannelMonthlySales.getString("month"))] = Float.parseFloat(getChannelMonthlySales.getString("actual_revenue"));
+							}while(getChannelMonthlySales.next());
 						}
 						reqVar.put("monthlySales",monthlySales);
 					}catch(SQLException e){
@@ -122,7 +125,10 @@ public class ADomesticSales extends HttpServlet{
 					try{
 						getChannelMonthlyTarget.beforeFirst();
 						if(getChannelMonthlyTarget.next()){
-							monthlyTarget[Integer.parseInt(getChannelMonthlyTarget.getString("month"))]=Float.parseFloat(getChannelMonthlyTarget.getString("actual_revenue"));
+							do{
+								monthlyTarget[Integer.parseInt(getChannelMonthlyTarget.getString("month"))]=Float.parseFloat(getChannelMonthlyTarget.getString("actual_revenue"));
+								}while(getChannelMonthlyTarget.next());
+							
 						}
 						reqVar.put("monthlyTarget",monthlyTarget);
 					}catch(SQLException e){
@@ -130,7 +136,7 @@ public class ADomesticSales extends HttpServlet{
 					}
 					request.setAttribute("reqVar",reqVar);
 					useDispatcher = true;
-					view = request.getRequestDispatcher("productsales/loadMonth.jsp");
+					view = request.getRequestDispatcher("domestic/loadMonth.jsp");
 				}
 				if(useDispatcher=true){
 					response.setHeader("Cache-control","private, no-store, no-cahce,must-revalidate");

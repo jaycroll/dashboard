@@ -53,9 +53,9 @@
 	</div>
 	<div data-role="content" style="<%=display_11%>">
 		<div class="ui-grid-b jqSection" style="margin-top:-2%">
-		    <div class="ui-block-a"><a href="javascript:void(0);" class="ibtntabs active ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini" alt='loadDefault'>Snapshot</a></div>
-		    <div class="ui-block-b"><a href="javascript:void(0);" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini" alt='loadMonth'>Monthly</a></div>
-		    <div class="ui-block-c"><a href="javascript:void(0);" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-shadow ui-mini">Query</a></div>
+		    <div class="ui-block-a"><a href="javascript:void(0);" class="ibtntabs ui-btn ui-btn-b ui-corner-all  ui-mini" alt='loadDefault'>Snapshot</a></div>
+		    <div class="ui-block-b"><a href="javascript:void(0);" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-mini" alt='loadMonth'>Monthly</a></div>
+		    <div class="ui-block-c"><a href="javascript:void(0);" class="ibtntabs ui-btn ui-btn-b ui-corner-all ui-mini">Query</a></div>
 		</div>
 		<div class="ui-grid-solo" id="content">
 		
