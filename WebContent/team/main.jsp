@@ -39,7 +39,7 @@
 <div id="team">
 
 	<div data-role="panel" id="mypanel" data-display="overlay" data-position="right">
-	    <ul data-role="listview" data-theme="a" data-divider-theme="a" data-count-theme="a">
+	    <ul data-role="listview" data-theme="a" data-divider-theme="b" data-count-theme="a">
 	    <li data-role="list-divider" style="font-weight:normal;font-size:20px;">Target Menu</li>
 	    <li><a href="<%=sitePathInit%>Projection" class="<%=disabled%>" style="font-weight:normal;">Company Projection</a></li>
 	    <li><a href="<%=sitePathInit%>Team" class="<%=disabled%>" style="font-weight:normal;">Team Projection</a></li>
@@ -47,10 +47,10 @@
 	    <li><a href="<%=sitePathInit%>" style="font-weight:normal;">Home Page</a></li>
 	</ul>
 	</div>
-	<div data-role="header" align="center" style="border:0px;margin-bottom:2%;">
-			<img src="<%=sitePathInit%>images/ppe-black.svg"/>		
+	<div data-role="header" align="center" style="border:0px;margin-bottom:2%;" data-theme="b">
+			<img src="<%=sitePathInit%>images/ppe-black.svg" width="80%"/>		
 	</div>
-	<div data-role="header" style="border:0px">
+	<div data-role="header" style="border:0px" data-theme="b">
 	  		<div id="title2">Dashboard</div>
 	  		<a href="" class="jq_btnLogout ui-btn ui-btn-a ui-corner-all  ui-btn-block " style="<%=display_1%>; font-size:14px"><span class="">Logout</span></a>
 	  		<a href="#mypanel" class="ui-btn ui-btn-a ui-corner-all  ui-btn-block " style="<%=display_1%>; font-size:14px"><span class="" >Menu</span></a>

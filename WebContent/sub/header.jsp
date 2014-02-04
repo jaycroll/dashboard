@@ -28,9 +28,10 @@
 <meta http-equiv="content-type"  charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" href="images/favicon.ico" />
-<link rel="stylesheet" href="<%=sitePathInit%>css/jquery.mobile.structure-1.4.0.css" /> 
-<link rel="stylesheet" href="<%=sitePathInit%>css/jquery.mobile-1.4.0.css"/>
 
+<link rel="stylesheet" href="<%=sitePathInit%>css/custom-dashboard.css"/>
+<link rel="stylesheet" href="<%=sitePathInit%>css/jquery.mobile.icons-1.4.0.css"/>
+<link rel="stylesheet" href="<%=sitePathInit%>css/jquery.mobile.structure-1.4.0.css" /> 
 <link rel="stylesheet" type="text/css"  href="<%=sitePathInit%>css/style2.css">
 <link rel="stylesheet" type="text/css" href="<%=sitePathInit%>css/font.css">
 <link rel="stylesheet" type="text/css" href="<%=sitePathInit%>css/nv.d3.css">

@@ -9,11 +9,12 @@
 		}
 		
 #title2{
-	font-size:26px;
+	font-size:21px;
 	font-family: Lucida Sans Unicode, Tahoma, Verdana, Arial, sans-serif;	
 	width:auto;
 	height: 53px;
 	margin-top:5px;
+	padding-top: 20px;
 	margin-bottom:5px;
 	text-align:center;
 	font-weight:normal !important; 
@@ -22,13 +23,16 @@
 }
 #title3{
 	font-size:21px;
-	font-family: Lucida Sans Unicode, Tahoma, Verdana, Arial, sans-serif;
-	font-weight: bold;	
+	font-family: Lucida Sans Unicode, Tahoma, Verdana, Arial, sans-serif;	
 	width:auto;
 	height: 53px;
-	margin-top:2%;
-	margin-bottom:1%;
-
+	margin-top:5px;
+	padding-top: 10px;
+	margin-bottom:5px;
+	text-align:center;
+	font-weight:normal !important; 
+	color:#000;
+	text-decoration:none;
 }
 
 /******CONTAINERS*****/

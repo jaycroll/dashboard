@@ -34,14 +34,14 @@ function changeImage(img,id){
 <div id="index" >
 		
 	  <div data-role="header" align="center" style="border:0px">
-			<img src="<%=sitePathInit%>images/ppe-black.svg"  style="width:325px; "/>
+			<img src="<%=sitePathInit%>images/ppe-black.svg"  width="80%"/>
 			
 	  </div>
 	  
-	  <div data-role="header" style="border:0px">
+	 	<div data-role="header" style="border:0px">
 	  		<div id="title2">Dashboard</div>
-	  		<a href="" class="jq_btnLogout ui-btn ui-btn-a ui-corner-all  ui-btn-block ui-mini" style="<%=display_2%>; font-size:14px"><span class="" >Logout</span></a>
-	  </div>
+	  		<a href="" class="jq_btnLogout ui-btn ui-btn-a ui-corner-all  ui-btn-block " style="<%=display_2%>; font-size:14px"><span class="">Logout</span></a>	  		
+		</div>
 				
 	  <div class="ui-grid-a" style="margin-top:4%">
 		    <div class="ui-block-a"><div class="ui-body ui-body-a" style="text-align:center; border:0px"><a href="<%=sitePathInit%>Projection" class="<%=disabled%>"><img src="<%=sitePathInit%>images/target.svg"></a></div></div>
@@ -59,13 +59,13 @@ function changeImage(img,id){
 	  <div data-role="popup" id="login" data-theme="a" class="ui-content" data-overlay-theme="b" style="max-width: 400px;margin-left:-10%">
 	    <form method="post" class="signin" id='formLogin' action="AUser">
 	    		<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right" style="margin-right:-18px;margin-top:-18px">Close</a>
-          		<div class="ui-header ui-bar-a" style="border:0px">Login</div>
+          		<div class="ui-header ui-bar-b" style="border:0px">Login</div>
           		<div  class="sLoginStatus" align='center'> </div>
                 <fieldset class="textbox">
              
-                <input id="username" name="username" value="" type="text" autocomplete="on" placeholder="Username">
+                <input id="username" data-theme="c" name="username" value="" type="text" autocomplete="on" placeholder="Username">
                 
-                <input id="password" name="password" value="" type="password" placeholder="Password">
+                <input id="password" data-theme="c" name="password" value="" type="password" placeholder="Password">
 				
 				<a class="forgot " href="#">Forgot your password?</a>
 				
