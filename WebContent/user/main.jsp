@@ -55,7 +55,7 @@
 	ResultSet rsUserList = (ResultSet) request.getAttribute("usrListSpec"); 
 	ResultSet rsRole = (ResultSet) request.getAttribute("urlRole"); 
 %>
-<div id="team">
+<div id="user">
 
 	<div data-role="panel" id="mypanel" data-display="overlay" data-position="right">
 	    <ul data-role="listview" data-theme="a" data-divider-theme="b" data-count-theme="a">
@@ -158,10 +158,10 @@ $(document).ready(function($){
 	
 		if(checkLogged()){
 				
-				$.post("<%=sitePathInit%>AUser",{action:'initDelete',userid:$(this).attr("alt")},
+				$.post("<%=sitePathInit%>AUser",{action:'initDelete',userid:$(this).attr("title")},
 						   function(data){
 									$('.basic-container').html(data);
-									initModal();
+	
 				});
 		}else{
 			window.location='<%=sitePathInit%>';	
@@ -169,6 +169,13 @@ $(document).ready(function($){
 	});	
 	
 	
+	$(".jq_btnEdit").click(function(){
+		if(checkLogged()){
+			var userid = $(this).attr("title");
+			window.location="<%=sitePathInit%>User/EditAccess/"+userid;
+		}
+		
+	});
 	
 	
 	

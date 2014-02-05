@@ -4,17 +4,21 @@
 <% 
 	String sitePathInitSub =request.getContextPath()+"/";
 %>    
-<div class='divCenter txtCenter jq_DeleteUserStatus'>
+<div class='jq_DeleteUserStatus ui-bar-a' data-role="popup" data-overlay="a" data-theme="a" id="theme" style="position:fixed;z-index:9999">
+		Are you sure you want to delete this user?
+		<br>
+		<%=request.getAttribute("fullname")%> (<%=request.getAttribute("rolename")%>)
+		<br>
+		<div class="ui-block-a"><a href="" class='ui-btn ui-btn-b ui-mini jq_ConfirmDeleteAccess' alt='<%=request.getAttribute("userid")%>'>Confirm</a></div>
+		<div class="ui-block-b"><a href=""  class='ui-btn ui-btn-b ui-mini jq_ModalClose'>Cancel</a></div>
+		
 
-		<div class='txtCenter'>Are you sure you want to delete this user?</div><br />
-		<div class='txtCenter lnkGrn '><%=request.getAttribute("fullname")%> (<%=request.getAttribute("rolename")%>)</div><br />
-		<div class='txtCenter'>
-				 <span class='lnkRed jq_ConfirmDeleteAccess' alt='<%=request.getAttribute("userid")%>'>Confirm</span> &nbsp; <span  class='lnkRed jq_ModalClose'>Cancel</span>
-		</div><br />
-		<div class='clr'>&nbsp;</div>
 </div>
 <script>
 	$(document).ready(function(){
+		$(".jq_ModalClose").click(function(){
+			$('.jq_DeleteUserStatus').hide();
+		});	
 		$(".jq_ConfirmDeleteAccess").click(function () {
 			if(checkLogged()){
 				
@@ -26,13 +30,14 @@
 								if(data.process){
 									$(".jq_DeleteUserStatus").removeClass("red");	
 									loadUser();
-									setTimeout("$.modal.close()",2000);
+									setTimeout("$('.jq_DeleteUserStatus').hide()",2000);
 								}else{
 									$(".jq_DeleteUserStatus").addClass("red");	
 								}
 								
 								
 				},"json");
+			
 				setTimeout(function(){
 					 window.location.reload();
 				 },1000);

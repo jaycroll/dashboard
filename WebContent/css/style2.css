@@ -9,13 +9,11 @@
 		}
 		
 #title2{
-	font-size:21px;
+	font-size:120%;
 	font-family: Lucida Sans Unicode, Tahoma, Verdana, Arial, sans-serif;	
 	width:auto;
-	height: 53px;
-	margin-top:5px;
-	padding-top: 20px;
-	margin-bottom:5px;
+	padding-top: 10px;
+
 	text-align:center;
 	font-weight:normal !important; 
 	color:#000;

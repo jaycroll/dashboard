@@ -21,9 +21,12 @@
         	<span class="ui-btn ui-btn-b ui-icon-edit ui-nodisc-icon ui-btn-icon-notext ui-corner-all ui-mini" title='<%=rs2.getString("userid")%>'>Edit</span>
         </td>
         <td align="center" class="lucida_10_red" width="100" style="text-align:center; height: 30px">
-        	<span class="jq_DeleteAccess ui-btn ui-btn-b ui-nodisc-icon ui-icon-delete ui-btn-icon-notext ui-corner-all ui-mini" title='<%=rs2.getString("userid")%>'>Delete</span>
+        	<a href="#theme" data-rel="popup" class="jq_DeleteAccess ui-btn ui-btn-b ui-nodisc-icon ui-icon-delete ui-btn-icon-notext ui-corner-all ui-mini" title='<%=rs2.getString("userid")%>'>Delete</a>
         </td>
         </tr>
 <%		
 	}
 %>	    
+<script>
+
+</script>

@@ -11,6 +11,7 @@ import java.util.Map;
 
 
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,11 +61,9 @@ public class AUser extends HttpServlet {
 		
 		Map iVariable=new HashMap();
 		
-		String action	="";
-		if(!request.getParameter("action").isEmpty()){
-			action=request.getParameter("action");
-		}
-		
+		String action	=request.getParameter("action");
+
+		System.out.println(action);
 		UserModel usr=new UserModel();
 		CustomHelper ch=new CustomHelper();
 		usr.projectFile=getServletContext().getRealPath("/");
